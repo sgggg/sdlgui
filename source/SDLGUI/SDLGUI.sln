@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLGUILIB", "SDLGUILIB\SDLGUILIB.vcxproj", "{2643187C-FACE-474F-86E9-0C8A2FC6A282}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Runtime", "Runtime\Runtime.vcxproj", "{5282C7EC-097F-4273-A37C-FF23850C98A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2643187C-FACE-474F-86E9-0C8A2FC6A282} = {2643187C-FACE-474F-86E9-0C8A2FC6A282}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

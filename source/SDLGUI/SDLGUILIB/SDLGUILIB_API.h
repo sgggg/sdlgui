@@ -10,6 +10,9 @@
 #define SDLGUILIB_API __declspec(dllimport)
 #endif
 
+/*
+// Example usage:
+
 // This class is exported from the SDLGUILIB.dll
 class SDLGUILIB_API CSDLGUILIB {
 public:
@@ -20,3 +23,5 @@ public:
 extern SDLGUILIB_API int nSDLGUILIB;
 
 SDLGUILIB_API int fnSDLGUILIB(void);
+
+*/
