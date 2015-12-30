@@ -32,6 +32,15 @@ int main(int /*argc*/, char* /*args*/[])
 	SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 
 	sgl::GlobalInitialize();
+
+	sgl::Window w(nullptr, "Main Window");
+	w.setSize(400, 300);
+	w.setCanvas(*window);
+	sgl::Button b(&w, "Press Me!");
+	b.setSize(100, 50);
+
+	w.draw();
+
 	auto running = true;
 	SDL_Event e;
 	while (running)
@@ -39,6 +48,7 @@ int main(int /*argc*/, char* /*args*/[])
 		while (0 != SDL_PollEvent(&e))
 		{
 			sgl::HandleEvent(e);
+			w.draw();
 			if (e.type == SDL_QUIT)
 			{
 				running = false;

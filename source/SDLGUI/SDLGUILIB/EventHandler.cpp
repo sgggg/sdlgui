@@ -6,13 +6,17 @@ namespace sgl
 {
 	int GlobalInitialize()
 	{
-		detail::globalEventHandler = new EventHandler();
+		if (detail::globalEventHandler == nullptr)
+		{
+			detail::globalEventHandler = new EventHandler();
+		}
 		return 0;
 	}
 
 	int GlobalCleanup()
 	{
 		delete detail::globalEventHandler;
+		detail::globalEventHandler = nullptr;
 		return 0;
 	}
 
@@ -29,6 +33,7 @@ namespace sgl
 	}
 
 	EventHandler::EventHandler()
+		:rootWindows()
 	{
 	}
 
