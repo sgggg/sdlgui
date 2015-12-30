@@ -71,9 +71,9 @@ namespace sgl
 
 	void Window::draw()
 	{
-		// TODO draw window and then draw children
 		if (isVisible_)
 		{
+			// TODO draw window and then draw children
 			for (const auto& child : children_)
 			{
 				child->draw();
