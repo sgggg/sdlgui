@@ -8,10 +8,13 @@ namespace sgl
 		:label_()
 		,width_(0)
 		,height_(0)
-		,posX_(0)
-		,posY_(0)
+		,relativePosX_(0)
+		,relativePosY_(0)
+		,screenPosX_(0)
+		,screenPosY_(0)
 		,isVisible_(false)
 		,isActive_(false)
+		,isClicked_(false)
 		,parent_(nullptr)
 		,children_()
 		,canvas_(nullptr)
@@ -19,17 +22,11 @@ namespace sgl
 	}
 
 	Window::Window(Window* parentWindow, const std::string& label)
-		:label_(label)
-		,width_(0)
-		,height_(0)
-		,posX_(0)
-		,posY_(0)
-		,isVisible_(false)
-		,isActive_(false)
-		,parent_(parentWindow)
-		,children_()
-		,canvas_(nullptr)
+		:Window()
 	{
+		label_ = label;
+		parent_ = parentWindow;
+		setPosition(0, 0);
 	}
 	
 	std::string Window::getLabel() const
@@ -42,9 +39,9 @@ namespace sgl
 		label_ = text;
 	}
 
-	void Window::addChild(Window* childWindow)
+	void Window::addChild(Window& childWindow)
 	{
-		children_.push_back(childWindow);
+		children_.push_back(&childWindow);
 	}
 
 	Window* Window::getParent() const
@@ -64,26 +61,42 @@ namespace sgl
 		height_ = size.height;
 	}
 
-	Point Window::getSize() const
+	Size Window::getSize() const
 	{
-		return Point{ width_, height_ };
+		return Size{ width_, height_ };
 	}
 
-	void Window::draw()
+	void Window::setPosition(int x, int y)
+	{
+		relativePosX_ = x;
+		relativePosY_ = y;
+		if (parent_ == nullptr)
+		{
+			screenPosX_ = x;
+			screenPosY_ = y;
+		}
+		else
+		{
+			screenPosX_ = parent_->screenPosX_ + x;
+			screenPosY_ = parent_->screenPosY_ + y;
+		}
+	}
+
+	Point Window::getPosition() const
+	{
+		return Point{ relativePosX_, relativePosY_ };
+	}
+
+	void Window::draw(SDL_Renderer& renderer)
 	{
 		if (isVisible_)
 		{
 			// TODO draw window and then draw children
 			for (const auto& child : children_)
 			{
-				child->draw();
+				child->draw(renderer);
 			}
 		}
-	}
-
-	void Window::setCanvas(SDL_Window& canvas)
-	{
-		canvas_ = &canvas;
 	}
 
 	bool Window::isVisible()
@@ -94,5 +107,79 @@ namespace sgl
 	void Window::setVisible(bool isVisible)
 	{
 		isVisible_ = isVisible;
+	}
+
+	bool Window::handleEvent(const SDL_Event& e)
+	{
+		// since child windows usually are on top of their parents, 
+		// we first pass the event down to the children to handle.
+		// If none of the children handle the event, we process it ourselves.
+		auto wasHandled = false;
+		for (const auto& child : children_)
+		{
+			wasHandled = child->handleEvent(e);
+			if (wasHandled)
+			{
+				break;
+			}
+		}
+		if (!wasHandled)
+		{
+			// if the event was not handled by any child
+			// check if it concerns this window
+			switch (e.type)
+			{
+			case SDL_MOUSEBUTTONDOWN:
+				{
+					// Uint32		type		the event type; SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP
+					// Uint32		timestamp	timestamp of the event
+					// Uint32		windowID	the window with mouse focus, if any
+					// Uint32		which		the mouse instance id, or SDL_TOUCH_MOUSEID; see Remarks for details
+					// Uint8		button		the button that changed; see Remarks for details
+					// Uint8		state		the state of the button; SDL_PRESSED or SDL_RELEASED
+					// Uint8		clicks		1 for single - click, 2 for double - click, etc. (>= SDL 2.0.2)
+					// Sint32		x			X coordinate, relative to window
+					// Sint32		y			Y coordinate, relative to window
+					auto insideWindow = e.button.x >= screenPosX_ &&
+						e.button.x <= screenPosX_ + width_ &&
+						e.button.y >= screenPosY_ &&
+						e.button.y <= screenPosY_ + height_;
+					if (insideWindow &&
+						e.button.button == SDL_BUTTON_LEFT &&
+						e.button.state == SDL_PRESSED)
+					{
+						// normal left click inside this window
+						isActive_ = true;
+						isClicked_ = true;
+						wasHandled = true;
+						std::cout << "mouse1 down on window " << label_ << std::endl;
+					}
+					break;
+				}
+			case SDL_MOUSEBUTTONUP:
+				{
+					auto insideWindow = e.button.x >= screenPosX_ &&
+						e.button.x <= screenPosX_ + width_ &&
+						e.button.y >= screenPosY_ &&
+						e.button.y <= screenPosY_ + height_;
+					if (insideWindow &&
+						e.button.button == SDL_BUTTON_LEFT &&
+						e.button.state == SDL_RELEASED)
+					{
+						// normal left mouse up inside this window
+						isActive_ = true;
+						isClicked_ = false;
+						wasHandled = true;
+						std::cout << "mouse1 up on window " << label_ << std::endl;
+					}
+					break;
+				}
+				// TODO add more event types
+			default:
+				// ignore event
+				break;
+			}
+		}
+		return wasHandled;
 	}
 }

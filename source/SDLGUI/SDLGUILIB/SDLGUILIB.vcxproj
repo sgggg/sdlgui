@@ -169,6 +169,7 @@
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="SDLGUILIB_API.h" />
     <ClInclude Include="SGL.h" />
     <ClInclude Include="stdafx.h" />

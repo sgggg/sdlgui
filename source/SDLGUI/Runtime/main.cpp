@@ -3,8 +3,6 @@
 #include "../SDLGUILIB/SGL.h"
 
 
-// this currently just shows a blank window for 2 seconds
-
 int main(int /*argc*/, char* /*args*/[])
 {
 	const int SCREEN_WIDTH = 640;
@@ -18,28 +16,26 @@ int main(int /*argc*/, char* /*args*/[])
 	}
 
 	//Create window
-	auto window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	if (window == nullptr)
+	auto sdlWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	if (sdlWindow == nullptr)
 	{
 		std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 	}
 
-	//Get window surface
-	auto screenSurface = SDL_GetWindowSurface(window);
-
-	//Fill the surface white
-	SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-
+	// get 2D rendering context
+	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+	
 	sgl::GlobalInitialize();
 
 	sgl::Window w(nullptr, "Main Window");
 	w.setSize(400, 300);
-	w.setCanvas(*window);
 	sgl::Button b(&w, "Press Me!");
 	b.setSize(100, 50);
 
-	w.draw();
+	SDL_RenderClear(renderer);
+	w.draw(*renderer);
+	SDL_RenderPresent(renderer);
 
 	auto running = true;
 	SDL_Event e;
@@ -47,23 +43,22 @@ int main(int /*argc*/, char* /*args*/[])
 	{
 		while (0 != SDL_PollEvent(&e))
 		{
-			sgl::HandleEvent(e);
-			w.draw();
+			w.handleEvent(e);
+			SDL_RenderClear(renderer);
+			w.draw(*renderer);
+			SDL_RenderPresent(renderer);
+
 			if (e.type == SDL_QUIT)
 			{
 				running = false;
 			}
 		}
 	}
+
+	// clean up allocated resources
 	sgl::GlobalCleanup();
-
-	//Update the surface
-	SDL_UpdateWindowSurface(window);
-
-	//Destroy window
-	SDL_DestroyWindow(window);
-
-	//Quit SDL subsystems
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(sdlWindow);
 	SDL_Quit();
 
 	return 0;
