@@ -3,3 +3,14 @@
 ################################################################################
 
 /source/SDLGUI/SDLGUILIB/Debug/SDLGUILIB.tlog
+*.suo
+*.ipch
+*.tlog
+*.log
+*.obj
+*.user
+*.pch
+*.pch
+*.pch
+*.sdf
+*.opendb
