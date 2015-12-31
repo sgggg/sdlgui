@@ -94,15 +94,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\x86;$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\x86;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SGLD.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(Platform)\SDL2.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\SDL2_ttf.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\libfreetype-6.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\zlib1.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGLD.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)\SDL2.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\SDL2_ttf.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\libfreetype-6.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\zlib1.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGLD.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,15 +118,15 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGLD.dll" "$(OutDir)"</Command>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\x64;$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\x64;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SGLD.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(Platform)\SDL2.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\SDL2_ttf.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\libfreetype-6.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\zlib1.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGLD.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)\SDL2.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\SDL2_ttf.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\libfreetype-6.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\zlib1.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGLD.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,15 +146,15 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGLD.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\x86;$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\x86;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SGL.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(Platform)\SDL2.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\SDL2_ttf.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\libfreetype-6.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\zlib1.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGL.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)\SDL2.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\SDL2_ttf.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\libfreetype-6.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\zlib1.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGL.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -174,15 +174,15 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGL.dll" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\x64;$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\x64;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget);$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SGL.lib;SDL2_ttf.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(Platform)\SDL2.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\SDL2_ttf.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\libfreetype-6.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(Platform)\zlib1.dll" "$(OutDir)"
-xcopy /y "$(ProjectDir)..\..\..\lib\$(Platform)\SGL.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\lib\$(PlatformTarget)\SDL2.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\SDL2_ttf.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\libfreetype-6.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\lib\$(PlatformTarget)\zlib1.dll" "$(OutDir)"
+xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGL.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
