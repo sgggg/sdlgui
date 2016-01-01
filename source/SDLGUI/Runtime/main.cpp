@@ -34,7 +34,7 @@ int main(int /*argc*/, char* /*args*/[])
 	b.setSize(100, 50);
 
 	SDL_RenderClear(renderer);
-	w.draw(*renderer);
+	w.draw(renderer);
 	SDL_RenderPresent(renderer);
 
 	auto running = true;
@@ -45,7 +45,7 @@ int main(int /*argc*/, char* /*args*/[])
 		{
 			w.handleEvent(e);
 			SDL_RenderClear(renderer);
-			w.draw(*renderer);
+			w.draw(renderer);
 			SDL_RenderPresent(renderer);
 
 			if (e.type == SDL_QUIT)
