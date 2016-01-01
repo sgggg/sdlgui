@@ -15,3 +15,9 @@
 *.sdf
 *.opendb
 /thirdparty/SDL2-2.0.3_source
+/source/SDLGUI/Runtime/x64
+/source/SDLGUI/Runtime/x86
+/source/SDLGUI/SDLGUILIB/x86
+/source/SDLGUI/SDLGUILIB/x64
+/source/SDLGUI/x86
+/source/SDLGUI/x64

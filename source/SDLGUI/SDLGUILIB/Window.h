@@ -25,13 +25,16 @@ namespace sgl
 		virtual void setPosition(int x, int y);
 		virtual Point getPosition() const;
 
-		// inherited methods
+		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 		virtual bool isVisible() override;
 		virtual void setVisible(bool isVisible) override;
 		virtual bool handleEvent(const SDL_Event& e) override;
 
-	private:
+	protected:
+		// helper functions
+		bool isInsideWindowBounds(int x, int y) const;
+
 		std::string label_;							///< label of this window
 		int width_;									///< Width of this window in pixels
 		int height_;								///< Height of this window in pixels
@@ -44,8 +47,9 @@ namespace sgl
 		bool isClicked_;							///< `true` if there was a mouse down event inside this window but no mouse up event yet
 		bool containsMouse_;						///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;							///< Non-owning pointer to parent window
-		std::vector<Window*> children_;				///< owning pointers to all children of this window
+		std::vector<Window*> children_;				///< Non-owning pointers to all children of this window
 
+	private:
 		Window& operator=(const Window&) = delete;
 		Window(const Window&) = delete;
 	};

@@ -4,11 +4,11 @@
 
 namespace sgl
 {
-	class SDLGUILIB_API Button : public Window
+	class TextLabel : public Window
 	{
 	public:
-		Button();
-		Button(Window* parent, const std::string& label);
+		TextLabel();
+		TextLabel(Window* parent, const std::string& text);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;

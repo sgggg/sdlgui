@@ -68,17 +68,20 @@ namespace sgl
 
 	void Window::setPosition(int x, int y)
 	{
-		relativePosX_ = x;
-		relativePosY_ = y;
+		auto newPosX = x;
+		auto newPosY = y;
+		// TODO check that window is always positioned fully inside parent window
+		relativePosX_ = newPosX;
+		relativePosY_ = newPosY;
 		if (parent_ == nullptr)
 		{
-			screenPosX_ = x;
-			screenPosY_ = y;
+			screenPosX_ = newPosX;
+			screenPosY_ = newPosY;
 		}
 		else
 		{
-			screenPosX_ = parent_->screenPosX_ + x;
-			screenPosY_ = parent_->screenPosY_ + y;
+			screenPosX_ = parent_->screenPosX_ + newPosX;
+			screenPosY_ = parent_->screenPosY_ + newPosY;
 		}
 	}
 
@@ -140,17 +143,14 @@ namespace sgl
 				// Uint8		clicks		1 for single - click, 2 for double - click, etc. (>= SDL 2.0.2)
 				// Sint32		x			X coordinate, relative to window
 				// Sint32		y			Y coordinate, relative to window
-				auto insideWindow = e.button.x >= screenPosX_ &&
-					e.button.x <= screenPosX_ + width_ &&
-					e.button.y >= screenPosY_ &&
-					e.button.y <= screenPosY_ + height_;
-				if (insideWindow &&
+				if (isInsideWindowBounds(e.button.x, e.button.y) &&
 					e.button.button == SDL_BUTTON_LEFT &&
 					e.button.state == SDL_PRESSED)
 				{
 					// normal left click inside this window
 					isActive_ = true;
 					isClicked_ = true;
+					containsMouse_ = true;
 					wasHandled = true;
 					std::cout << "mouse1 down on window " << label_ << std::endl;
 				}
@@ -158,17 +158,14 @@ namespace sgl
 			}
 			case SDL_MOUSEBUTTONUP:
 			{
-				auto insideWindow = e.button.x >= screenPosX_ &&
-					e.button.x <= screenPosX_ + width_ &&
-					e.button.y >= screenPosY_ &&
-					e.button.y <= screenPosY_ + height_;
-				if (insideWindow &&
+				if (isInsideWindowBounds(e.button.x, e.button.y) &&
 					e.button.button == SDL_BUTTON_LEFT &&
 					e.button.state == SDL_RELEASED)
 				{
 					// normal left mouse up inside this window
 					isActive_ = true;
 					isClicked_ = false;
+					containsMouse_ = true;
 					wasHandled = true;
 					std::cout << "mouse1 up on window " << label_ << std::endl;
 				}
@@ -180,7 +177,7 @@ namespace sgl
 				// - drag & drop
 				// - resizing the window
 				// - releasing mouse-down when leaving the window with pressed lmouse
-				// - resuming mouse-down when entering with pressed lmouse
+				// - resuming mouse-down when re-entering with pressed lmouse
 				// TODO
 				break;
 			}
@@ -191,5 +188,13 @@ namespace sgl
 			}
 		}
 		return wasHandled;
+	}
+
+	bool Window::isInsideWindowBounds(int x, int y) const
+	{
+		return	x >= screenPosX_ &&
+				x <= screenPosX_ + width_ &&
+				y >= screenPosY_ &&
+				y <= screenPosY_ + height_;
 	}
 }
