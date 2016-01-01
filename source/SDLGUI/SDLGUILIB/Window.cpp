@@ -12,6 +12,7 @@ namespace sgl
 		,relativePosY_(0)
 		,screenPosX_(0)
 		,screenPosY_(0)
+		,hasTitleBar_(false)
 		,isVisible_(false)
 		,isActive_(false)
 		,isClicked_(false)
@@ -179,6 +180,28 @@ namespace sgl
 				// - releasing mouse-down when leaving the window with pressed lmouse
 				// - resuming mouse-down when re-entering with pressed lmouse
 				// TODO
+				auto didContainMouse = containsMouse_;
+				containsMouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
+				if (didContainMouse && containsMouse_)
+				{
+					// mouse moved within the window area
+					wasHandled = true;
+				}
+				else if (didContainMouse && !containsMouse_)
+				{
+					// mouse left the window area
+					std::cout << "mouse left " << label_ << std::endl;
+					containsMouse_ = false;
+					isClicked_ = false;
+				}
+				else if (!didContainMouse && containsMouse_)
+				{
+					// mouse entered the window area
+					std::cout << "mouse entered " << label_ << std::endl;
+					wasHandled = true;
+					containsMouse_ = true;
+					// TODO set isClicked_ if mouse1 is pressed
+				}
 				break;
 			}
 			// TODO add more event types

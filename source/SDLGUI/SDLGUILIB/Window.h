@@ -42,6 +42,7 @@ namespace sgl
 		int relativePosY_;							///< Position of this window along Y axis relative to parent window
 		int screenPosX_;							///< Position of this window in screen (SDL window) coordinates
 		int screenPosY_;							///< Position of this window in screen (SDL window) coordinates
+		bool hasTitleBar_;							///< If true, this window has a title bar containing its label as title at the top
 		bool isVisible_;							///< If true, this window and none of the children will be drawn
 		bool isActive_;								///< Ignores all received events if window is inactive.
 		bool isClicked_;							///< `true` if there was a mouse down event inside this window but no mouse up event yet
