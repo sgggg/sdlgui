@@ -1,0 +1,19 @@
+Task List
+
+* This list will contain all tasks that still need to be completed.
+
+- implement text rendering helper functions
+- implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
+- implement pack function that reduces a window to its minimal required size (to still fit all children)
+- streamline event handling code
+- add a text input control
+- add checkbox control
+- add radio button control
+- add grouping window for radio buttons and other controls
+- (optional) add canvas control
+- (optional) add register control
+- add timed events and redraws for animations
+
+... and more
+
+
