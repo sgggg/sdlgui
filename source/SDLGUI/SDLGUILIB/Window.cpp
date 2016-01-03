@@ -5,7 +5,8 @@
 namespace sgl
 {
 	Window::Window()
-		:label_()
+		:id_(-1)
+		,label_()
 		,width_(0)
 		,height_(0)
 		,relativePosX_(0)
@@ -91,6 +92,11 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
+	void Window::addEventHandler(EventType eventType, EventHandler handler)
+	{
+		eventHandlers_[eventType] = handler;
+	}
+
 	void Window::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_)
@@ -153,7 +159,7 @@ namespace sgl
 					isClicked_ = true;
 					containsMouse_ = true;
 					wasHandled = true;
-					std::cout << "mouse1 down on window " << label_ << std::endl;
+					triggerMouseDown();
 				}
 				break;
 			}
@@ -164,11 +170,14 @@ namespace sgl
 					e.button.state == SDL_RELEASED)
 				{
 					// normal left mouse up inside this window
-					isActive_ = true;
+					if (isClicked_)
+					{
+						triggerMouseUp();
+						triggerClicked();
+					}
 					isClicked_ = false;
 					containsMouse_ = true;
 					wasHandled = true;
-					std::cout << "mouse1 up on window " << label_ << std::endl;
 				}
 				break;
 			}
@@ -190,14 +199,14 @@ namespace sgl
 				else if (didContainMouse && !containsMouse_)
 				{
 					// mouse left the window area
-					std::cout << "mouse left " << label_ << std::endl;
+					triggerMouseLeft();
 					containsMouse_ = false;
 					isClicked_ = false;
 				}
 				else if (!didContainMouse && containsMouse_)
 				{
 					// mouse entered the window area
-					std::cout << "mouse entered " << label_ << std::endl;
+					triggerMouseEntered();
 					wasHandled = true;
 					containsMouse_ = true;
 					// TODO set isClicked_ if mouse1 is pressed
@@ -219,5 +228,35 @@ namespace sgl
 				x <= screenPosX_ + width_ &&
 				y >= screenPosY_ &&
 				y <= screenPosY_ + height_;
+	}
+
+	void Window::triggerClicked()
+	{
+		std::cout << "Window " << label_ << ": clicked" << std::endl;
+	}
+
+	void Window::triggerDoubleClicked()
+	{
+		std::cout << "Window " << label_ << ": double clicked" << std::endl;
+	}
+
+	void Window::triggerMouseEntered()
+	{
+		std::cout << "Window " << label_ << ": mouse entered" << std::endl;
+	}
+
+	void Window::triggerMouseLeft()
+	{
+		std::cout << "Window " << label_ << ": mouse left" << std::endl;
+	}
+
+	void Window::triggerMouseDown()
+	{
+		std::cout << "Window " << label_ << ": mouse down" << std::endl;
+	}
+
+	void Window::triggerMouseUp()
+	{
+		std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 }

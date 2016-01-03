@@ -2,14 +2,19 @@
 
 #include "SDLGUILIB_API.h"
 #include "Drawable.h"
+#include "Event.h"
 #include "Utility.h"
 #include "EventProcessor.h"
 #include <vector>
 #include <memory>
 #include <string>
+#include <functional>
+#include <map>
 
 namespace sgl
 {
+	typedef int WindowId;
+
 	class SDLGUILIB_API Window : public Drawable, EventProcessor
 	{
 	public:
@@ -24,6 +29,7 @@ namespace sgl
 		virtual Size getSize() const;
 		virtual void setPosition(int x, int y);
 		virtual Point getPosition() const;
+		virtual void addEventHandler(EventType eventType, EventHandler handler);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
@@ -32,9 +38,18 @@ namespace sgl
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	protected:
+		// event generating functions
+		virtual void triggerClicked();
+		virtual void triggerDoubleClicked();
+		virtual void triggerMouseEntered();
+		virtual void triggerMouseLeft();
+		virtual void triggerMouseDown();
+		virtual void triggerMouseUp();
+
 		// helper functions
 		bool isInsideWindowBounds(int x, int y) const;
 
+		WindowId id_;								///< unique identifier for this window
 		std::string label_;							///< label of this window
 		int width_;									///< Width of this window in pixels
 		int height_;								///< Height of this window in pixels
@@ -49,6 +64,7 @@ namespace sgl
 		bool containsMouse_;						///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;							///< Non-owning pointer to parent window
 		std::vector<Window*> children_;				///< Non-owning pointers to all children of this window
+		std::map<EventType, EventHandler> eventHandlers_;
 
 	private:
 		Window& operator=(const Window&) = delete;

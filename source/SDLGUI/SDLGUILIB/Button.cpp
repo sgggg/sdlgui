@@ -40,4 +40,40 @@ namespace sgl
 			}
 		}
 	}
+
+	void Button::triggerClicked()
+	{
+		auto evHandler = eventHandlers_.find(EventType::Button);
+		if (evHandler != std::end(eventHandlers_))
+		{
+			Event e;
+			e.type = EventType::Button;
+			evHandler->second(e);
+		}
+	}
+
+	void Button::triggerDoubleClicked()
+	{
+		// do nothing
+	}
+
+	void Button::triggerMouseEntered()
+	{
+		//std::cout << "Button " << label_ << ": mouse entered" << std::endl;
+	}
+
+	void Button::triggerMouseLeft()
+	{
+		//std::cout << "Button " << label_ << ": mouse left" << std::endl;
+	}
+
+	void Button::triggerMouseDown()
+	{
+		//std::cout << "Window " << label_ << ": mouse down" << std::endl;
+	}
+
+	void Button::triggerMouseUp()
+	{
+		//std::cout << "Window " << label_ << ": mouse up" << std::endl;
+	}
 }

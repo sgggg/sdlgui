@@ -32,7 +32,12 @@ int main(int /*argc*/, char* /*args*/[])
 	w.setSize(400, 300);
 	sgl::Button b(&w, "Press Me!");
 	b.setSize(100, 50);
+	auto f = [](const sgl::Event& e) {
+		std::cout << "my own function was executed!" << std::endl;
+	};
+	b.addEventHandler(sgl::EventType::Button, f);
 
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	w.draw(renderer);
 	SDL_RenderPresent(renderer);
@@ -44,6 +49,7 @@ int main(int /*argc*/, char* /*args*/[])
 		while (0 != SDL_PollEvent(&e))
 		{
 			w.handleEvent(e);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
 			w.draw(renderer);
 			SDL_RenderPresent(renderer);

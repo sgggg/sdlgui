@@ -172,7 +172,9 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Drawable.h" />
-    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="GuiFrame.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="SDLGUILIB_API.h" />
     <ClInclude Include="SGL.h" />
@@ -199,7 +201,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ErrorHandling.cpp" />
-    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
