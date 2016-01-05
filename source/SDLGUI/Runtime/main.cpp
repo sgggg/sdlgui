@@ -15,6 +15,12 @@ int main(int /*argc*/, char* /*args*/[])
 		return 0;
 	}
 
+	if (TTF_Init() < 0)
+	{
+		std::cerr << "SDL_ttf could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+		return 0;
+	}
+
 	//Create window
 	auto sdlWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (sdlWindow == nullptr)
@@ -29,8 +35,12 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::GlobalInitialize();
 
 	sgl::Window w(nullptr, "Main Window");
+	w.setVisible(1);
 	w.setSize(400, 300);
+
 	sgl::Button b(&w, "Press Me!");
+	b.setVisible(1);
+	b.setPosition(0, 100);
 	b.setSize(100, 50);
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
