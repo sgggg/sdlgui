@@ -1,22 +1,29 @@
 #include "stdafx.h"
 #include "Checkbox.h"
+#include "Gui.h"
 
 namespace sgl
 {
 	Checkbox::Checkbox()
 		:Window()
+		,isChecked_(false)
 	{
 	}
 
 	Checkbox::Checkbox(Window* parent, const std::string& label)
 		:Window(parent, label)
+		,isChecked_(false)
 	{
-		parent->addChild(*this); 
 	}
 
-	bool Checkbox::isChecked()
+	bool Checkbox::isChecked() const
 	{
 		return isChecked_;
+	}
+
+	void Checkbox::setChecked(bool isChecked)
+	{
+		isChecked_ = isChecked;
 	}
 
 	void Checkbox::triggerClicked()
@@ -27,49 +34,55 @@ namespace sgl
 
 	void Checkbox::triggerDoubleClicked()
 	{
-		// do nothing
 	}
 
 	void Checkbox::triggerMouseEntered()
 	{
-		//std::cout << "Button " << label_ << ": mouse entered" << std::endl;
 	}
 
 	void Checkbox::triggerMouseLeft()
 	{
-		//std::cout << "Button " << label_ << ": mouse left" << std::endl;
 	}
 
 	void Checkbox::triggerMouseDown()
 	{
-		//std::cout << "Window " << label_ << ": mouse down" << std::endl;
 	}
 
 	void Checkbox::triggerMouseUp()
 	{
-		//std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 
 	void Checkbox::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_)
 		{
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ }; //draw gray outline
-			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
-			SDL_RenderDrawRect(renderer, &outlineRect);
+			auto boxSize = 12;
+			auto labelOffset = 8 + boxSize;
+			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
 
-			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, { 0xC0, 0xC0, 0xC0 });
 			if (isActive_)
 			{
-				if (isChecked_)
+				// draw box
+				if (containsMouse_)
 				{
-					// TODO draw checkbox in checked state
+					drawFilledRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlContainsMouse);
 				}
 				else
 				{
-					// TODO draw checkbox in unchecked state
+					drawFilledRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlBackgroundActive);
 				}
-				// TODO draw checkbox label
+				drawRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlFrameActive);
+				if (isChecked_)
+				{
+					// draw checkbox in checked state
+					drawFilledRectangle(renderer, screenPosX_ + 2, screenPosY_ + 2, boxSize - 4, boxSize - 4, colorTheme.controlFrameActive);
+				}
+				else
+				{
+					// draw checkbox in unchecked state -> no fill
+				}
+				// draw label next to check box
+				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{

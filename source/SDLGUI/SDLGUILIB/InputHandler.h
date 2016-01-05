@@ -3,6 +3,7 @@
 #include "SDL.h"
 #include "SDLGUILIB_API.h"
 #include "Event.h"
+#include "ColorTheme.h"
 #include <vector>
 
 
@@ -11,12 +12,6 @@
 namespace sgl
 {
 	class Window;
-	class InputHandler;
-
-	SDLGUILIB_API int GlobalInitialize();
-	SDLGUILIB_API int GlobalCleanup();
-	SDLGUILIB_API void HandleInput(SDL_Event& e);
-	SDLGUILIB_API InputHandler& GetGlobalInputHandler();
 	
 	class SDLGUILIB_API InputHandler
 	{
@@ -34,9 +29,4 @@ namespace sgl
 		InputHandler& operator=(const InputHandler&) = delete;
 		InputHandler(const InputHandler&) = delete;
 	};
-
-	namespace detail
-	{
-		extern InputHandler* globalInputHandlerInstance;
-	}
 }

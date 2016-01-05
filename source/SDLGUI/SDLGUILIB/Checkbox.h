@@ -10,9 +10,11 @@ namespace sgl
 		Checkbox();
 		Checkbox(Window* parent, const std::string& label);
 
+		virtual bool isChecked() const;
+		virtual void setChecked(bool isChecked);
 
+		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
-		bool isChecked();
 
 	protected:
 		virtual void triggerClicked();
@@ -21,6 +23,7 @@ namespace sgl
 		virtual void triggerMouseLeft();
 		virtual void triggerMouseDown();
 		virtual void triggerMouseUp();
+
 		bool isChecked_;						///< `true` if the checkbox is checked
 	};
 }

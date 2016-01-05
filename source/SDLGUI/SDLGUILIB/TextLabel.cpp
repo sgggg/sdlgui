@@ -13,7 +13,7 @@ namespace sgl
 	{
 	}
 
-	void TextLabel::draw(SDL_Renderer* renderer)
+	void TextLabel::draw(SDL_Renderer* /*renderer*/)
 	{
 		if (isVisible_)
 		{

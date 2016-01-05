@@ -1,5 +1,6 @@
 #include <iostream>
-#include <SDL.h>
+#include "SDL.h"
+#include "SDL_ttf.h"
 #include "../SDLGUILIB/SGL.h"
 
 
@@ -32,25 +33,29 @@ int main(int /*argc*/, char* /*args*/[])
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 	
-	sgl::GlobalInitialize();
+	// create GUI
+	sgl::Gui gui;
 
-	sgl::Window w(nullptr, "Main Window");
-	w.setVisible(1);
+	// create new window
+	sgl::Window w(&gui, "Main Window");
 	w.setSize(400, 300);
 
+	// add button to window
 	sgl::Button b(&w, "Press Me!");
-	b.setVisible(1);
 	b.setPosition(0, 100);
-	b.setSize(100, 50);
+	b.setSize(100, 40);
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
 	};
 	b.addEventHandler(sgl::EventType::Button, f);
 
+	// add checkbox to window
 	sgl::Checkbox c(&w, "Check Me!");
-	c.setVisible(1);
 	c.setPosition(200, 100);
-	c.setSize(100, 50);
+	c.setSize(100, 40);
+
+	// make everything visible
+	gui.setVisible(true);
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -63,7 +68,7 @@ int main(int /*argc*/, char* /*args*/[])
 	{
 		while (0 != SDL_PollEvent(&e))
 		{
-			w.handleEvent(e);
+			gui.handleEvent(e);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
 			w.draw(renderer);
@@ -77,7 +82,6 @@ int main(int /*argc*/, char* /*args*/[])
 	}
 
 	// clean up allocated resources
-	sgl::GlobalCleanup();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(sdlWindow);
 	SDL_Quit();

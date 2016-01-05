@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Button.h"
+#include "Gui.h"
 
 namespace sgl
 {
@@ -11,33 +12,36 @@ namespace sgl
 	Button::Button(Window* parent, const std::string& label)
 		:Window(parent, label)
 	{
-		parent->addChild(*this);
 	}
 
 	void Button::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_)
 		{
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ }; //draw gray outline
-			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
-			SDL_RenderDrawRect(renderer, &outlineRect);
-
-			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, { 0xC0, 0xC0, 0xC0 });
 			if (isActive_)
 			{
+				auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
 				if (isClicked_)
 				{
-					// TODO draw button in pressed state
+					// draw button in pressed state
+					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlPressed);
 				}
 				else if (containsMouse_)
 				{
-					// TODO draw button in mouse-over state
+					// draw button in mouse-over state
+					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlContainsMouse);
 				}
 				else
 				{
-					// TODO draw button in normal state (not pressed, not mouse-over)
+					// draw button in normal state (not pressed, not mouse-over)
+					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlBackgroundActive);
 				}
-				// TODO draw button label
+				// always draw the same outline
+				SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
+				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
+
+				// render text
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Center, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{
