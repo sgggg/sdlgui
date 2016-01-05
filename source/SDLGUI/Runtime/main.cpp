@@ -52,7 +52,6 @@ int main(int /*argc*/, char* /*args*/[])
 	c.setPosition(200, 100);
 	c.setSize(100, 50);
 
-
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	w.draw(renderer);

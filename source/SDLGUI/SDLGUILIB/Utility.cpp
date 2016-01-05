@@ -3,6 +3,11 @@
 #include "Utility.h"
 #include "SDL_ttf.h"
 #include <iostream>
+#include <string>
+#include <codecvt>				// this is used in ws2s
+#include <objbase.h>			// provides CoTaskMemFree
+#include <Shlobj.h>				// provides SHGetKnownFolderPath
+#include <Knownfolders.h>		// provides FOLDERID_Fonts
 
 namespace sgl
 {
@@ -10,7 +15,11 @@ namespace sgl
 	{
 		int width_, height_;
 
-		auto textFont = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", fontSize); // This obviously only works on windows and if windows is installed in C:\Windows
+		wchar_t* folderPath;
+		SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);								// This stores the Windows folder path in folderPath
+		auto textFont = TTF_OpenFont( (ws2s(folderPath) + "\\Arial.ttf").c_str() , fontSize);	// We have to convert folderPath to string
+		CoTaskMemFree(static_cast<void*>(folderPath));											// Manually free folderPath
+
 		if (textFont == NULL)
 		{
 			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
@@ -42,11 +51,19 @@ namespace sgl
 					SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
 
 					// Free resources
-					SDL_FreeSurface(surfaceMessage);
 					SDL_DestroyTexture(textureMessage);
-					TTF_CloseFont(textFont);
 				}
+				SDL_FreeSurface(surfaceMessage);
 			}
+			TTF_CloseFont(textFont);
 		}
+	}
+
+	std::string ws2s(const std::wstring& wstr)
+	{
+		typedef std::codecvt_utf8<wchar_t> convert_typeX;
+		std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+		return converterX.to_bytes(wstr);
 	}
 }
