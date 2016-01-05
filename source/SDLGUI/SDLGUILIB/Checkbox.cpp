@@ -34,27 +34,22 @@ namespace sgl
 
 	void Checkbox::triggerDoubleClicked()
 	{
-		// do nothing
 	}
 
 	void Checkbox::triggerMouseEntered()
 	{
-		//std::cout << "Button " << label_ << ": mouse entered" << std::endl;
 	}
 
 	void Checkbox::triggerMouseLeft()
 	{
-		//std::cout << "Button " << label_ << ": mouse left" << std::endl;
 	}
 
 	void Checkbox::triggerMouseDown()
 	{
-		//std::cout << "Window " << label_ << ": mouse down" << std::endl;
 	}
 
 	void Checkbox::triggerMouseUp()
 	{
-		//std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 
 	void Checkbox::draw(SDL_Renderer* renderer)
@@ -87,7 +82,7 @@ namespace sgl
 					// draw checkbox in unchecked state -> no fill
 				}
 				// draw label next to check box
-				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_, colorTheme.textActive, colorTheme.textBackground);
+				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{

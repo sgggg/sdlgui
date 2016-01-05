@@ -43,7 +43,7 @@ int main(int /*argc*/, char* /*args*/[])
 	// add button to window
 	sgl::Button b(&w, "Press Me!");
 	b.setPosition(0, 100);
-	b.setSize(100, 50);
+	b.setSize(100, 40);
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
 	};
@@ -52,7 +52,7 @@ int main(int /*argc*/, char* /*args*/[])
 	// add checkbox to window
 	sgl::Checkbox c(&w, "Check Me!");
 	c.setPosition(200, 100);
-	c.setSize(100, 50);
+	c.setSize(100, 40);
 
 	// make everything visible
 	gui.setVisible(true);

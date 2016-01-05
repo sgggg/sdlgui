@@ -6,8 +6,9 @@
 
 namespace sgl
 {
-	void renderTextAtPos(SDL_Renderer* renderer, std::string textMessage, int posX, int posY, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
+	void renderTextAtPos(SDL_Renderer* renderer, std::string textMessage, int posX, int posY, PosAlign align, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
 	{
+		// TODO position drawn text according to alignment
 		auto textFont = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", fontSize); // This obviously only works on windows and if windows is installed in C:\Windows
 		if (textFont == NULL)
 		{
@@ -35,8 +36,9 @@ namespace sgl
 				{
 					// Copy texture to renderer
 					SDL_Rect destRect = { posX, posY, width, height };
-					//SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-					//SDL_RenderFillRect(renderer, &destRect);
+					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
+					SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+					SDL_RenderFillRect(renderer, &destRect);
 					SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
 
 					// Free resources

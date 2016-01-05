@@ -115,12 +115,12 @@ namespace sgl
 			if (isActive_)
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, colorTheme.textActive, colorTheme.textBackground);
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, colorTheme.textInactive, colorTheme.textBackground);
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Left, colorTheme.textInactive, colorTheme.textBackground);
 			}
 
 			// draw children
