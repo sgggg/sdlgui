@@ -47,6 +47,12 @@ int main(int /*argc*/, char* /*args*/[])
 	};
 	b.addEventHandler(sgl::EventType::Button, f);
 
+	sgl::Checkbox c(&w, "Check Me!");
+	c.setVisible(1);
+	c.setPosition(200, 100);
+	c.setSize(100, 50);
+
+
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	w.draw(renderer);
