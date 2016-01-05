@@ -10,7 +10,7 @@ namespace sgl
 	{
 		int width_, height_;
 
-		auto textFont = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", fontSize);
+		auto textFont = TTF_OpenFont("C:/Windows/Fonts/Arial.ttf", fontSize); // This obviously only works on windows and if windows is installed in C:\Windows
 		if (textFont == NULL)
 		{
 			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
@@ -24,6 +24,7 @@ namespace sgl
 			}
 			else
 			{
+				// Get width and height from surface so we don't have to use SDL_QueryTexture
 				width_ = surfaceMessage->w;
 				height_ = surfaceMessage->h;
 
@@ -34,11 +35,14 @@ namespace sgl
 				}
 				else
 				{
-					SDL_FreeSurface(surfaceMessage);
-
+					// Copy texture to renderer
 					SDL_Rect destRect = { posX, posY, width_, height_ };
+					SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 					SDL_RenderFillRect(renderer, &destRect);
 					SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
+
+					// Free resources
+					SDL_FreeSurface(surfaceMessage);
 					SDL_DestroyTexture(textureMessage);
 					TTF_CloseFont(textFont);
 				}

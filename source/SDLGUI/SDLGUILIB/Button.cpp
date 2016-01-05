@@ -18,6 +18,11 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
+			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ }; //draw gray outline
+			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
+			SDL_RenderDrawRect(renderer, &outlineRect);
+
+			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, { 0xC0, 0xC0, 0xC0 });
 			if (isActive_)
 			{
 				if (isClicked_)

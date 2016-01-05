@@ -101,6 +101,12 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
+			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
+			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
+			SDL_RenderDrawRect(renderer, &outlineRect);
+
+			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, {0xC0, 0xC0, 0xC0});
+
 			// TODO draw window and then draw children
 			for (const auto& child : children_)
 			{
