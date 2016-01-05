@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "Window.h"
+#include "Gui.h"
+#include <assert.h>
 
 namespace sgl
 {
@@ -15,10 +17,11 @@ namespace sgl
 		,screenPosY_(0)
 		,hasTitleBar_(false)
 		,isVisible_(false)
-		,isActive_(false)
+		,isActive_(true)
 		,isClicked_(false)
 		,containsMouse_(false)
 		,parent_(nullptr)
+		,guiRoot_(nullptr)
 		,children_()
 	{
 	}
@@ -28,6 +31,11 @@ namespace sgl
 	{
 		label_ = label;
 		parent_ = parentWindow;
+		if (parent_ != nullptr)
+		{
+			parent_->addChild(*this);
+			setRootWindow();
+		}
 		setPosition(0, 0);
 	}
 	
@@ -43,6 +51,7 @@ namespace sgl
 
 	void Window::addChild(Window& childWindow)
 	{
+		assert(&childWindow != this);	// window can't be its own child
 		children_.push_back(&childWindow);
 	}
 
@@ -101,13 +110,20 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
-			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
-			SDL_RenderDrawRect(renderer, &outlineRect);
+			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+			// draw this window
+			if (isActive_)
+			{
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, colorTheme.textActive, colorTheme.textBackground);
+			}
+			else
+			{
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, colorTheme.textInactive, colorTheme.textBackground);
+			}
 
-			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, {0xC0, 0xC0, 0xC0});
-
-			// TODO draw window and then draw children
+			// draw children
 			for (const auto& child : children_)
 			{
 				child->draw(renderer);
@@ -123,6 +139,10 @@ namespace sgl
 	void Window::setVisible(bool isVisible)
 	{
 		isVisible_ = isVisible;
+		for (auto child : children_)
+		{
+			child->setVisible(isVisible);
+		}
 	}
 
 	bool Window::handleEvent(const SDL_Event& e)
@@ -234,6 +254,22 @@ namespace sgl
 				x <= screenPosX_ + width_ &&
 				y >= screenPosY_ &&
 				y <= screenPosY_ + height_;
+	}
+
+	void Window::setRootWindow()
+	{
+		// find root window
+		guiRoot_ = nullptr;
+		if (!parent_)
+		{
+			return;
+		}
+		auto nextParent = parent_;
+		while (nextParent->parent_ != nullptr)
+		{
+			nextParent = nextParent->parent_;
+		}
+		guiRoot_ = dynamic_cast<Gui*>(nextParent);
 	}
 
 	void Window::triggerClicked()

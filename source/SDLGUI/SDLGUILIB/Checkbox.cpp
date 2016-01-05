@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Checkbox.h"
+#include "Gui.h"
 
 namespace sgl
 {
@@ -11,7 +12,6 @@ namespace sgl
 	Checkbox::Checkbox(Window* parent, const std::string& label)
 		:Window(parent, label)
 	{
-		parent->addChild(*this); 
 	}
 
 	bool Checkbox::isChecked()
@@ -54,22 +54,26 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ }; //draw gray outline
-			SDL_SetRenderDrawColor(renderer, 0xC0, 0xC0, 0xC0, 0xFF);
-			SDL_RenderDrawRect(renderer, &outlineRect);
+			auto boxSize = 12;
+			auto labelOffset = 8 + boxSize;
+			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
 
-			renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, { 0,0,0 }, { 0xC0, 0xC0, 0xC0 });
 			if (isActive_)
 			{
+				// draw box
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlBackgroundActive);
+				drawRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlFrameActive);
 				if (isChecked_)
 				{
-					// TODO draw checkbox in checked state
+					// draw checkbox in checked state
+					drawFilledRectangle(renderer, screenPosX_ + 2, screenPosY_ + 2, boxSize - 4, boxSize - 4, colorTheme.controlFrameActive);
 				}
 				else
 				{
-					// TODO draw checkbox in unchecked state
+					// draw checkbox in unchecked state -> no fill
 				}
-				// TODO draw checkbox label
+				// draw label next to check box
+				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{

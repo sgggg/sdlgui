@@ -1,5 +1,6 @@
 #include <iostream>
-#include <SDL.h>
+#include "SDL.h"
+#include "SDL_ttf.h"
 #include "../SDLGUILIB/SGL.h"
 
 
@@ -32,14 +33,12 @@ int main(int /*argc*/, char* /*args*/[])
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 	
-	sgl::GlobalInitialize();
+	sgl::Gui gui;
 
-	sgl::Window w(nullptr, "Main Window");
-	w.setVisible(1);
+	sgl::Window w(&gui, "Main Window");
 	w.setSize(400, 300);
 
 	sgl::Button b(&w, "Press Me!");
-	b.setVisible(1);
 	b.setPosition(0, 100);
 	b.setSize(100, 50);
 	auto f = [](const sgl::Event& e) {
@@ -48,9 +47,11 @@ int main(int /*argc*/, char* /*args*/[])
 	b.addEventHandler(sgl::EventType::Button, f);
 
 	sgl::Checkbox c(&w, "Check Me!");
-	c.setVisible(1);
 	c.setPosition(200, 100);
 	c.setSize(100, 50);
+
+	// make everything visible
+	gui.setVisible(true);
 
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -64,7 +65,7 @@ int main(int /*argc*/, char* /*args*/[])
 	{
 		while (0 != SDL_PollEvent(&e))
 		{
-			w.handleEvent(e);
+			gui.handleEvent(e);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
 			w.draw(renderer);
@@ -78,7 +79,6 @@ int main(int /*argc*/, char* /*args*/[])
 	}
 
 	// clean up allocated resources
-	sgl::GlobalCleanup();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(sdlWindow);
 	SDL_Quit();
