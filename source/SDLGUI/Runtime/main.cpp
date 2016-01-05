@@ -33,11 +33,14 @@ int main(int /*argc*/, char* /*args*/[])
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 	
+	// create GUI
 	sgl::Gui gui;
 
+	// create new window
 	sgl::Window w(&gui, "Main Window");
 	w.setSize(400, 300);
 
+	// add button to window
 	sgl::Button b(&w, "Press Me!");
 	b.setPosition(0, 100);
 	b.setSize(100, 50);
@@ -46,6 +49,7 @@ int main(int /*argc*/, char* /*args*/[])
 	};
 	b.addEventHandler(sgl::EventType::Button, f);
 
+	// add checkbox to window
 	sgl::Checkbox c(&w, "Check Me!");
 	c.setPosition(200, 100);
 	c.setSize(100, 50);
