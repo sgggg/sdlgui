@@ -5,3 +5,5 @@
 #include "Event.h"
 #include "Button.h"
 #include "Checkbox.h"
+#include "TextLabel.h"
+#include "TextInput.h"

@@ -4,7 +4,7 @@
 
 namespace sgl
 {
-	class TextLabel : public Window
+	class SDLGUILIB_API TextLabel : public Window
 	{
 	public:
 		TextLabel();

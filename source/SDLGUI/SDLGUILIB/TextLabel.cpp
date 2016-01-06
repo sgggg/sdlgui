@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TextLabel.h"
+#include "gui.h"
 
 namespace sgl
 {
@@ -13,13 +14,14 @@ namespace sgl
 	{
 	}
 
-	void TextLabel::draw(SDL_Renderer* /*renderer*/)
+	void TextLabel::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_)
 		{
 			if (isActive_)
 			{
-				// TODO draw text
+				auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::TopLeft, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{

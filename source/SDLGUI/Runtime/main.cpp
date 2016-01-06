@@ -54,6 +54,16 @@ int main(int /*argc*/, char* /*args*/[])
 	c.setPosition(200, 100);
 	c.setSize(100, 40);
 
+	//add textlabel to window
+	sgl::TextLabel t(&w, "hello world");
+	t.setPosition(10, 20);
+	t.setSize(10, 10);
+
+	//add textinput to window
+	sgl::TextInput i(&w, "Der defaultText");
+	i.setPosition(20,40);
+	i.setSize(100,40);
+
 	// make everything visible
 	gui.setVisible(true);
 

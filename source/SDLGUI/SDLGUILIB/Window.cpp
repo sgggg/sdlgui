@@ -247,6 +247,12 @@ namespace sgl
 					triggerMouseEntered();
 					wasHandled = true;
 					containsMouse_ = true;
+					if(e.motion.state & SDL_BUTTON_LMASK)
+					{
+						isActive_ = true;
+						isClicked_ = true;
+						//TODO activate only when last mous click is in window (solve in mouseup?/drag and drop)
+					}
 					// TODO set isClicked_ if mouse1 is pressed
 				}
 				break;

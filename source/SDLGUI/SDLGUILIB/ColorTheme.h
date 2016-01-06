@@ -21,8 +21,10 @@ namespace sgl
 		SDL_Color controlFrameInactive;
 		SDL_Color controlContainsMouse;
 		SDL_Color controlPressed;
+		SDL_Color controlInputBackground;
 		SDL_Color textBackground;
 		SDL_Color textActive;
 		SDL_Color textInactive;
+		
 	};
 }
