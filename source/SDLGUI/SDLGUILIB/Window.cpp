@@ -101,9 +101,14 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
-	void Window::addEventHandler(EventType eventType, EventHandler handler)
+	void Window::addEventCallback(EventType eventType, EventHandler handler)
 	{
 		eventHandlers_[eventType] = handler;
+	}
+
+	void Window::removeEventCallback(EventType eventType)
+	{
+		eventHandlers_.erase(eventType);
 	}
 
 	void Window::draw(SDL_Renderer* renderer)

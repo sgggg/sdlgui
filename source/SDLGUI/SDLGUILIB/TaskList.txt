@@ -5,14 +5,19 @@ Task List
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - streamline event handling code
-- add a text input control
+- finish text input control
 - add radio button control
-- finish text label control
-- add grouping window for radio buttons and other controls
+- add grouping window (GroupBox) for radio buttons and other controls
 - (optional) add canvas control
 - (optional) add register control
+- (optional) add combo-box (drop-down list) control
 - add timed events and redraws for animations
-- extract window title bar code into a new control element TitleBar
+- implement concept of window focus (key presses are sent to the window with focus, only one window can have focus)
+- implement Frame class that represents a normal window (instead of the class Window we currently use)
+	* move title bar code to this class
+- implement moving of windows (drag & drop), this also moves all controls in this window
+- make sure controls are always positioned (and drawn) inside their parent window
+
 
 
 ... and more
