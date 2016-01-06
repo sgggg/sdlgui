@@ -42,7 +42,7 @@ int main(int /*argc*/, char* /*args*/[])
 
 	// add button to window
 	sgl::Button b(&w, "Press Me!");
-	b.setPosition(0, 100);
+	b.setPosition(5, 155);
 	b.setSize(100, 40);
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
@@ -68,9 +68,9 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::HBoxLayout hl(&w, "Horizontales Layout");
 	hl.setPosition(0, 200);
 	hl.setSize(400, 50);
-	sgl::Button b2(&hl, "Press Me!");
-	sgl::Button b3(&hl, "Press Me!");
-	sgl::Button b4(&hl, "Press Me!");
+	sgl::Button b2(&hl, "Press Me 2!");
+	sgl::Button b3(&hl, "Press Me 3!");
+	sgl::Button b4(&hl, "Press Me 4!");
 	hl.updateLayout();
 
 	// make everything visible
