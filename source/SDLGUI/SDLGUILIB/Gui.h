@@ -11,7 +11,9 @@ namespace sgl
 	public:
 		Gui();
 
+		// inherited functions
 		virtual bool handleEvent(const SDL_Event& e) override;
+		virtual void draw(SDL_Renderer* renderer) override;
 
 		StyleManager& getStyleManager();
 

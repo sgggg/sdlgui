@@ -65,7 +65,7 @@ namespace sgl
 		bool isClicked_;							///< `true` if there was a mouse down event inside this window but no mouse up event yet
 		bool containsMouse_;						///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;							///< Non-owning pointer to parent window
-		Gui* guiRoot_;
+		Gui* guiRoot_;								///< Pointer to the root window of the current GUI
 		std::vector<Window*> children_;				///< Non-owning pointers to all children of this window
 		std::map<EventType, EventHandler> eventHandlers_;
 

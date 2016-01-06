@@ -82,7 +82,7 @@ namespace sgl
 					// draw checkbox in unchecked state -> no fill
 				}
 				// draw label next to check box
-				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_ + boxSize / 2, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{

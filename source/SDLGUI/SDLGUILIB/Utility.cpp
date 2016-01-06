@@ -11,10 +11,49 @@
 
 namespace sgl
 {
+	Point alignRectangle(SDL_Rect rect, PosAlign newAlignment)
+	{
+		Point newPosition = { rect.x, rect.y };
+		switch (newAlignment)
+		{
+		case PosAlign::TopLeft:
+			break;
+		case PosAlign::Top:
+			newPosition.x = rect.x - rect.w / 2;
+			break;
+		case PosAlign::TopRight:
+			newPosition.x = rect.x - rect.w;
+			break;
+		case PosAlign::Left:
+			newPosition.y = rect.y - rect.h / 2;
+			break;
+		case PosAlign::Center:
+			newPosition.x = rect.x - rect.w / 2;
+			newPosition.y = rect.y - rect.h / 2;
+			break;
+		case PosAlign::Right:
+			newPosition.x = rect.x - rect.w;
+			newPosition.y = rect.y - rect.h / 2;
+			break;
+		case PosAlign::BottomLeft:
+			newPosition.y = rect.y - rect.h;
+			break;
+		case PosAlign::Bottom:
+			newPosition.x = rect.x - rect.w / 2;
+			newPosition.y = rect.y - rect.h;
+			break;
+		case PosAlign::BottomRight:
+			newPosition.x = rect.x - rect.w;
+			newPosition.y = rect.y - rect.h;
+			break;
+		default:
+			break;
+		}
+		return newPosition;
+	}
+
 	void renderTextAtPos(SDL_Renderer* renderer, std::string textMessage, int posX, int posY, PosAlign align, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
 	{
-		int width_, height_;
-
 		wchar_t* folderPath;
 		SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);								// This stores the Windows folder path in folderPath
 		auto textFont = TTF_OpenFont( (ws2s(folderPath) + "\\Arial.ttf").c_str() , fontSize);	// We have to convert folderPath to string
@@ -45,7 +84,8 @@ namespace sgl
 				else
 				{
 					// Copy texture to renderer
-					SDL_Rect destRect = { posX, posY, width, height };
+					auto alignedPos = alignRectangle({ posX, posY, width, height }, align);
+					SDL_Rect destRect = { alignedPos.x, alignedPos.y, width, height };
 					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 					SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 					SDL_RenderFillRect(renderer, &destRect);

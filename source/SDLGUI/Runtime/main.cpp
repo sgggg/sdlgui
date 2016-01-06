@@ -23,7 +23,7 @@ int main(int /*argc*/, char* /*args*/[])
 	}
 
 	//Create window
-	auto sdlWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	auto sdlWindow = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (sdlWindow == nullptr)
 	{
 		std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
@@ -59,7 +59,7 @@ int main(int /*argc*/, char* /*args*/[])
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	w.draw(renderer);
+	gui.draw(renderer);
 	SDL_RenderPresent(renderer);
 
 	auto running = true;
@@ -71,7 +71,7 @@ int main(int /*argc*/, char* /*args*/[])
 			gui.handleEvent(e);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
-			w.draw(renderer);
+			gui.draw(renderer);
 			SDL_RenderPresent(renderer);
 
 			if (e.type == SDL_QUIT)

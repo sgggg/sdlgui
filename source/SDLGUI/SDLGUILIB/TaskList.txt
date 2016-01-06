@@ -12,7 +12,8 @@ Task List
 - (optional) add canvas control
 - (optional) add register control
 - add timed events and redraws for animations
-- complete implementation of text rendering helper (alignment)
+- extract window title bar code into a new control element TitleBar
+
 
 ... and more
 

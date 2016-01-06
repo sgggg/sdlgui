@@ -15,7 +15,7 @@ namespace sgl
 		,relativePosY_(0)
 		,screenPosX_(0)
 		,screenPosY_(0)
-		,hasTitleBar_(false)
+		,hasTitleBar_(true)
 		,isVisible_(false)
 		,isActive_(true)
 		,isClicked_(false)
@@ -115,12 +115,24 @@ namespace sgl
 			if (isActive_)
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				if (hasTitleBar_)
+				{
+					auto titleBarHeight = 16;
+					auto titleBarMargin = 2;
+					auto titleBarTextOffset = 8;
+					SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
+					drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
+					renderTextAtPos(renderer, label_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2, 
+						PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				}
 			}
 			else
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Left, colorTheme.textInactive, colorTheme.textBackground);
+				if (hasTitleBar_)
+				{
+					// TODO
+				}
 			}
 
 			// draw children
@@ -255,7 +267,7 @@ namespace sgl
 				y >= screenPosY_ &&
 				y <= screenPosY_ + height_;
 	}
-
+	
 	void Window::setRootWindow()
 	{
 		// find root window
@@ -270,6 +282,7 @@ namespace sgl
 			nextParent = nextParent->parent_;
 		}
 		guiRoot_ = dynamic_cast<Gui*>(nextParent);
+		assert(guiRoot_ != nullptr);
 	}
 
 	void Window::triggerClicked()

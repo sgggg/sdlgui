@@ -26,6 +26,16 @@ namespace sgl
 		return wasHandled;
 	}
 
+	void Gui::draw(SDL_Renderer * renderer)
+	{
+		// don't draw anything for a Gui object
+		// draw children
+		for (const auto& child : children_)
+		{
+			child->draw(renderer);
+		}
+	}
+
 	StyleManager& Gui::getStyleManager()
 	{
 		return styleManager_;

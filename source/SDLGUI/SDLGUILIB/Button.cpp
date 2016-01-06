@@ -41,7 +41,8 @@ namespace sgl
 				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
 
 				// render text
-				renderTextAtPos(renderer, label_, screenPosX_, screenPosY_, PosAlign::Center, colorTheme.textActive, colorTheme.textBackground);
+				auto buttonCenter = getCenter({ screenPosX_, screenPosY_, width_, height_ });
+				renderTextAtPos(renderer, label_, buttonCenter.x, buttonCenter.y, PosAlign::Center, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else
 			{
