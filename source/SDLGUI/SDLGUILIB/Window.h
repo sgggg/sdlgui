@@ -30,7 +30,8 @@ namespace sgl
 		virtual Size getSize() const;
 		virtual void setPosition(int x, int y);
 		virtual Point getPosition() const;
-		virtual void addEventHandler(EventType eventType, EventHandler handler);
+		virtual void addEventCallback(EventType eventType, EventHandler handler);
+		virtual void removeEventCallback(EventType eventType);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;

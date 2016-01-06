@@ -47,7 +47,7 @@ int main(int /*argc*/, char* /*args*/[])
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
 	};
-	b.addEventHandler(sgl::EventType::Button, f);
+	b.addEventCallback(sgl::EventType::Button, f);
 
 	// add checkbox to window
 	sgl::Checkbox c(&w, "Check Me!");
