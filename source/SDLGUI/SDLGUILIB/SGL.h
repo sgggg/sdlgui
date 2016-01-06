@@ -7,3 +7,4 @@
 #include "Checkbox.h"
 #include "TextLabel.h"
 #include "TextInput.h"
+#include "HBoxLayout.h"

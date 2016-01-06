@@ -64,6 +64,15 @@ int main(int /*argc*/, char* /*args*/[])
 	i.setPosition(20,40);
 	i.setSize(100,40);
 
+	//add window with horizontal layout
+	sgl::HBoxLayout hl(&w, "Horizontales Layout");
+	hl.setPosition(0, 200);
+	hl.setSize(400, 50);
+	sgl::Button b2(&hl, "Press Me!");
+	sgl::Button b3(&hl, "Press Me!");
+	sgl::Button b4(&hl, "Press Me!");
+	hl.updateLayout();
+
 	// make everything visible
 	gui.setVisible(true);
 
