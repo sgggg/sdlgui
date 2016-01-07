@@ -21,5 +21,8 @@ namespace sgl
 		//virtual void triggerMouseLeft();
 		//virtual void triggerMouseDown();
 		//virtual void triggerMouseUp();*/
+
+		std::string defaultText_;
+		std::string currentText_;
 	};
 }

@@ -4,15 +4,13 @@
 namespace sgl
 {
 	HBoxLayout::HBoxLayout()
-		: Window()
+		:Window()
 	{
-		hasTitleBar_ = false;
 	}
 
-	HBoxLayout::HBoxLayout(Window* parentWindow, const std::string& label)
-		: Window(parentWindow, label)
+	HBoxLayout::HBoxLayout(Window* parentWindow)
+		:Window(parentWindow)
 	{
-		hasTitleBar_ = false;
 	}
 
 	void HBoxLayout::setHorizontalPadding(int d)

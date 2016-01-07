@@ -7,7 +7,7 @@ namespace sgl
 {
 	class Event;
 
-	typedef std::function<void(const Event& e)> EventHandler;
+	typedef std::function<void(const Event& e)> EventCallback;
 
 	enum class EventType
 	{

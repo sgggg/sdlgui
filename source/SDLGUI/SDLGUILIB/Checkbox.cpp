@@ -6,14 +6,26 @@ namespace sgl
 {
 	Checkbox::Checkbox()
 		:Window()
+		,label_()
 		,isChecked_(false)
 	{
 	}
 
 	Checkbox::Checkbox(Window* parent, const std::string& label)
-		:Window(parent, label)
+		:Window(parent)
+		,label_(label)
 		,isChecked_(false)
 	{
+	}
+
+	std::string Checkbox::getLabel() const
+	{
+		return label_;
+	}
+
+	void Checkbox::setLabel(const std::string& text)
+	{
+		label_ = text;
 	}
 
 	bool Checkbox::isChecked() const

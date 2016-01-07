@@ -8,14 +8,12 @@ namespace sgl
 {
 	Window::Window()
 		:id_(-1)
-		,label_()
 		,width_(0)
 		,height_(0)
 		,relativePosX_(0)
 		,relativePosY_(0)
 		,screenPosX_(0)
 		,screenPosY_(0)
-		,hasTitleBar_(true)
 		,isVisible_(false)
 		,isActive_(true)
 		,isClicked_(false)
@@ -26,10 +24,9 @@ namespace sgl
 	{
 	}
 
-	Window::Window(Window* parentWindow, const std::string& label)
+	Window::Window(Window* parentWindow)
 		:Window()
 	{
-		label_ = label;
 		parent_ = parentWindow;
 		if (parent_ != nullptr)
 		{
@@ -37,16 +34,6 @@ namespace sgl
 			setRootWindow();
 		}
 		setPosition(0, 0);
-	}
-	
-	std::string Window::getLabel() const
-	{
-		return label_;
-	}
-
-	void Window::setLabel(const std::string& text)
-	{
-		label_ = text;
 	}
 
 	void Window::addChild(Window& childWindow)
@@ -101,7 +88,7 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
-	void Window::addEventCallback(EventType eventType, EventHandler handler)
+	void Window::addEventCallback(EventType eventType, EventCallback handler)
 	{
 		eventHandlers_[eventType] = handler;
 	}
@@ -120,24 +107,10 @@ namespace sgl
 			if (isActive_)
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				if (hasTitleBar_)
-				{
-					auto titleBarHeight = 16;
-					auto titleBarMargin = 2;
-					auto titleBarTextOffset = 8;
-					SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
-					drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
-					renderTextAtPos(renderer, label_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2, 
-						PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
-				}
 			}
 			else
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				if (hasTitleBar_)
-				{
-					// TODO
-				}
 			}
 
 			// draw children
@@ -298,31 +271,25 @@ namespace sgl
 
 	void Window::triggerClicked()
 	{
-		std::cout << "Window " << label_ << ": clicked" << std::endl;
 	}
 
 	void Window::triggerDoubleClicked()
 	{
-		std::cout << "Window " << label_ << ": double clicked" << std::endl;
 	}
 
 	void Window::triggerMouseEntered()
 	{
-		std::cout << "Window " << label_ << ": mouse entered" << std::endl;
 	}
 
 	void Window::triggerMouseLeft()
 	{
-		std::cout << "Window " << label_ << ": mouse left" << std::endl;
 	}
 
 	void Window::triggerMouseDown()
 	{
-		std::cout << "Window " << label_ << ": mouse down" << std::endl;
 	}
 
 	void Window::triggerMouseUp()
 	{
-		std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 }

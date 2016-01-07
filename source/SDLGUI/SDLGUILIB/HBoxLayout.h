@@ -9,7 +9,7 @@ namespace sgl
 	{
 	public:
 		HBoxLayout();
-		HBoxLayout(Window* parentWindow, const std::string& label);
+		HBoxLayout(Window* parentWindow);
 		void setHorizontalPadding(int d);
 		void setMarginTop(int t);
 		void setMarginBottom(int b);
