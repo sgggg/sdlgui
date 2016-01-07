@@ -36,6 +36,12 @@ namespace sgl
 				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
 
 				//TODO render text
+
+				//TODO input a curser when area is clicked (remove it when clicking some place else)
+
+				//TODO add keyboard as input
+
+				//(optional) add written and submitted text to another area
 				
 			}
 
