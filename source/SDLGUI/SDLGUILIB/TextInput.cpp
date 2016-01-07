@@ -6,12 +6,26 @@ namespace sgl
 {
 	TextInput::TextInput()
 		:Window()
+		,defaultText_()
+		,currentText_()
 	{
 	}
 
 	TextInput::TextInput(Window* parent, const std::string& defaultText)
-		: Window(parent, defaultText)
+		:Window(parent)
+		,defaultText_(defaultText)
+		,currentText_(defaultText)
 	{
+	}
+
+	std::string TextInput::getText() const
+	{
+		return currentText_;
+	}
+
+	void TextInput::setText(const std::string & newText)
+	{
+		currentText_ = newText;
 	}
 
 	void TextInput::draw(SDL_Renderer* renderer)

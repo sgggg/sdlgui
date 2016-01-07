@@ -8,14 +8,12 @@ namespace sgl
 {
 	Window::Window()
 		:id_(-1)
-		,label_()
 		,width_(0)
 		,height_(0)
 		,relativePosX_(0)
 		,relativePosY_(0)
 		,screenPosX_(0)
 		,screenPosY_(0)
-		,hasTitleBar_(true)
 		,isVisible_(false)
 		,isActive_(true)
 		,isClicked_(false)
@@ -26,10 +24,9 @@ namespace sgl
 	{
 	}
 
-	Window::Window(Window* parentWindow, const std::string& label)
+	Window::Window(Window* parentWindow)
 		:Window()
 	{
-		label_ = label;
 		parent_ = parentWindow;
 		if (parent_ != nullptr)
 		{
@@ -38,21 +35,42 @@ namespace sgl
 		}
 		setPosition(0, 0);
 	}
-	
-	std::string Window::getLabel() const
-	{
-		return label_;
-	}
 
-	void Window::setLabel(const std::string& text)
+	Window::~Window()
 	{
-		label_ = text;
+		if (parent_ != nullptr)
+		{
+			parent_->removeChild(*this);
+		}
+		for (auto child : children_)
+		{
+			child->setParent(nullptr);
+		}
 	}
 
 	void Window::addChild(Window& childWindow)
 	{
 		assert(&childWindow != this);	// window can't be its own child
 		children_.push_back(&childWindow);
+	}
+
+	void Window::removeChild(Window& childWindow)
+	{
+		auto childIt = std::find(children_.begin(), children_.end(), &childWindow);
+		if (childIt != children_.end())
+		{
+			children_.erase(childIt);
+		}
+	}
+
+	void Window::setParent(Window* newParent)
+	{
+		if (parent_ != nullptr)
+		{
+			parent_->removeChild(*this);
+		}
+		parent_ = newParent;
+		setRootWindow();
 	}
 
 	Window* Window::getParent() const
@@ -79,9 +97,10 @@ namespace sgl
 
 	void Window::setPosition(int x, int y)
 	{
+		// TODO check that window is always positioned fully inside parent window
+		// TODO make sure that all child windows are moved together with their parent
 		auto newPosX = x;
 		auto newPosY = y;
-		// TODO check that window is always positioned fully inside parent window
 		relativePosX_ = newPosX;
 		relativePosY_ = newPosY;
 		if (parent_ == nullptr)
@@ -101,46 +120,14 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
-	void Window::addEventHandler(EventType eventType, EventHandler handler)
+	void Window::addEventCallback(EventType eventType, EventCallback handler)
 	{
 		eventHandlers_[eventType] = handler;
 	}
 
-	void Window::draw(SDL_Renderer* renderer)
+	void Window::removeEventCallback(EventType eventType)
 	{
-		if (isVisible_)
-		{
-			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
-			// draw this window
-			if (isActive_)
-			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				if (hasTitleBar_)
-				{
-					auto titleBarHeight = 16;
-					auto titleBarMargin = 2;
-					auto titleBarTextOffset = 8;
-					SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
-					drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
-					renderTextAtPos(renderer, label_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2, 
-						PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
-				}
-			}
-			else
-			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				if (hasTitleBar_)
-				{
-					// TODO
-				}
-			}
-
-			// draw children
-			for (const auto& child : children_)
-			{
-				child->draw(renderer);
-			}
-		}
+		eventHandlers_.erase(eventType);
 	}
 
 	bool Window::isVisible()
@@ -293,31 +280,25 @@ namespace sgl
 
 	void Window::triggerClicked()
 	{
-		std::cout << "Window " << label_ << ": clicked" << std::endl;
 	}
 
 	void Window::triggerDoubleClicked()
 	{
-		std::cout << "Window " << label_ << ": double clicked" << std::endl;
 	}
 
 	void Window::triggerMouseEntered()
 	{
-		std::cout << "Window " << label_ << ": mouse entered" << std::endl;
 	}
 
 	void Window::triggerMouseLeft()
 	{
-		std::cout << "Window " << label_ << ": mouse left" << std::endl;
 	}
 
 	void Window::triggerMouseDown()
 	{
-		std::cout << "Window " << label_ << ": mouse down" << std::endl;
 	}
 
 	void Window::triggerMouseUp()
 	{
-		std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 }

@@ -4,7 +4,7 @@
 namespace sgl
 {
 	Gui::Gui()
-		:Window(nullptr, "")
+		:Window(nullptr)
 		,inputManager_()
 		,styleManager_()
 	{

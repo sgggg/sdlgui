@@ -6,12 +6,24 @@ namespace sgl
 {
 	Button::Button()
 		:Window()
+		,label_()
 	{
 	}
 
 	Button::Button(Window* parent, const std::string& label)
-		:Window(parent, label)
+		:Window(parent)
+		,label_(label)
 	{
+	}
+
+	std::string Button::getLabel() const
+	{
+		return label_;
+	}
+
+	void Button::setLabel(const std::string& text)
+	{
+		label_ = text;
 	}
 
 	void Button::draw(SDL_Renderer* renderer)

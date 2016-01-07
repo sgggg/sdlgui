@@ -37,32 +37,42 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::Gui gui;
 
 	// create new window
-	sgl::Window w(&gui, "Main Window");
-	w.setSize(400, 300);
+	sgl::Frame mainFrame(&gui, "Main Window");
+	mainFrame.setSize(400, 300);
+	mainFrame.setTitleBarVisible(true);
 
 	// add button to window
-	sgl::Button b(&w, "Press Me!");
-	b.setPosition(0, 100);
+	sgl::Button b(&mainFrame, "Press Me!");
+	b.setPosition(5, 155);
 	b.setSize(100, 40);
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
 	};
-	b.addEventHandler(sgl::EventType::Button, f);
+	b.addEventCallback(sgl::EventType::Button, f);
 
 	// add checkbox to window
-	sgl::Checkbox c(&w, "Check Me!");
+	sgl::Checkbox c(&mainFrame, "Check Me!");
 	c.setPosition(200, 100);
 	c.setSize(100, 40);
 
 	//add textlabel to window
-	sgl::TextLabel t(&w, "hello world");
+	sgl::TextLabel t(&mainFrame, "hello world");
 	t.setPosition(10, 20);
 	t.setSize(10, 10);
 
 	//add textinput to window
-	sgl::TextInput i(&w, "Der defaultText");
+	sgl::TextInput i(&mainFrame, "Der defaultText");
 	i.setPosition(20,40);
 	i.setSize(100,40);
+
+	//add window with horizontal layout
+	sgl::HBoxLayout hl(&mainFrame);
+	hl.setPosition(0, 200);
+	hl.setSize(400, 50);
+	sgl::Button b2(&hl, "Press Me 2!");
+	sgl::Button b3(&hl, "Press Me 3!");
+	sgl::Button b4(&hl, "Press Me 4!");
+	hl.updateLayout();
 
 	// make everything visible
 	gui.setVisible(true);

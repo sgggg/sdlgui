@@ -176,7 +176,9 @@
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Frame.h" />
     <ClInclude Include="Gui.h" />
+    <ClInclude Include="HBoxLayout.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="OsUtility.h" />
@@ -209,7 +211,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ErrorHandling.cpp" />
+    <ClCompile Include="Frame.cpp" />
     <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="HBoxLayout.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="OsUtility.cpp" />
     <ClCompile Include="TextInput.cpp" />

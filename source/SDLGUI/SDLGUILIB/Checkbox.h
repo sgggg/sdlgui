@@ -10,6 +10,8 @@ namespace sgl
 		Checkbox();
 		Checkbox(Window* parent, const std::string& label);
 
+		virtual std::string getLabel() const;
+		virtual void setLabel(const std::string& text);
 		virtual bool isChecked() const;
 		virtual void setChecked(bool isChecked);
 
@@ -17,13 +19,14 @@ namespace sgl
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:
-		virtual void triggerClicked();
-		virtual void triggerDoubleClicked();
-		virtual void triggerMouseEntered();
-		virtual void triggerMouseLeft();
-		virtual void triggerMouseDown();
-		virtual void triggerMouseUp();
+		virtual void triggerClicked() override;
+		virtual void triggerDoubleClicked() override;
+		virtual void triggerMouseEntered() override;
+		virtual void triggerMouseLeft() override;
+		virtual void triggerMouseDown() override;
+		virtual void triggerMouseUp() override;
 
+		std::string label_;						///< label of the checkbox
 		bool isChecked_;						///< `true` if the checkbox is checked
 	};
 }
