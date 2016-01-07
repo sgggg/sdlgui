@@ -244,6 +244,14 @@ namespace sgl
 				}
 				break;
 			}
+			case SDL_KEYDOWN:
+			{
+				
+				auto keyname = SDL_GetKeyName(e.key.keysym.sym);
+				std::cout << keyname<< std::endl;
+				wasHandled = true;
+				break;
+			}
 			// TODO add more event types
 			default:
 				// ignore event

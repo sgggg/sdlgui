@@ -17,13 +17,6 @@ namespace sgl
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:
-		//virtual void triggerClicked() override;
-		//virtual void triggerDoubleClicked() override;
-		//virtual void triggerMouseEntered() override;
-		//virtual void triggerMouseLeft() override;
-		//virtual void triggerMouseDown() override;
-		//virtual void triggerMouseUp() override;
-
 		std::string defaultText_;
 		std::string currentText_;
 	};

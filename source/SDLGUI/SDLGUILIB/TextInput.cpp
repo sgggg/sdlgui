@@ -28,6 +28,8 @@ namespace sgl
 		currentText_ = newText;
 	}
 
+
+
 	void TextInput::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_) 
