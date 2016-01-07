@@ -9,6 +9,7 @@ namespace sgl
 	public:
 		TextLabel();
 		TextLabel(Window* parent, const std::string& text);
+		virtual std::string getText() const;
 		virtual void setText(const std::string& newText);
 
 		// inherited functions

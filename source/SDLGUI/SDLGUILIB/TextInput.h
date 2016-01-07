@@ -10,17 +10,19 @@ namespace sgl
 	public:
 		TextInput();
 		TextInput(Window* parent, const std::string& defaultText);
+		virtual std::string getText() const;
+		virtual void setText(const std::string& newText);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:
-		//virtual void triggerClicked();
-		//virtual void triggerDoubleClicked();
-		//virtual void triggerMouseEntered();
-		//virtual void triggerMouseLeft();
-		//virtual void triggerMouseDown();
-		//virtual void triggerMouseUp();*/
+		//virtual void triggerClicked() override;
+		//virtual void triggerDoubleClicked() override;
+		//virtual void triggerMouseEntered() override;
+		//virtual void triggerMouseLeft() override;
+		//virtual void triggerMouseDown() override;
+		//virtual void triggerMouseUp() override;
 
 		std::string defaultText_;
 		std::string currentText_;

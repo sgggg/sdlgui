@@ -16,6 +16,11 @@ namespace sgl
 	{
 	}
 
+	std::string TextLabel::getText() const
+	{
+		return text_;
+	}
+
 	void TextLabel::setText(const std::string & newText)
 	{
 		text_ = newText;

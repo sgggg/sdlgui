@@ -18,6 +18,16 @@ namespace sgl
 	{
 	}
 
+	std::string TextInput::getText() const
+	{
+		return currentText_;
+	}
+
+	void TextInput::setText(const std::string & newText)
+	{
+		currentText_ = newText;
+	}
+
 	void TextInput::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_) 

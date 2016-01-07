@@ -54,20 +54,20 @@ namespace sgl
 		bool isInsideWindowBounds(int x, int y) const;
 		void setRootWindow();
 
-		WindowId id_;								///< unique identifier for this window
-		int width_;									///< Width of this window in pixels
-		int height_;								///< Height of this window in pixels
-		int relativePosX_;							///< Position of this window along X axis relative to parent window
-		int relativePosY_;							///< Position of this window along Y axis relative to parent window
-		int screenPosX_;							///< Position of this window in screen (SDL window) coordinates
-		int screenPosY_;							///< Position of this window in screen (SDL window) coordinates
-		bool isVisible_;							///< If true, this window and none of the children will be drawn
-		bool isActive_;								///< Ignores all received events if window is inactive.
-		bool isClicked_;							///< `true` if there was a mouse down event inside this window but no mouse up event yet
-		bool containsMouse_;						///< `true` if the mouse pointer is currently inside this window
-		Window* parent_;							///< Non-owning pointer to parent window
-		Gui* guiRoot_;								///< Pointer to the root window of the current GUI
-		std::list<Window*> children_;				///< Non-owning pointers to all children of this window
+		WindowId id_;										///< unique identifier for this window
+		int width_;											///< Width of this window in pixels
+		int height_;										///< Height of this window in pixels
+		int relativePosX_;									///< Position of this window along X axis relative to parent window
+		int relativePosY_;									///< Position of this window along Y axis relative to parent window
+		int screenPosX_;									///< Position of this window in screen (SDL window) coordinates
+		int screenPosY_;									///< Position of this window in screen (SDL window) coordinates
+		bool isVisible_;									///< If true, this window and none of the children will be drawn
+		bool isActive_;										///< Ignores all received events if window is inactive.
+		bool isClicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
+		bool containsMouse_;								///< `true` if the mouse pointer is currently inside this window
+		Window* parent_;									///< Non-owning pointer to parent window
+		Gui* guiRoot_;										///< Pointer to the root window of the current GUI
+		std::list<Window*> children_;						///< Non-owning pointers to all children of this window
 		std::map<EventType, EventCallback> eventHandlers_;	///< List of registered event callback functions
 
 	private:
