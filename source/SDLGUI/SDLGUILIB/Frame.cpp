@@ -28,21 +28,35 @@ namespace sgl
 		return hasTitleBar_;
 	}
 
-	void Frame::draw(SDL_Renderer * renderer)
+	void Frame::draw(SDL_Renderer* renderer)
 	{
-		Window::draw(renderer);
 		if (isVisible_)
 		{
 			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
-			if (hasTitleBar_)
+			// draw this window
+			if (isActive_)
 			{
-				auto titleBarHeight = 16;
-				auto titleBarMargin = 2;
-				auto titleBarTextOffset = 8;
-				SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
-				drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
-				renderTextAtPos(renderer, title_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2,
-					PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+				if (hasTitleBar_)
+				{
+					auto titleBarHeight = 16;
+					auto titleBarMargin = 2;
+					auto titleBarTextOffset = 8;
+					SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
+					drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
+					renderTextAtPos(renderer, title_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2,
+						PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				}
+			}
+			else
+			{
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+			}
+
+			// draw children
+			for (const auto& child : children_)
+			{
+				child->draw(renderer);
 			}
 		}
 	}

@@ -15,6 +15,8 @@ namespace sgl
 		void setMarginBottom(int b);
 		void updateLayout();
 
+		virtual void draw(SDL_Renderer* renderer) override;
+
 	protected:
 		int horizontalPadding_ = 5;
 		int marginTop_ = 5,

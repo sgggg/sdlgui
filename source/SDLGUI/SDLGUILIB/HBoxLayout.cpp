@@ -39,4 +39,13 @@ namespace sgl
 			i++;
 		}
 	}
+
+	void HBoxLayout::draw(SDL_Renderer * renderer)
+	{
+		// draw all windows inside the layout
+		for (const auto& child : children_)
+		{
+			child->draw(renderer);
+		}
+	}
 }

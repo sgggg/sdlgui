@@ -36,10 +36,41 @@ namespace sgl
 		setPosition(0, 0);
 	}
 
+	Window::~Window()
+	{
+		if (parent_ != nullptr)
+		{
+			parent_->removeChild(*this);
+		}
+		for (auto child : children_)
+		{
+			child->setParent(nullptr);
+		}
+	}
+
 	void Window::addChild(Window& childWindow)
 	{
 		assert(&childWindow != this);	// window can't be its own child
 		children_.push_back(&childWindow);
+	}
+
+	void Window::removeChild(Window& childWindow)
+	{
+		auto childIt = std::find(children_.begin(), children_.end(), &childWindow);
+		if (childIt != children_.end())
+		{
+			children_.erase(childIt);
+		}
+	}
+
+	void Window::setParent(Window* newParent)
+	{
+		if (parent_ != nullptr)
+		{
+			parent_->removeChild(*this);
+		}
+		parent_ = newParent;
+		setRootWindow();
 	}
 
 	Window* Window::getParent() const
@@ -66,9 +97,10 @@ namespace sgl
 
 	void Window::setPosition(int x, int y)
 	{
+		// TODO check that window is always positioned fully inside parent window
+		// TODO make sure that all child windows are moved together with their parent
 		auto newPosX = x;
 		auto newPosY = y;
-		// TODO check that window is always positioned fully inside parent window
 		relativePosX_ = newPosX;
 		relativePosY_ = newPosY;
 		if (parent_ == nullptr)
@@ -96,29 +128,6 @@ namespace sgl
 	void Window::removeEventCallback(EventType eventType)
 	{
 		eventHandlers_.erase(eventType);
-	}
-
-	void Window::draw(SDL_Renderer* renderer)
-	{
-		if (isVisible_)
-		{
-			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
-			// draw this window
-			if (isActive_)
-			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-			}
-			else
-			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-			}
-
-			// draw children
-			for (const auto& child : children_)
-			{
-				child->draw(renderer);
-			}
-		}
 	}
 
 	bool Window::isVisible()

@@ -5,7 +5,7 @@
 #include "Event.h"
 #include "Utility.h"
 #include "EventProcessor.h"
-#include <vector>
+#include <list>
 #include <memory>
 #include <string>
 #include <functional>
@@ -21,7 +21,11 @@ namespace sgl
 	public:
 		Window();
 		Window(Window* parentWindow);
+		~Window();
+
 		virtual void addChild(Window& childWindow);
+		virtual void removeChild(Window& childWindow);
+		virtual void setParent(Window* newParent);
 		virtual Window* getParent() const;
 		virtual void setSize(int width, int height);
 		virtual void setSize(Size size);
@@ -32,7 +36,7 @@ namespace sgl
 		virtual void removeEventCallback(EventType eventType);
 
 		// inherited functions
-		virtual void draw(SDL_Renderer* renderer) override;
+		//virtual void draw(SDL_Renderer* renderer) override;
 		virtual bool isVisible() override;
 		virtual void setVisible(bool isVisible) override;
 		virtual bool handleEvent(const SDL_Event& e) override;
@@ -63,7 +67,7 @@ namespace sgl
 		bool containsMouse_;						///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;							///< Non-owning pointer to parent window
 		Gui* guiRoot_;								///< Pointer to the root window of the current GUI
-		std::vector<Window*> children_;				///< Non-owning pointers to all children of this window
+		std::list<Window*> children_;				///< Non-owning pointers to all children of this window
 		std::map<EventType, EventCallback> eventHandlers_;	///< List of registered event callback functions
 
 	private:
