@@ -8,6 +8,7 @@
 #include <objbase.h>			// provides CoTaskMemFree
 #include <Shlobj.h>				// provides SHGetKnownFolderPath
 #include <Knownfolders.h>		// provides FOLDERID_Fonts
+#include <cmath>				// provides pi
 
 namespace sgl
 {
@@ -113,6 +114,21 @@ namespace sgl
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 		SDL_RenderFillRect(renderer, &outlineRect);
 	}
+
+	void drawCircle()
+	{
+		int centerOfCircle_x = 100, centerOfCircle_y = 100;// centre of circle in pixel coords
+		int radius = 50;
+
+		float pi = M_PI;
+
+		float angleIncrease = 1.0f / radius;
+		for (float angle = 0.0f; angle <= pi; angle += angleIncrease) 
+		{
+			float xpos = centerOfCircle_x + radius*cos(angle);	// x position of pixel to be drawn
+			float ypos = centerOfCircle_y + radius*sin(angle);	// y position of pixel to be drawn
+			//putpixel(xpos, ypos, surface);
+		}
 
 	std::string ws2s(const std::wstring& wstr)
 	{
