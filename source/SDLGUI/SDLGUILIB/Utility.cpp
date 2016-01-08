@@ -127,27 +127,64 @@ namespace sgl
 		{
 			float xpos = centerOfCircle_x + radius*cos(angle);	// x position of pixel to be drawn
 			float ypos = centerOfCircle_y + radius*sin(angle);	// y position of pixel to be drawn
-			//putpixel(surface, xpos, ypos, pixel);
+
+			// TODO find out which surface/how to get it or whether to use replacement
+
+			//getpixel(surface, xpos, ypos);
+			//putpixel(surface, xpos, ypos, ppixel);
 		}
 	}
 
 	/*
+	* source https://www.libsdl.org/release/SDL-1.2.15/docs/html/guidevideo.html example 2-4
+	* Return the pixel value at (x, y)
+	* NOTE: The surface must be locked before calling this!
+	*/
+	Uint32 getpixel(SDL_Surface *surface, int x, int y)
+	{
+		int bytesPerPixelOfSurface = surface->format->BytesPerPixel;
+		/* Here p is the address to the pixel we want to retrieve */
+		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixelOfSurface;
+
+		switch (bytesPerPixelOfSurface) {
+		case 1:
+			return *ppixel;
+
+		case 2:
+			return *(Uint16 *)ppixel;
+
+		case 3:
+			if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				return ppixel[0] << 16 | ppixel[1] << 8 | ppixel[2];
+			else
+				return ppixel[0] | ppixel[1] << 8 | ppixel[2] << 16;
+
+		case 4:
+			return *(Uint32 *)ppixel;
+
+		default:
+			return 0;       /* shouldn't happen, but avoids warnings */
+		}
+	}
+
+	/*
+	* source https://www.libsdl.org/release/SDL-1.2.15/docs/html/guidevideo.html example 2-5
 	* Set the pixel at (x, y) to the given value
 	* NOTE: The surface must be locked before calling this!
 	*/
 	void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	{
-		int bpp = surface->format->BytesPerPixel;
+		int bytesPerPixelOfSurface = surface->format->BytesPerPixel;
 		/* Here ppixel is the address to the pixel we want to set */
-		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixelOfSurface;
 
-		switch (bpp) {
+		switch (bytesPerPixelOfSurface) {
 		case 1:
 			*ppixel = pixel;
 			break;
 
 		case 2:
-			*(Uint16 *)p = pixel;
+			*(Uint16 *)ppixel = pixel;
 			break;
 
 		case 3:
