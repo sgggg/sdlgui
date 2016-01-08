@@ -14,7 +14,7 @@
 namespace sgl
 {
 	typedef int WindowId;
-	class Gui;
+	class GuiManager;
 
 	class SDLGUILIB_API Window : public Drawable, EventProcessor
 	{
@@ -32,6 +32,8 @@ namespace sgl
 		virtual Size getSize() const;
 		virtual void setPosition(int x, int y);
 		virtual Point getPosition() const;
+		virtual void setFocus();
+		virtual bool hasFocus() const;
 		virtual void addEventCallback(EventType eventType, EventCallback handler);
 		virtual void removeEventCallback(EventType eventType);
 
@@ -49,10 +51,11 @@ namespace sgl
 		virtual void triggerMouseLeft();
 		virtual void triggerMouseDown();
 		virtual void triggerMouseUp();
+		virtual void triggerFocusGained();
+		virtual void triggerFocusLost();
 
 		// helper functions
 		bool isInsideWindowBounds(int x, int y) const;
-		void setRootWindow();
 
 		WindowId id_;										///< unique identifier for this window
 		int width_;											///< Width of this window in pixels
@@ -64,11 +67,12 @@ namespace sgl
 		bool isVisible_;									///< If true, this window and none of the children will be drawn
 		bool isActive_;										///< Ignores all received events if window is inactive.
 		bool isClicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
+		bool hasFocus_;										///< `true` if this window is the one currently receiving keyboard input
 		bool containsMouse_;								///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;									///< Non-owning pointer to parent window
-		Gui* guiRoot_;										///< Pointer to the root window of the current GUI
 		std::list<Window*> children_;						///< Non-owning pointers to all children of this window
 		std::map<EventType, EventCallback> eventHandlers_;	///< List of registered event callback functions
+		GuiManager* manager_;								///< Non-owning pointer to the global GUI manager
 
 	private:
 		Window& operator=(const Window&) = delete;

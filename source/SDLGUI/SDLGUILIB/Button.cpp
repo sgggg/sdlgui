@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Button.h"
-#include "Gui.h"
+#include "GuiManager.h"
 
 namespace sgl
 {
@@ -32,7 +32,7 @@ namespace sgl
 		{
 			if (isActive_)
 			{
-				auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+				auto colorTheme = manager_->getStyleManager().getColorTheme();
 				if (isClicked_)
 				{
 					// draw button in pressed state
@@ -65,11 +65,11 @@ namespace sgl
 
 	void Button::triggerClicked()
 	{
-		auto evHandler = eventHandlers_.find(EventType::Button);
+		auto evHandler = eventHandlers_.find(EventType::ButtonPressed);
 		if (evHandler != std::end(eventHandlers_))
 		{
 			Event e;
-			e.type = EventType::Button;
+			e.type_ = EventType::ButtonPressed;
 			evHandler->second(e);
 		}
 	}

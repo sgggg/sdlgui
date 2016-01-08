@@ -19,7 +19,7 @@ namespace sgl
 		SDL_Color transparent	= { 0x0		,	0x0		,	0x0		, 0x0	};
 		windowBackground			= lightgray;
 		windowTitlebar				= gray;
-		windowFrameFocus			= lightgray;
+		windowFrameFocus			= black;
 		windowFrameNoFocus			= lightgray;
 		controlBackgroundActive		= lightgray;
 		controlBackgroundInactive	= lightgray;

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "Window.h"
-#include "Gui.h"
+#include "GuiManager.h"
 #include <assert.h>
 
 namespace sgl
@@ -19,29 +19,24 @@ namespace sgl
 		,isClicked_(false)
 		,containsMouse_(false)
 		,parent_(nullptr)
-		,guiRoot_(nullptr)
 		,children_()
+		,eventHandlers_()
+		,manager_(GuiManager::GetInstance())
 	{
 	}
 
 	Window::Window(Window* parentWindow)
 		:Window()
 	{
-		parent_ = parentWindow;
-		if (parent_ != nullptr)
-		{
-			parent_->addChild(*this);
-			setRootWindow();
-		}
+		setParent(parentWindow);
 		setPosition(0, 0);
+		manager_->registerWindow(this, id_);
 	}
 
 	Window::~Window()
 	{
-		if (parent_ != nullptr)
-		{
-			parent_->removeChild(*this);
-		}
+		manager_->unregisterWindow(this);
+		setParent(nullptr);
 		for (auto child : children_)
 		{
 			child->setParent(nullptr);
@@ -50,27 +45,33 @@ namespace sgl
 
 	void Window::addChild(Window& childWindow)
 	{
-		assert(&childWindow != this);	// window can't be its own child
-		children_.push_back(&childWindow);
+		childWindow.setParent(this);
 	}
 
 	void Window::removeChild(Window& childWindow)
 	{
-		auto childIt = std::find(children_.begin(), children_.end(), &childWindow);
-		if (childIt != children_.end())
-		{
-			children_.erase(childIt);
-		}
+		childWindow.setParent(nullptr);
 	}
 
 	void Window::setParent(Window* newParent)
 	{
+		// 1. remove this window from children of old parent, if there was one
 		if (parent_ != nullptr)
 		{
-			parent_->removeChild(*this);
+			auto childIt = std::find(parent_->children_.begin(), parent_->children_.end(), this);
+			if (childIt != parent_->children_.end())
+			{
+				parent_->children_.erase(childIt);
+			}
 		}
+		// 2. add this window to new parents children if new parent exists
+		if (newParent != nullptr)
+		{
+			newParent->children_.push_back(this);
+		}
+		// 3. set this windows parent
 		parent_ = newParent;
-		setRootWindow();
+		assert(parent_ != this);	// window can't be its own child
 	}
 
 	Window* Window::getParent() const
@@ -120,6 +121,16 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
+	void Window::setFocus()
+	{
+		manager_->setWindowFocus(this);
+	}
+
+	bool Window::hasFocus() const
+	{
+		return manager_->hasWindowFocus(this);
+	}
+
 	void Window::addEventCallback(EventType eventType, EventCallback handler)
 	{
 		eventHandlers_[eventType] = handler;
@@ -146,7 +157,7 @@ namespace sgl
 
 	bool Window::handleEvent(const SDL_Event& e)
 	{
-		// since child windows usually are on top of their parents, 
+		// since child windows are on top of their parents, 
 		// we first pass the event down to the children to handle.
 		// If none of the children handle the event, we process it ourselves.
 		auto wasHandled = false;
@@ -199,6 +210,8 @@ namespace sgl
 					{
 						triggerMouseUp();
 						triggerClicked();
+						setFocus();
+						triggerFocusGained();
 					}
 					isClicked_ = false;
 					containsMouse_ = true;
@@ -234,11 +247,9 @@ namespace sgl
 					triggerMouseEntered();
 					wasHandled = true;
 					containsMouse_ = true;
-					if(e.motion.state & SDL_BUTTON_LMASK)
+					if(e.motion.state & SDL_BUTTON_LMASK && hasFocus())
 					{
-						isActive_ = true;
 						isClicked_ = true;
-						//TODO activate only when last mous click is in window (solve in mouseup?/drag and drop)
 					}
 					// TODO set isClicked_ if mouse1 is pressed
 				}
@@ -246,13 +257,16 @@ namespace sgl
 			}
 			case SDL_KEYDOWN:
 			{
-				
-				auto keyname = SDL_GetKeyName(e.key.keysym.sym);
-				std::cout << keyname<< std::endl;
-				wasHandled = true;
+				// handle keyboard only if we're the window with focus
+				if (manager_->hasWindowFocus(this))
+				{
+					auto keyname = SDL_GetKeyName(e.key.keysym.sym);
+					std::cout << keyname << std::endl;
+					wasHandled = true;
+				}
 				break;
 			}
-			// TODO add more event types
+			// TODO add more event types here
 			default:
 				// ignore event
 				break;
@@ -269,23 +283,6 @@ namespace sgl
 				y <= screenPosY_ + height_;
 	}
 	
-	void Window::setRootWindow()
-	{
-		// find root window
-		guiRoot_ = nullptr;
-		if (!parent_)
-		{
-			return;
-		}
-		auto nextParent = parent_;
-		while (nextParent->parent_ != nullptr)
-		{
-			nextParent = nextParent->parent_;
-		}
-		guiRoot_ = dynamic_cast<Gui*>(nextParent);
-		assert(guiRoot_ != nullptr);
-	}
-
 	void Window::triggerClicked()
 	{
 	}
@@ -307,6 +304,14 @@ namespace sgl
 	}
 
 	void Window::triggerMouseUp()
+	{
+	}
+
+	void Window::triggerFocusGained()
+	{
+	}
+
+	void Window::triggerFocusLost()
 	{
 	}
 }

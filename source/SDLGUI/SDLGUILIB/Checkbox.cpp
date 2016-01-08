@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Checkbox.h"
-#include "Gui.h"
+#include "GuiManager.h"
 
 namespace sgl
 {
@@ -70,7 +70,7 @@ namespace sgl
 		{
 			auto boxSize = 12;
 			auto labelOffset = 8 + boxSize;
-			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+			auto colorTheme = manager_->getStyleManager().getColorTheme();
 
 			if (isActive_)
 			{

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Frame.h"
-#include "Gui.h"
+#include "GuiManager.h"
 
 namespace sgl
 {
@@ -32,11 +32,12 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
-			auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+			auto colorTheme = manager_->getStyleManager().getColorTheme();
 			// draw this window
 			if (isActive_)
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowFrameFocus);
 				if (hasTitleBar_)
 				{
 					auto titleBarHeight = 16;

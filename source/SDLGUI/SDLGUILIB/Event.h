@@ -5,26 +5,19 @@
 
 namespace sgl
 {
-	class Event;
+	struct Event;
 
 	typedef std::function<void(const Event& e)> EventCallback;
+	typedef int64_t EventTime;
 
 	enum class EventType
 	{
-		Button
+		ButtonPressed
 	};
 	
-	enum class MouseState
+	struct Event
 	{
-		LeftClick,
-		LeftDoubleClick,
-		RightClick,
-		MiddleClick
-	};
-
-	class Event
-	{
-	public:
-		EventType type;
+		EventType type_;
+		EventTime time_;
 	};
 }
