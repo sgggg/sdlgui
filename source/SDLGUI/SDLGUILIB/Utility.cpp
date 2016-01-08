@@ -57,13 +57,13 @@ namespace sgl
 	{
 		wchar_t* folderPath;
 		SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);								// This stores the Windows folder path in folderPath
-		auto textFont = TTF_OpenFont( (ws2s(folderPath) + "\\Arial.ttf").c_str() , fontSize);	// We have to convert folderPath to string
+		auto textFont = TTF_OpenFont((ws2s(folderPath) + "\\Arial.ttf").c_str(), fontSize);	// We have to convert folderPath to string
 		CoTaskMemFree(static_cast<void*>(folderPath));											// Manually free folderPath
 
 		if (textFont == NULL)
 		{
 			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
-		} 
+		}
 		else
 		{
 			auto surfaceMessage = TTF_RenderText_Solid(textFont, textMessage.c_str(), textColor);
@@ -123,12 +123,52 @@ namespace sgl
 		float pi = M_PI;
 
 		float angleIncrease = 1.0f / radius;
-		for (float angle = 0.0f; angle <= pi; angle += angleIncrease) 
+		for (float angle = 0.0f; angle <= pi; angle += angleIncrease)
 		{
 			float xpos = centerOfCircle_x + radius*cos(angle);	// x position of pixel to be drawn
 			float ypos = centerOfCircle_y + radius*sin(angle);	// y position of pixel to be drawn
-			//putpixel(xpos, ypos, surface);
+			//putpixel(surface, xpos, ypos, pixel);
 		}
+	}
+
+	/*
+	* Set the pixel at (x, y) to the given value
+	* NOTE: The surface must be locked before calling this!
+	*/
+	void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+	{
+		int bpp = surface->format->BytesPerPixel;
+		/* Here ppixel is the address to the pixel we want to set */
+		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+		switch (bpp) {
+		case 1:
+			*ppixel = pixel;
+			break;
+
+		case 2:
+			*(Uint16 *)p = pixel;
+			break;
+
+		case 3:
+			if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+				ppixel[0] = (pixel >> 16) & 0xff;
+				ppixel[1] = (pixel >> 8) & 0xff;
+				ppixel[2] = pixel & 0xff;
+			}
+			else {
+				ppixel[0] = pixel & 0xff;
+				ppixel[1] = (pixel >> 8) & 0xff;
+				ppixel[2] = (pixel >> 16) & 0xff;
+			}
+			break;
+
+		case 4:
+			*(Uint32 *)ppixel = pixel;
+			break;
+		}
+	}
+
 
 	std::string ws2s(const std::wstring& wstr)
 	{
