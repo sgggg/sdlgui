@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "TextLabel.h"
-#include "Gui.h"
+#include "GuiManager.h"
 
 namespace sgl
 {
@@ -32,7 +32,7 @@ namespace sgl
 		{
 			if (isActive_)
 			{
-				auto colorTheme = guiRoot_->getStyleManager().getColorTheme();
+				auto colorTheme = manager_->getStyleManager().getColorTheme();
 				renderTextAtPos(renderer, text_, screenPosX_, screenPosY_, PosAlign::TopLeft, colorTheme.textActive, colorTheme.textBackground);
 			}
 			else

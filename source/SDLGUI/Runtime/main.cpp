@@ -33,11 +33,8 @@ int main(int /*argc*/, char* /*args*/[])
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 	
-	// create GUI
-	sgl::Gui gui;
-
 	// create new window
-	sgl::Frame mainFrame(&gui, "Main Window");
+	sgl::Frame mainFrame(nullptr, "Main Window");
 	mainFrame.setSize(400, 300);
 	mainFrame.setTitleBarVisible(true);
 
@@ -48,7 +45,7 @@ int main(int /*argc*/, char* /*args*/[])
 	auto f = [](const sgl::Event& e) {
 		std::cout << "my own function was executed!" << std::endl;
 	};
-	b.addEventCallback(sgl::EventType::Button, f);
+	b.addEventCallback(sgl::EventType::ButtonPressed, f);
 
 	// add checkbox to window
 	sgl::Checkbox c(&mainFrame, "Check Me!");
@@ -78,11 +75,18 @@ int main(int /*argc*/, char* /*args*/[])
 	gl.updateLayout();
 
 	// make everything visible
-	gui.setVisible(true);
+	mainFrame.setVisible(true);
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	// create second window
+	sgl::Frame secondFrame(nullptr, "Other Window");
+	secondFrame.setSize(400, 300);
+	secondFrame.setPosition(100, 100);
+	secondFrame.setTitleBarVisible(true);
+	secondFrame.setVisible(true);
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
 	SDL_RenderClear(renderer);
-	gui.draw(renderer);
+	sgl::DrawGui(renderer);
 	SDL_RenderPresent(renderer);
 
 	auto running = true;
@@ -91,10 +95,10 @@ int main(int /*argc*/, char* /*args*/[])
 	{
 		while (0 != SDL_PollEvent(&e))
 		{
-			gui.handleEvent(e);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			sgl::HandleEvent(&e);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
 			SDL_RenderClear(renderer);
-			gui.draw(renderer);
+			sgl::DrawGui(renderer);
 			SDL_RenderPresent(renderer);
 
 			if (e.type == SDL_QUIT)

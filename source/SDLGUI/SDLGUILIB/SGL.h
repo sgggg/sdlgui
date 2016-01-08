@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ErrorHandling.h"
-#include "Gui.h"
 #include "Event.h"
 #include "Frame.h"
 #include "Button.h"
@@ -10,3 +9,4 @@
 #include "TextInput.h"
 #include "HBoxLayout.h"
 #include "GridLayout.h"
+#include "GuiManager.h"

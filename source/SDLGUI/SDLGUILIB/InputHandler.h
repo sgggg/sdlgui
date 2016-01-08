@@ -1,30 +1,30 @@
 #pragma once
 
 #include "SDL.h"
-#include "SDLGUILIB_API.h"
 #include "Event.h"
+#include "EventProcessor.h"
 #include "ColorTheme.h"
 #include <vector>
 
 
-// Note: do not use any of this shit... still work in progress
-
 namespace sgl
 {
+	class GuiManager;
 	class Window;
 	
-	class SDLGUILIB_API InputHandler
+	class SDLGUILIB_API InputHandler : public EventProcessor
 	{
 	public:
-		InputHandler();
-		~InputHandler();
-		SDL_Event& process(SDL_Event& e);
+		InputHandler(GuiManager* manager);
+
+		// inherited functions
+		virtual bool handleEvent(const SDL_Event& e) override;
 
 	private:
-		std::vector<Window*> rootWindows;
-
 		// helper functions
-		static Event convertToSglEvent(SDL_Event& e);
+		bool handleWindowWithChildren(Window* window, const SDL_Event& e);
+
+		GuiManager* manager_;
 
 		InputHandler& operator=(const InputHandler&) = delete;
 		InputHandler(const InputHandler&) = delete;

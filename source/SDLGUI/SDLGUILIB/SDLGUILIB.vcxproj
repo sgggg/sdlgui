@@ -178,7 +178,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GridLayout.h" />
-    <ClInclude Include="Gui.h" />
+    <ClInclude Include="GuiManager.h" />
     <ClInclude Include="HBoxLayout.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="EventProcessor.h" />
@@ -214,7 +214,7 @@
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GridLayout.cpp" />
-    <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="HBoxLayout.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="OsUtility.cpp" />

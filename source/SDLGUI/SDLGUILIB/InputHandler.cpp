@@ -1,36 +1,38 @@
 #include "stdafx.h"
 
 #include "InputHandler.h"
+#include "GuiManager.h"
+#include "Window.h"
+#include <assert.h>
 
 namespace sgl
 {
-	InputHandler::InputHandler()
-		:rootWindows()
+	InputHandler::InputHandler(GuiManager* manager)
+		:manager_(manager)
 	{
+		assert(manager_ != nullptr);
 	}
 
-	InputHandler::~InputHandler()
-	{
-	}
 
-	SDL_Event& InputHandler::process(SDL_Event& e)
+	bool InputHandler::handleEvent(const SDL_Event& e)
 	{
-		auto event = convertToSglEvent(e);
-		switch (e.type)
+		// a parent gets the event only when no children claims the input as exclusive
+		for (auto window : manager_->getWindows())
 		{
-		case SDL_QUIT:
-			break;
-		default:
-			break;
+			if (window->getParent() == nullptr)
+			{
+				auto wasCaptured = window->handleEvent(e);
+				if (wasCaptured)
+				{
+					break;
+				}
+			}
 		}
-		return e;
+		return true;
 	}
 
-	Event InputHandler::convertToSglEvent(SDL_Event& /*e*/)
+	bool InputHandler::handleWindowWithChildren(Window* window, const SDL_Event& e)
 	{
-		Event guiEvent;
-		// TODO fill guiEvent with info from e 
-		guiEvent.type = EventType::Button;
-		return guiEvent;
+		return false;
 	}
 }
