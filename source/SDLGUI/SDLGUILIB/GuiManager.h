@@ -47,5 +47,6 @@ namespace sgl
 		StyleManager styleManager_;						///< Manages window appearance
 		std::list<Window*> windows_;					///< Non-owning pointers to all Window instances
 		std::list<Window*> windowStack_;				///< order in which windows are stacked on the screen (first on top) for drawing and input processing
+		int64_t windowIdCounter_;						///< TODO temporarily used to generate Window IDs
 	};
 }

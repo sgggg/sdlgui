@@ -31,6 +31,7 @@ namespace sgl
 		setParent(parentWindow);
 		setPosition(0, 0);
 		manager_->registerWindow(this, id_);
+		std::cout << "Window " << id_ << " constructed and registered" << std::endl;
 	}
 
 	Window::~Window()

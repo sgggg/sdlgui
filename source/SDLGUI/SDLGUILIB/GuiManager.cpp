@@ -106,16 +106,15 @@ namespace sgl
 
 	WindowId GuiManager::getAvailableWindowId()
 	{
-		// TODO
-		return -1;
+		return windowIdCounter_++;
 	}
 
 	GuiManager::GuiManager()
 		:inputHandler_(this)
 		,styleManager_()
-		//,scheduler_()
 		,windows_()
 		,windowStack_()
+		,windowIdCounter_(0)
 	{
 	}
 
