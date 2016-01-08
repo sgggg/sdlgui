@@ -62,14 +62,17 @@ int main(int /*argc*/, char* /*args*/[])
 	i.setPosition(20,40);
 	i.setSize(100,40);
 
-	//add window with horizontal layout
-	sgl::HBoxLayout hl(&mainFrame);
-	hl.setPosition(0, 200);
-	hl.setSize(400, 50);
-	sgl::Button b2(&hl, "Press Me 2!");
-	sgl::Button b3(&hl, "Press Me 3!");
-	sgl::Button b4(&hl, "Press Me 4!");
-	hl.updateLayout();
+	//add window with grid layout
+	sgl::GridLayout gl(&mainFrame);
+	gl.setPosition(0, 200);
+	gl.setSize(400, 100);
+	sgl::Button b2(&gl, "Press Me 2!");
+	sgl::Button b3(&gl, "Press Me 3!");
+	sgl::Button b4(&gl, "Press Me 4!");
+	gl.setGridPosition(b2, 1, 1);
+	gl.setGridPosition(b3, 0, 0);
+	gl.setGridPosition(b4, 0, 1);
+	gl.updateLayout();
 
 	// make everything visible
 	mainFrame.setVisible(true);
