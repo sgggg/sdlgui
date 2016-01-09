@@ -1,5 +1,12 @@
-Task List
+Known Bugs List
+* This list contains bugs in the latest version
 
+- windows still handle a mouse click even when hidden: maybe set isActive_ to false when hidden?
+- windows can draw outside their bounds
+
+
+
+Task List
 * This list will contain all tasks that still need to be completed.
 
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
@@ -16,6 +23,7 @@ Task List
 - window id generation/assignment should account for user defined IDs and IDs that are reused
 - some kind of child focus management that determines which child of a window has focus within that window
 - update window stack (and child focus) in GuiManager whenever the parent/child relationship of any window changes
+- adjust window size automatically to drawn content like text for buttons, checkboxes, text labels
 
 
 
