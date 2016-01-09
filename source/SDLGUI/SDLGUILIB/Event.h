@@ -12,7 +12,9 @@ namespace sgl
 
 	enum class EventType
 	{
-		ButtonPressed
+		ButtonPressed,
+		CheckBoxChecked,
+		CheckBoxUnchecked
 	};
 	
 	struct Event

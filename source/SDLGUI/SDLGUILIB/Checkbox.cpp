@@ -41,29 +41,16 @@ namespace sgl
 	void Checkbox::triggerClicked()
 	{
 		isChecked_ = !isChecked_;
-		std::cout << "Checkbox is now " << ((isChecked_) ? "checked!" : "unchecked!") << std::endl;
+		auto eventType = isChecked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
+		auto evHandler = eventHandlers_.find(eventType);
+		if (evHandler != std::end(eventHandlers_))
+		{
+			Event e;
+			e.type_ = eventType;
+			evHandler->second(e);
+		}
 	}
-
-	void Checkbox::triggerDoubleClicked()
-	{
-	}
-
-	void Checkbox::triggerMouseEntered()
-	{
-	}
-
-	void Checkbox::triggerMouseLeft()
-	{
-	}
-
-	void Checkbox::triggerMouseDown()
-	{
-	}
-
-	void Checkbox::triggerMouseUp()
-	{
-	}
-
+	
 	void Checkbox::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_)

@@ -23,22 +23,23 @@ namespace sgl
 		Window(Window* parentWindow);
 		~Window();
 
+		virtual WindowId GetId() const;
 		virtual void addChild(Window& childWindow);
 		virtual void removeChild(Window& childWindow);
 		virtual void setParent(Window* newParent);
 		virtual Window* getParent() const;
 		virtual void setSize(int width, int height);
-		virtual void setSize(Size size);
 		virtual Size getSize() const;
+		//virtual void setSizeFixed(bool isFixed);
 		virtual void setPosition(int x, int y);
 		virtual Point getPosition() const;
+		//virtual void setPositionFixed(bool isFixed);
 		virtual void setFocus();
 		virtual bool hasFocus() const;
 		virtual void addEventCallback(EventType eventType, EventCallback handler);
 		virtual void removeEventCallback(EventType eventType);
 
 		// inherited functions
-		//virtual void draw(SDL_Renderer* renderer) override;
 		virtual bool isVisible() override;
 		virtual void setVisible(bool isVisible) override;
 		virtual bool handleEvent(const SDL_Event& e) override;
@@ -56,14 +57,17 @@ namespace sgl
 
 		// helper functions
 		bool isInsideWindowBounds(int x, int y) const;
+		Window* getRootParent(Window* window);
 
 		WindowId id_;										///< unique identifier for this window
 		int width_;											///< Width of this window in pixels
 		int height_;										///< Height of this window in pixels
+		//bool isSizeFixed_;									///< If `true`, window can not be resized
 		int relativePosX_;									///< Position of this window along X axis relative to parent window
 		int relativePosY_;									///< Position of this window along Y axis relative to parent window
 		int screenPosX_;									///< Position of this window in screen (SDL window) coordinates
 		int screenPosY_;									///< Position of this window in screen (SDL window) coordinates
+		//bool isPositionFixed_;								///< If `true`, window position can not be changed (ignored if parent is moved)
 		bool isVisible_;									///< If true, this window and none of the children will be drawn
 		bool isActive_;										///< Ignores all received events if window is inactive.
 		bool isClicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet

@@ -28,7 +28,7 @@ namespace sgl
 
 		InputHandler& getInputHandler();
 		StyleManager& getStyleManager();
-		std::list<Window*>& getWindows();
+		std::list<Window*>& getWindowStack();
 		void drawGui(SDL_Renderer* renderer);
 
 		void registerWindow(Window* window, WindowId& /* out */ id);
@@ -36,6 +36,8 @@ namespace sgl
 		void setWindowFocus(Window* windowWithFocus);
 		bool hasWindowFocus(const Window* window) const;
 		WindowId getAvailableWindowId();
+		void freeWindowId(WindowId id);
+		void updateWindowStack();
 
 	private:
 		GuiManager();
@@ -46,7 +48,7 @@ namespace sgl
 		InputHandler inputHandler_;						///< Manager for SDL_Event input
 		StyleManager styleManager_;						///< Manages window appearance
 		std::list<Window*> windows_;					///< Non-owning pointers to all Window instances
-		std::list<Window*> windowStack_;				///< order in which windows are stacked on the screen (first on top) for drawing and input processing
+		std::list<Window*> windowStack_;				///< Non-owning pointers to all orphan Window instances (windows without parents)
 		int64_t windowIdCounter_;						///< TODO temporarily used to generate Window IDs
 	};
 }

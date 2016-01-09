@@ -17,15 +17,12 @@ namespace sgl
 	bool InputHandler::handleEvent(const SDL_Event& e)
 	{
 		// a parent gets the event only when no children claims the input as exclusive
-		for (auto window : manager_->getWindows())
+		for (auto window : manager_->getWindowStack())
 		{
-			if (window->getParent() == nullptr)
+			auto wasCaptured = window->handleEvent(e);
+			if (wasCaptured)
 			{
-				auto wasCaptured = window->handleEvent(e);
-				if (wasCaptured)
-				{
-					break;
-				}
+				break;
 			}
 		}
 		return true;

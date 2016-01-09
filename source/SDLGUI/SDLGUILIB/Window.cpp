@@ -44,6 +44,11 @@ namespace sgl
 		}
 	}
 
+	WindowId Window::GetId() const
+	{
+		return id_;
+	}
+
 	void Window::addChild(Window& childWindow)
 	{
 		childWindow.setParent(this);
@@ -73,6 +78,8 @@ namespace sgl
 		// 3. set this windows parent
 		parent_ = newParent;
 		assert(parent_ != this);	// window can't be its own child
+		// 4. notify manager that parent relationships have changed
+		manager_->updateWindowStack();
 	}
 
 	Window* Window::getParent() const
@@ -86,16 +93,15 @@ namespace sgl
 		height_ = height;
 	}
 
-	void Window::setSize(Size size)
-	{
-		width_ = size.width;
-		height_ = size.height;
-	}
-
 	Size Window::getSize() const
 	{
 		return Size{ width_, height_ };
 	}
+
+	//void Window::setSizeFixed(bool isFixed)
+	//{
+	//	isSizeFixed_ = isFixed;
+	//}
 
 	void Window::setPosition(int x, int y)
 	{
@@ -122,9 +128,21 @@ namespace sgl
 		return Point{ relativePosX_, relativePosY_ };
 	}
 
+	//void Window::setPositionFixed(bool isFixed)
+	//{
+	//	isPositionFixed_ = isFixed;
+	//}
+
 	void Window::setFocus()
 	{
-		manager_->setWindowFocus(this);
+		if (parent_ == nullptr)
+		{
+			manager_->setWindowFocus(this);
+		}
+		else
+		{
+			getRootParent(this)->setFocus();
+		}
 	}
 
 	bool Window::hasFocus() const
@@ -282,6 +300,16 @@ namespace sgl
 				x <= screenPosX_ + width_ &&
 				y >= screenPosY_ &&
 				y <= screenPosY_ + height_;
+	}
+
+	Window* Window::getRootParent(Window* window)
+	{
+		auto rootParent = window;
+		while (rootParent->parent_ != nullptr)
+		{
+			rootParent = rootParent->parent_;
+		}
+		return rootParent;
 	}
 	
 	void Window::triggerClicked()

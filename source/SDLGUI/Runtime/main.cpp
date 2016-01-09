@@ -42,15 +42,25 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::Button b(&mainFrame, "Press Me!");
 	b.setPosition(5, 155);
 	b.setSize(100, 40);
-	auto f = [](const sgl::Event& e) {
-		std::cout << "my own function was executed!" << std::endl;
+	auto f1 = [](const sgl::Event& /*e*/) {
+		std::cout << "\"Press Me!\" was clicked!" << std::endl;
 	};
-	b.addEventCallback(sgl::EventType::ButtonPressed, f);
+	b.addEventCallback(sgl::EventType::ButtonPressed, f1);
 
 	// add checkbox to window
-	sgl::Checkbox c(&mainFrame, "Check Me!");
+	sgl::Checkbox c(&mainFrame, "Hide Buttone \"Press Me!\"");
 	c.setPosition(200, 100);
 	c.setSize(100, 40);
+	auto f2 = [&b](const sgl::Event& /*e*/) {
+		std::cout << "checkbox checked" << std::endl;
+		b.setVisible(false);
+	};
+	auto f3 = [&b](const sgl::Event& /*e*/) {
+		std::cout << "checkbox unchecked" << std::endl;
+		b.setVisible(true);
+	};
+	c.addEventCallback(sgl::EventType::CheckBoxChecked, f2);
+	c.addEventCallback(sgl::EventType::CheckBoxUnchecked, f3);
 
 	//add textlabel to window
 	sgl::TextLabel t(&mainFrame, "hello world");
