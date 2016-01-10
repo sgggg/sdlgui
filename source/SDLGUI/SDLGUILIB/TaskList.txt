@@ -6,6 +6,7 @@ Known Bugs List
 	* The part with text should be handled like this, i think: drawTextAtPos should return a texture/surface and not render directly.
 	  Then inside the window we can either increase the window size according to the texture/surface size or copy only the part of the 
 	  texture/surface to the renderer that is inside the window bounds.
+- for some reason the text rendering currently looks shit (the 't's seem to be aligned incorrectly). Maybe this is a font/size problem?
 
 
 
@@ -17,16 +18,21 @@ Task List
 - finish text input control
 - add radio button control
 - add grouping window (GroupBox) for radio buttons and other controls
+- add scroll bars
 - (optional) add canvas control
 - (optional) add register control
 - (optional) add combo-box (drop-down list) control
+- (optional) add customizable menus and menu bars
 - add timed events and redraws for animations
-- implement moving of windows (drag & drop), this also moves all controls in this window
+- implement moving of windows (drag & drop), this also moves all controls in a window
 - make sure controls are always positioned (and drawn) inside their parent window
 - window id generation/assignment should account for user defined IDs and IDs that are reused
-- some kind of child focus management that determines which child of a window has focus within that window
-- update window stack (and child focus) in GuiManager whenever the parent/child relationship of any window changes
 - adjust window size automatically to drawn content like text for buttons, checkboxes, text labels
+- change mouse cursor (e.g. when hovering text input controls or when resizing/moving a window) via SDL_CreateSystemCursor
+- add functionality to (minimize/)maximize windows
+- add title bar buttons for (minimizing/)maximizing
+- add test project to unit test basic functionality
+- add reference implementations using the developed GUI functionality to implement a simple calculator
 
 
 
