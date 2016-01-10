@@ -30,36 +30,42 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
+			auto colorTheme = manager_->getStyleManager().getColorTheme();
+			SDL_Color colorButtonFill, colorButtonFrame, colorButtonLabel;
 			if (isActive_)
 			{
-				auto colorTheme = manager_->getStyleManager().getColorTheme();
 				if (isClicked_)
 				{
 					// draw button in pressed state
-					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlPressed);
+					colorButtonFill = colorTheme.controlPressed;
 				}
 				else if (containsMouse_)
 				{
 					// draw button in mouse-over state
-					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlContainsMouse);
+					colorButtonFill = colorTheme.controlContainsMouse;
 				}
 				else
 				{
 					// draw button in normal state (not pressed, not mouse-over)
-					drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlBackgroundActive);
+					colorButtonFill = colorTheme.controlBackgroundActive;
 				}
-				// always draw the same outline
-				SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
-				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
-
-				// render text
-				auto buttonCenter = getCenter({ screenPosX_, screenPosY_, width_, height_ });
-				renderTextAtPos(renderer, label_, buttonCenter.x, buttonCenter.y, PosAlign::Center, colorTheme.textActive, colorTheme.textBackground);
+				colorButtonFrame = colorTheme.controlFrameActive;
+				colorButtonLabel = colorTheme.textActive;
 			}
 			else
 			{
-				// TODO draw button in inactive state (grayed out)
+				colorButtonFill = colorTheme.controlBackgroundInactive;
+				colorButtonFrame = colorTheme.controlFrameInactive;
+				colorButtonLabel = colorTheme.textInactive;
 			}
+			// draw button fill color
+			drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorButtonFill);
+			// draw outline
+			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
+			drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorButtonFrame);
+			// draw button label
+			auto buttonCenter = getCenter({ screenPosX_, screenPosY_, width_, height_ });
+			renderTextAtPos(renderer, label_, buttonCenter.x, buttonCenter.y, PosAlign::Center, colorButtonLabel, colorTheme.textBackground);
 		}
 	}
 

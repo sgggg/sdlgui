@@ -36,6 +36,8 @@ namespace sgl
 		//virtual void setPositionFixed(bool isFixed);
 		virtual void setFocus();
 		virtual bool hasFocus() const;
+		virtual void setActive(bool isActive);
+		virtual bool isActive() const;
 		virtual void addEventCallback(EventType eventType, EventCallback handler);
 		virtual void removeEventCallback(EventType eventType);
 
@@ -54,6 +56,7 @@ namespace sgl
 		virtual void triggerMouseUp();
 		virtual void triggerFocusGained();
 		virtual void triggerFocusLost();
+		virtual void triggerWindowResize();
 
 		// helper functions
 		bool isInsideWindowBounds(int x, int y) const;

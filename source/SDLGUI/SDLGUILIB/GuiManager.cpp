@@ -47,10 +47,7 @@ namespace sgl
 		// we're going through the list in reverse order so that the first item is drawn on top
 		for (auto windowIt = std::rbegin(windowStack_); windowIt != std::rend(windowStack_); ++windowIt)
 		{
-			if ((*windowIt)->getParent() == nullptr)
-			{
-				(*windowIt)->draw(renderer);
-			}
+			(*windowIt)->draw(renderer);
 		}
 	}
 
@@ -69,7 +66,7 @@ namespace sgl
 
 	void GuiManager::unregisterWindow(Window* window)
 	{
-		// currently O(#windows), could be O(1)
+		// TODO currently O(#windows), could be O(1)
 		auto windowIt = std::find(std::begin(windows_), std::end(windows_), window);
 		if (windowIt != std::end(windows_))
 		{
@@ -118,7 +115,14 @@ namespace sgl
 
 	void GuiManager::updateWindowStack()
 	{
-		// TODO generate new window stack according to windows in windows_
+		windowStack_.clear();
+		for (const auto win : windows_)
+		{
+			if (win->getParent() == nullptr)
+			{
+				windowStack_.push_back(win);
+			}
+		}
 	}
 
 	GuiManager::GuiManager()

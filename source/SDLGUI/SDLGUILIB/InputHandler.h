@@ -21,9 +21,6 @@ namespace sgl
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	private:
-		// helper functions
-		bool handleWindowWithChildren(Window* window, const SDL_Event& e);
-
 		GuiManager* manager_;
 
 		InputHandler& operator=(const InputHandler&) = delete;

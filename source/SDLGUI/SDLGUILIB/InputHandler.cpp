@@ -27,9 +27,4 @@ namespace sgl
 		}
 		return true;
 	}
-
-	bool InputHandler::handleWindowWithChildren(Window* window, const SDL_Event& e)
-	{
-		return false;
-	}
 }

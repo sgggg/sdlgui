@@ -3,6 +3,9 @@ Known Bugs List
 
 - windows still handle a mouse click even when hidden: maybe set isActive_ to false when hidden?
 - windows can draw outside their bounds
+	* The part with text should be handled like this, i think: drawTextAtPos should return a texture/surface and not render directly.
+	  Then inside the window we can either increase the window size according to the texture/surface size or copy only the part of the 
+	  texture/surface to the renderer that is inside the window bounds.
 
 
 

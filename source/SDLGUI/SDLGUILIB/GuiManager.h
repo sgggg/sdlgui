@@ -48,7 +48,7 @@ namespace sgl
 		InputHandler inputHandler_;						///< Manager for SDL_Event input
 		StyleManager styleManager_;						///< Manages window appearance
 		std::list<Window*> windows_;					///< Non-owning pointers to all Window instances
-		std::list<Window*> windowStack_;				///< Non-owning pointers to all orphan Window instances (windows without parents)
+		std::list<Window*> windowStack_;				///< Non-owning pointers to all top-level Window instances (windows without parents)
 		int64_t windowIdCounter_;						///< TODO temporarily used to generate Window IDs
 	};
 }

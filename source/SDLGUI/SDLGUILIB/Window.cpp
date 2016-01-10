@@ -150,6 +150,16 @@ namespace sgl
 		return manager_->hasWindowFocus(this);
 	}
 
+	void Window::setActive(bool isActive)
+	{
+		isActive_ = isActive;
+	}
+
+	bool Window::isActive() const
+	{
+		return isActive_;
+	}
+
 	void Window::addEventCallback(EventType eventType, EventCallback handler)
 	{
 		eventHandlers_[eventType] = handler;
@@ -176,6 +186,10 @@ namespace sgl
 
 	bool Window::handleEvent(const SDL_Event& e)
 	{
+		if (!isActive_)
+		{
+			return false;
+		}
 		// since child windows are on top of their parents, 
 		// we first pass the event down to the children to handle.
 		// If none of the children handle the event, we process it ourselves.
@@ -214,6 +228,8 @@ namespace sgl
 					isClicked_ = true;
 					containsMouse_ = true;
 					wasHandled = true;
+					setFocus();
+					triggerFocusGained();
 					triggerMouseDown();
 				}
 				break;
@@ -229,8 +245,6 @@ namespace sgl
 					{
 						triggerMouseUp();
 						triggerClicked();
-						setFocus();
-						triggerFocusGained();
 					}
 					isClicked_ = false;
 					containsMouse_ = true;
@@ -341,6 +355,10 @@ namespace sgl
 	}
 
 	void Window::triggerFocusLost()
+	{
+	}
+
+	void Window::triggerWindowResize()
 	{
 	}
 }
