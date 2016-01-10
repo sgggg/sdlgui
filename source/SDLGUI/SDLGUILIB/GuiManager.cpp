@@ -53,20 +53,28 @@ namespace sgl
 
 	void GuiManager::registerWindow(Window* window, WindowId& id)
 	{
+		// each window must have a unique window ID
 		if (id == -1)
 		{
 			id = getAvailableWindowId();
 		}
+		windows_.push_back(window);
+		// the draw order of top-level windows is saved in the window stack
 		if (window->getParent() == nullptr)
 		{
 			windowStack_.push_front(window);
 		}
-		windows_.push_back(window);
+		// if this is the first window created, set it as focused
+		if (windows_.size() == 1)
+		{
+			windowWithFocus_ = window;
+		}
 	}
 
 	void GuiManager::unregisterWindow(Window* window)
 	{
 		// TODO currently O(#windows), could be O(1)
+		// remove the window from all data structures
 		auto windowIt = std::find(std::begin(windows_), std::end(windows_), window);
 		if (windowIt != std::end(windows_))
 		{
@@ -78,29 +86,36 @@ namespace sgl
 			windowStack_.erase(windowStackIt);
 		}
 		freeWindowId(window->GetId());
+		// move focus to another existing window, if the destroyed had focus
+		if (window == windowWithFocus_)
+		{
+			if (windowStack_.size() > 0)
+			{
+				windowWithFocus_ = *std::begin(windowStack_);
+			}
+			else
+			{
+				// this one was the last window
+				windowWithFocus_ = nullptr;
+			}
+		}
 	}
 
 	void GuiManager::setWindowFocus(Window* windowWithFocus)
 	{
-		auto windowIt = std::find(std::begin(windowStack_), std::end(windowStack_), windowWithFocus);
-		if (windowIt != std::end(windowStack_))
+		assert(windowWithFocus != nullptr);
+		if (windowWithFocus_ != windowWithFocus)
 		{
-			windowStack_.erase(windowIt);
-			windowStack_.push_front(windowWithFocus);
-		}
-		else
-		{
-			assert(false);	// setting focus to unregistered window!
+			auto previousFocusWindow = windowWithFocus_;
+			windowWithFocus_ = windowWithFocus;
+			windowWithFocus->triggerFocusGained();
+			previousFocusWindow->triggerFocusLost();
 		}
 	}
 
 	bool GuiManager::hasWindowFocus(const Window* window) const
 	{
-		if (windowStack_.size() == 0)
-		{
-			return false;
-		}
-		return *std::begin(windowStack_) == window;
+		return windowWithFocus_ == window;
 	}
 
 	WindowId GuiManager::getAvailableWindowId()
@@ -111,6 +126,18 @@ namespace sgl
 	void GuiManager::freeWindowId(WindowId id)
 	{
 		// TODO implement
+	}
+
+	void GuiManager::stackOnTop(Window* newTopWindow)
+	{
+		auto windowIt = std::find(std::begin(windowStack_), std::end(windowStack_), newTopWindow);
+		assert(windowIt != std::end(windowStack_));	// setting focus to unregistered window!
+		if (windowIt != std::begin(windowStack_))
+		{
+			// move to front of window stack if it is not already
+			windowStack_.erase(windowIt);
+			windowStack_.push_front(newTopWindow);
+		}
 	}
 
 	void GuiManager::updateWindowStack()
@@ -130,6 +157,7 @@ namespace sgl
 		,styleManager_()
 		,windows_()
 		,windowStack_()
+		,windowWithFocus_(nullptr)
 		,windowIdCounter_(0)
 	{
 	}

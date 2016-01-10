@@ -135,13 +135,14 @@ namespace sgl
 
 	void Window::setFocus()
 	{
+		manager_->setWindowFocus(this);
 		if (parent_ == nullptr)
 		{
-			manager_->setWindowFocus(this);
+			manager_->stackOnTop(this);
 		}
 		else
 		{
-			getRootParent(this)->setFocus();
+			manager_->stackOnTop(getRootParent(this));
 		}
 	}
 
@@ -229,7 +230,6 @@ namespace sgl
 					containsMouse_ = true;
 					wasHandled = true;
 					setFocus();
-					triggerFocusGained();
 					triggerMouseDown();
 				}
 				break;
@@ -352,6 +352,8 @@ namespace sgl
 
 	void Window::triggerFocusGained()
 	{
+		auto isChild = parent_ != nullptr;
+		std::cout << "window " << id_ << " gained focus " << (isChild ? "(child)" : "(top-level)") << std::endl;
 	}
 
 	void Window::triggerFocusLost()

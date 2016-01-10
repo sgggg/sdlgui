@@ -47,6 +47,7 @@ namespace sgl
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	protected:
+		friend GuiManager;
 		// event generating functions
 		virtual void triggerClicked();
 		virtual void triggerDoubleClicked();

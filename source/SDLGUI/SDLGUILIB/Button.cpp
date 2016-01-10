@@ -82,26 +82,21 @@ namespace sgl
 
 	void Button::triggerDoubleClicked()
 	{
-		// do nothing
 	}
 
 	void Button::triggerMouseEntered()
 	{
-		//std::cout << "Button " << label_ << ": mouse entered" << std::endl;
 	}
 
 	void Button::triggerMouseLeft()
 	{
-		//std::cout << "Button " << label_ << ": mouse left" << std::endl;
 	}
 
 	void Button::triggerMouseDown()
 	{
-		//std::cout << "Window " << label_ << ": mouse down" << std::endl;
 	}
 
 	void Button::triggerMouseUp()
 	{
-		//std::cout << "Window " << label_ << ": mouse up" << std::endl;
 	}
 }
