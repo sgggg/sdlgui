@@ -7,11 +7,13 @@ namespace sgl
 {
 	GridLayout::GridLayout()
 		:Window()
+		,grid_()
 	{
 	}
 
 	GridLayout::GridLayout(Window* parentWindow)
-		: Window(parentWindow)
+		:Window(parentWindow)
+		,grid_()
 	{
 	}
 
@@ -40,12 +42,12 @@ namespace sgl
 		for (auto gridElem : grid_)
 		{
 			gridElem.first->setSize(widthPerChild, heightPerChild);
-			gridElem.first->setPosition( marginLeft_ + gridElem.second.h * widthPerCell  + paddingLeft_,
-										 marginTop_  + gridElem.second.v * heightPerCell + paddingTop_ );
+			gridElem.first->setPosition( marginLeft_ + gridElem.second.y * widthPerCell  + paddingLeft_,
+										 marginTop_  + gridElem.second.x * heightPerCell + paddingTop_ );
 		}
 	}
 
-	void GridLayout::draw(SDL_Renderer * renderer)
+	void GridLayout::draw(SDL_Renderer* renderer)
 	{
 		// draw all windows inside the layout
 		for (const auto& child : children_)
@@ -58,7 +60,7 @@ namespace sgl
 	{
 		assert(std::find(children_.begin(), children_.end(), &childWindow) != children_.end()); // Assert that childWindow is element of GridLayout
 		grid_.erase(&childWindow);
-		grid_.insert(std::pair<Window*, Position>(&childWindow, { v,h }));
+		grid_.insert(std::make_pair(&childWindow, Point{ v,h }));
 
 		maxH_ = std::max(maxH_, h);
 		maxV_ = std::max(maxV_, v);

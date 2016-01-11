@@ -2,16 +2,11 @@
 
 #include "SDLGUILIB_API.h"
 #include "Window.h"
+#include "Utility.h"
 #include <map>
 
 namespace sgl
 {
-	struct Position
-	{
-		int v;
-		int h;
-	};
-
 	class SDLGUILIB_API GridLayout : public Window
 	{
 	public:
@@ -35,6 +30,6 @@ namespace sgl
 			marginRight_ = 5;
 		int maxV_ = 0,
 			maxH_ = 0;
-		std::map<Window*, Position> grid_;
+		std::map<Window*, Point> grid_;
 	};
 }
