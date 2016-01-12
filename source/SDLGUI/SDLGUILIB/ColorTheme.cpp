@@ -15,7 +15,7 @@ namespace sgl
 		SDL_Color gray			= { 0xC0	,	0xC0	,	0xC0	, 0xFF	};
 		SDL_Color darkergray	= { 0xAA	,	0xAA	,	0xAA	, 0xFF	};
 		SDL_Color black			= { 0x0		,	0x0		,	0x0		, 0xFF	};
-		SDL_Color white			= { 0xFF	,	0xFF	,	0xFF	, 0xFF };
+		SDL_Color white			= { 0xFF	,	0xFF	,	0xFF	, 0xFF	};
 		SDL_Color transparent	= { 0x0		,	0x0		,	0x0		, 0x0	};
 		windowBackground			= lightgray;
 		windowTitlebar				= gray;
@@ -27,7 +27,8 @@ namespace sgl
 		controlFrameInactive		= darkergray;
 		controlContainsMouse		= lightergray;
 		controlPressed				= darkergray;
-		controlInputBackground		= white;
+		controlTextAreaBackground	= white;
+		controlInputCursor			= black;
 		textBackground				= transparent;
 		textActive					= black;
 		textInactive				= darkergray;

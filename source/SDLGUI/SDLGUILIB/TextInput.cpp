@@ -27,40 +27,38 @@ namespace sgl
 	{
 		currentText_ = newText;
 	}
-
-
-
+	
 	void TextInput::draw(SDL_Renderer* renderer)
 	{
 		if (isVisible_) 
 		{
+			auto colorTheme = manager_->getStyleManager().getColorTheme();
+			SDL_Color colorInputFill, colorInputFrame, colorInputCursor, colorInputText;
+			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
 			if (isActive_)
 			{
-				auto colorTheme = manager_->getStyleManager().getColorTheme();
-				if (containsMouse_)
-				{
-					// do nothing
-				}
-				else
-				{
-					//nothing
-				}
-				// draw TextInput in normal state (not pressed, not mouse-over)
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlInputBackground);
-				// always draw the same outline
-				SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlTextAreaBackground);
 				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
-
-				//TODO render text
-
-				//TODO input a curser when area is clicked (remove it when clicking some place else)
-
-				//TODO add keyboard as input
-
-				//(optional) add written and submitted text to another area
-				
+				if (hasFocus())
+				{
+					if (manager_->getApplicationTime() % 1000 < 500)
+					{
+						// draw cursor inside text box at the appropriate position 
+						// and with the correct height (depending on font size)
+						// TODO
+					}
+				}
+				// render text, stored in currentText_
+				// TODO use color for active text
 			}
+			else
+			{
+				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlBackgroundInactive);
+				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameInactive);
+				// render text, stored in currentText_
+				// TODO use color for inactive text
 
+			}
 		}
 	}
 

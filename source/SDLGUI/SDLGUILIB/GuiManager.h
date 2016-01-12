@@ -102,11 +102,17 @@ namespace sgl
 		 */
 		void freeWindowId(WindowId id);
 		/** 
-		 * @brief Moves the given window to the top of the window stack.
+		 * @brief Moves the given top-level window to the top of the window stack.
+		 *
+		 * The given window must be a top-level window, this means it can not have a parent.
+		 * Moving a window to the top of the window stack, makes it the first window to receive 
+		 * user input and the window that is drawn on top of all other top-level windows.
 		 * @param window Pointer to the window to be moved to the top of the window stack.
 		 */
 		void stackOnTop(Window* window);
 		void updateWindowStack();
+		void setApplicationTime(int64_t time);
+		int64_t getApplicationTime() const;
 
 	private:
 		GuiManager();
@@ -120,5 +126,6 @@ namespace sgl
 		std::list<Window*> windowStack_;				///< Non-owning pointers to all top-level windows. Input to windows and drawing of windows is done according to this list (first item drawn last)
 		Window* windowWithFocus_;						///< Points to the window with focus
 		int64_t windowIdCounter_;						///< TODO temporarily used to generate Window IDs
+		int64_t applicationTime_;						///< saves the current time the GUI uses for all things that need to be timed
 	};
 }

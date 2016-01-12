@@ -5,21 +5,29 @@
 
 namespace sgl
 {
-	struct Event;
+	class Event;
 
 	typedef std::function<void(const Event& e)> EventCallback;
 	typedef int64_t EventTime;
 
 	enum class EventType
 	{
+		Default,
 		ButtonPressed,
 		CheckBoxChecked,
 		CheckBoxUnchecked
 	};
 	
-	struct Event
+	class Event
 	{
-		EventType type_;
-		EventTime time_;
+	public:
+		EventType type_ = EventType::Default;
+		EventTime time_ = 0;
+	};
+
+	class CommandEvent : public Event
+	{
+	public:
+		bool isChecked_ = false;
 	};
 }

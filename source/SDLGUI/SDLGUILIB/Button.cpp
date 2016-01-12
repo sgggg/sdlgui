@@ -76,27 +76,8 @@ namespace sgl
 		{
 			Event e;
 			e.type_ = EventType::ButtonPressed;
+			e.time_ = manager_->getApplicationTime();
 			evHandler->second(e);
 		}
-	}
-
-	void Button::triggerDoubleClicked()
-	{
-	}
-
-	void Button::triggerMouseEntered()
-	{
-	}
-
-	void Button::triggerMouseLeft()
-	{
-	}
-
-	void Button::triggerMouseDown()
-	{
-	}
-
-	void Button::triggerMouseUp()
-	{
 	}
 }

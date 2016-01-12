@@ -75,7 +75,6 @@ namespace sgl
 		bool isVisible_;									///< If true, this window and none of the children will be drawn
 		bool isActive_;										///< Ignores all received events if window is inactive.
 		bool isClicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
-		bool hasFocus_;										///< `true` if this window is the one currently receiving keyboard input
 		bool containsMouse_;								///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;									///< Non-owning pointer to parent window
 		std::list<Window*> children_;						///< Non-owning pointers to all children of this window

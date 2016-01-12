@@ -107,15 +107,30 @@ namespace sgl
 		if (windowWithFocus_ != windowWithFocus)
 		{
 			auto previousFocusWindow = windowWithFocus_;
-			windowWithFocus_ = windowWithFocus;
-			windowWithFocus->triggerFocusGained();
+			// first we remove focus from the old window
+			// this is done by setting windowWithFocus_ to nullptr
+			windowWithFocus_ = nullptr;
+			// then we notify the window that it lost focus
+			// this also triggers user-defined event callbacks
 			previousFocusWindow->triggerFocusLost();
+			// then we set focus to the new window
+			windowWithFocus_ = windowWithFocus;
+			// then we notify the new window that it gained focus
+			// this also triggers user-defined event callbacks
+			windowWithFocus->triggerFocusGained();
 		}
 	}
 
 	bool GuiManager::hasWindowFocus(const Window* window) const
 	{
-		return windowWithFocus_ == window;
+		if (windowWithFocus_ == nullptr)
+		{
+			return false;
+		}
+		else
+		{
+			return windowWithFocus_ == window;
+		}
 	}
 
 	WindowId GuiManager::getAvailableWindowId()
@@ -152,6 +167,16 @@ namespace sgl
 		}
 	}
 
+	void GuiManager::setApplicationTime(int64_t time)
+	{
+		applicationTime_ = time;
+	}
+
+	int64_t GuiManager::getApplicationTime() const
+	{
+		return applicationTime_;
+	}
+
 	GuiManager::GuiManager()
 		:inputHandler_(this)
 		,styleManager_()
@@ -159,6 +184,7 @@ namespace sgl
 		,windowStack_()
 		,windowWithFocus_(nullptr)
 		,windowIdCounter_(0)
+		,applicationTime_(0)
 	{
 	}
 

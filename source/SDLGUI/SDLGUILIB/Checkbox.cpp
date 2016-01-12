@@ -47,6 +47,7 @@ namespace sgl
 		{
 			Event e;
 			e.type_ = eventType;
+			e.time_ = manager_->getApplicationTime();
 			evHandler->second(e);
 		}
 	}

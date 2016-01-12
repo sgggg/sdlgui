@@ -318,6 +318,7 @@ namespace sgl
 
 	Window* Window::getRootParent(Window* window)
 	{
+		assert(window != nullptr);
 		auto rootParent = window;
 		while (rootParent->parent_ != nullptr)
 		{
@@ -358,6 +359,7 @@ namespace sgl
 
 	void Window::triggerFocusLost()
 	{
+		std::cout << "window " << id_ << " lost focus" << std::endl;
 	}
 
 	void Window::triggerWindowResize()
