@@ -28,4 +28,12 @@ namespace sgl
 		SDL_Color textInactive;
 		
 	};
+
+	class WindowStyle
+	{
+	public:
+		int fontSize				= 12;
+		int frameBorderSize			= 3;
+		int buttonBorderSize		= 1;
+	};
 }

@@ -10,6 +10,7 @@ namespace sgl
 		:currentColorTheme_()
 	{
 		loadDefaultColorTheme();
+		loadDefaultWindowStyle();
 	}
 
 	const ColorTheme& StyleManager::getColorTheme() const
@@ -17,8 +18,17 @@ namespace sgl
 		return currentColorTheme_;
 	}
 
+	const WindowStyle & StyleManager::getWindowStyle() const
+	{
+		return currentWindowStyle_;
+	}
+
 	void StyleManager::loadDefaultColorTheme()
 	{
 		currentColorTheme_.loadDefault();
+	}
+	void StyleManager::loadDefaultWindowStyle()
+	{
+		currentWindowStyle_ = WindowStyle();
 	}
 }

@@ -11,6 +11,8 @@ namespace sgl
 	// global functions for GUI control
 	void SDLGUILIB_API DrawGui(SDL_Renderer* renderer);
 	bool SDLGUILIB_API HandleEvent(SDL_Event* e);
+	void SDLGUILIB_API SetApplicationTime(int64_t absoluteTime);
+	//void SDLGUILIB_API AdvanceApplicationTime(int64_t deltaTime);
 
 
 	class Window;

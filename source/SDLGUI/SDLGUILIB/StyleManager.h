@@ -10,9 +10,12 @@ namespace sgl
 		StyleManager();
 
 		const ColorTheme& getColorTheme() const;
+		const WindowStyle& getWindowStyle() const;
 		void loadDefaultColorTheme();
+		void loadDefaultWindowStyle();
 
 	private:
 		ColorTheme currentColorTheme_;
+		WindowStyle currentWindowStyle_;
 	};
 }

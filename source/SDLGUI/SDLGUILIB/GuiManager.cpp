@@ -15,6 +15,11 @@ namespace sgl
 		return GuiManager::GetInstance()->getInputHandler().handleEvent(*e);
 	}
 
+	void SetApplicationTime(int64_t absoluteTime)
+	{
+		GuiManager::GetInstance()->setApplicationTime(absoluteTime);
+	}
+
 	GuiManager* GuiManager::GetInstance()
 	{
 		if (instance == nullptr)

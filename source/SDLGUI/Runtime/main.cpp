@@ -2,6 +2,8 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "../SDLGUILIB/SGL.h"
+#include <chrono>
+#include <thread>
 
 
 int main(int /*argc*/, char* /*args*/[])
@@ -104,28 +106,37 @@ int main(int /*argc*/, char* /*args*/[])
 	secondFrame.setTitleBarVisible(true);
 	secondFrame.setVisible(true);
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
-	SDL_RenderClear(renderer);
-	sgl::DrawGui(renderer);
-	SDL_RenderPresent(renderer);
-
 	auto running = true;
 	SDL_Event e;
+	std::chrono::high_resolution_clock clock;
 	while (running)
 	{
+		// begin new frame
+		auto frameStart = clock.now();
+
+		// 1. advance state of application to the current time
+		sgl::SetApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()).count());
+
+		// 2. handle all input
 		while (0 != SDL_PollEvent(&e))
 		{
 			sgl::HandleEvent(&e);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
-			SDL_RenderClear(renderer);
-			sgl::DrawGui(renderer);
-			SDL_RenderPresent(renderer);
 
 			if (e.type == SDL_QUIT)
 			{
 				running = false;
 			}
 		}
+
+		// 3. draw updated state
+		SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
+		SDL_RenderClear(renderer);
+		sgl::DrawGui(renderer);
+		SDL_RenderPresent(renderer);
+
+		// 3. wait until frame time is over (each frame has 1/60th of a second for 60 fps)
+		auto timeLeftInFrame = (std::chrono::seconds(1) / 60) - (clock.now() - frameStart);
+		std::this_thread::sleep_for(timeLeftInFrame);
 	}
 
 	// clean up allocated resources

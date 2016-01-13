@@ -33,7 +33,8 @@ namespace sgl
 		if (isVisible_) 
 		{
 			auto colorTheme = manager_->getStyleManager().getColorTheme();
-			SDL_Color colorInputFill, colorInputFrame, colorInputCursor, colorInputText;
+			auto windowStyle = manager_->getStyleManager().getWindowStyle();
+			SDL_Color colorInputFill, colorInputFrame, colorInputText;
 			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
 			if (isActive_)
 			{
@@ -45,7 +46,11 @@ namespace sgl
 					{
 						// draw cursor inside text box at the appropriate position 
 						// and with the correct height (depending on font size)
-						// TODO
+						SDL_SetRenderDrawColor(renderer, colorTheme.controlInputCursor.r, colorTheme.controlInputCursor.g, 
+							colorTheme.controlInputCursor.b, colorTheme.controlInputCursor.a);
+						Point cursorStart	= { relativePosX_ + 2, relativePosY_ + 2 };
+						Point cursorEnd		= { cursorStart.x, cursorStart.y + windowStyle.fontSize };
+						SDL_RenderDrawLine(renderer, cursorStart.x, cursorStart.y, cursorEnd.x, cursorEnd.y);
 					}
 				}
 				// render text, stored in currentText_
