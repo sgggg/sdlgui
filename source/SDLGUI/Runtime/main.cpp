@@ -91,9 +91,9 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::Button b2(&gl, "Press Me 2!");
 	sgl::Button b3(&gl, "Press Me 3!");
 	sgl::Button b4(&gl, "Press Me 4!");
-	gl.setGridPosition(b2, 1, 1);
-	gl.setGridPosition(b3, 0, 0);
-	gl.setGridPosition(b4, 0, 1);
+	gl.setGridPolicy(b2, 1, 0, 1, 2);
+	gl.setGridPolicy(b3, 0, 0);
+	gl.setGridPolicy(b4, 0, 1);
 	gl.updateLayout();
 
 	// make everything visible
@@ -136,7 +136,7 @@ int main(int /*argc*/, char* /*args*/[])
 
 		// 3. wait until frame time is over (each frame has 1/60th of a second for 60 fps)
 		auto timeLeftInFrame = (std::chrono::seconds(1) / 60) - (clock.now() - frameStart);
-		std::this_thread::sleep_for(timeLeftInFrame);
+		std::this_thread::sleep_for( timeLeftInFrame );
 	}
 
 	// clean up allocated resources
