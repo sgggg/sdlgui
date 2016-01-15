@@ -109,6 +109,8 @@ int main(int /*argc*/, char* /*args*/[])
 	auto running = true;
 	SDL_Event e;
 	std::chrono::high_resolution_clock clock;
+	const auto maxFps = 60;
+	const auto frameTime = std::chrono::microseconds(1000000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
 	while (running)
 	{
 		// begin new frame
@@ -134,9 +136,8 @@ int main(int /*argc*/, char* /*args*/[])
 		sgl::DrawGui(renderer);
 		SDL_RenderPresent(renderer);
 
-		// 3. wait until frame time is over (each frame has 1/60th of a second for 60 fps)
+		// 4. wait until frame time is over
 		auto elapsed = clock.now() - frameStart;
-		auto frameTime = (std::chrono::microseconds(1000000) / 60);
 		auto timeLeftInFrame = frameTime - elapsed;
 		std::this_thread::sleep_for(timeLeftInFrame);
 	}
