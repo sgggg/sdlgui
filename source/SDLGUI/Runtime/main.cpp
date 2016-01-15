@@ -91,9 +91,9 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::Button b2(&gl, "Press Me 2!");
 	sgl::Button b3(&gl, "Press Me 3!");
 	sgl::Button b4(&gl, "Press Me 4!");
-	gl.setGridPosition(b2, 1, 1);
-	gl.setGridPosition(b3, 0, 0);
-	gl.setGridPosition(b4, 0, 1);
+	gl.setGridPolicy(b2, 1, 0, 1, 2);
+	gl.setGridPolicy(b3, 0, 0);
+	gl.setGridPolicy(b4, 0, 1);
 	gl.updateLayout();
 
 	// make everything visible

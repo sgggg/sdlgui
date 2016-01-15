@@ -7,6 +7,7 @@ Known Bugs List
 	  Then inside the window we can either increase the window size according to the texture/surface size or copy only the part of the 
 	  texture/surface to the renderer that is inside the window bounds.
 - for some reason the text rendering currently looks shit (the 't's seem to be aligned incorrectly). Maybe this is a font/size problem?
+- Application uses 100% of the assigned core
 
 
 
