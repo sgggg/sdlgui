@@ -135,7 +135,9 @@ int main(int /*argc*/, char* /*args*/[])
 		SDL_RenderPresent(renderer);
 
 		// 3. wait until frame time is over (each frame has 1/60th of a second for 60 fps)
-		auto timeLeftInFrame = (std::chrono::seconds(1) / 60) - (clock.now() - frameStart);
+		auto elapsed = clock.now() - frameStart;
+		auto frameTime = (std::chrono::microseconds(1000000) / 60);
+		auto timeLeftInFrame = frameTime - elapsed;
 		std::this_thread::sleep_for(timeLeftInFrame);
 	}
 
