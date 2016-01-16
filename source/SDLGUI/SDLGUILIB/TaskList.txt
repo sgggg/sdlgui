@@ -16,7 +16,7 @@ Task List
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - finish text input control
-- add radio button control
+- finish radio button control
 - add grouping window (GroupBox) for radio buttons and other controls
 - add scroll bars
 - (optional) add canvas control

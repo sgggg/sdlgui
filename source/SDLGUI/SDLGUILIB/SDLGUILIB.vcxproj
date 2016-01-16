@@ -178,11 +178,13 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GridLayout.h" />
+    <ClInclude Include="GroupBox.h" />
     <ClInclude Include="GuiManager.h" />
     <ClInclude Include="HBoxLayout.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="OsUtility.h" />
+    <ClInclude Include="RadioButton.h" />
     <ClInclude Include="SDLGUILIB_API.h" />
     <ClInclude Include="SGL.h" />
     <ClInclude Include="stdafx.h" />
@@ -214,10 +216,12 @@
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GridLayout.cpp" />
+    <ClCompile Include="GroupBox.cpp" />
     <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="HBoxLayout.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="OsUtility.cpp" />
+    <ClCompile Include="RadioButton.cpp" />
     <ClCompile Include="TextInput.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

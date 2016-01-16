@@ -96,14 +96,19 @@ int main(int /*argc*/, char* /*args*/[])
 	gl.setGridPolicy(b4, 0, 1);
 	gl.updateLayout();
 
-	// make everything visible
-	mainFrame.setVisible(true);
-
 	// create second window
 	sgl::Frame secondFrame(nullptr, "Other Window");
 	secondFrame.setSize(400, 300);
 	secondFrame.setPosition(100, 100);
 	secondFrame.setTitleBarVisible(true);
+
+	// add radio button to window
+	sgl::RadioButton radioButton(&secondFrame, "Radio?");
+	radioButton.setPosition(200, 50);
+	radioButton.setSize(100, 40);
+
+	// make everything visible
+	mainFrame.setVisible(true);
 	secondFrame.setVisible(true);
 
 	auto running = true;

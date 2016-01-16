@@ -43,5 +43,9 @@ namespace sgl
 
 	void drawFilledRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c);
 
+	void drawCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c);
+
+	void drawFilledCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c);
+
 	std::string ws2s(const std::wstring& wstr); // Converts wstring to string
 }

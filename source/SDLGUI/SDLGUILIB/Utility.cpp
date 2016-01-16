@@ -115,98 +115,61 @@ namespace sgl
 		SDL_RenderFillRect(renderer, &outlineRect);
 	}
 
-	void drawCircle()
+	void drawCircleImpl(SDL_Renderer* renderer, int x0, int y0, int radius, SDL_Color c, bool fillCircle)
 	{
-		int centerOfCircle_x = 100, centerOfCircle_y = 100;// centre of circle in pixel coords
-		int radius = 50;
+		// This function implements the Midpoint circle algorithm, 
+		// see wikipedia https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
+		// Note 1: There is a notation error on the wiki page in the C code example: they interchanged Octant 7 and 8
+		// Note 2: To draw a filled circle, we simply connect two of the points we draw in opposite octants 
+		// with horizontal lines.
+		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+		auto x = radius;
+		auto y = 0;
+		auto decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
 
-		float pi = M_PI;
-
-		float angleIncrease = 1.0f / radius;
-		for (float angle = 0.0f; angle <= pi; angle += angleIncrease)
+		while (y <= x)
 		{
-			float xpos = centerOfCircle_x + radius*cos(angle);	// x position of pixel to be drawn
-			float ypos = centerOfCircle_y + radius*sin(angle);	// y position of pixel to be drawn
-
-			// TODO find out which surface/how to get it or whether to use replacement
-
-			//getpixel(surface, xpos, ypos);
-			//putpixel(surface, xpos, ypos, ppixel);
-		}
-	}
-
-	/*
-	* source https://www.libsdl.org/release/SDL-1.2.15/docs/html/guidevideo.html example 2-4
-	* Return the pixel value at (x, y)
-	* NOTE: The surface must be locked before calling this!
-	*/
-	Uint32 getpixel(SDL_Surface *surface, int x, int y)
-	{
-		int bytesPerPixelOfSurface = surface->format->BytesPerPixel;
-		/* Here p is the address to the pixel we want to retrieve */
-		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixelOfSurface;
-
-		switch (bytesPerPixelOfSurface) {
-		case 1:
-			return *ppixel;
-
-		case 2:
-			return *(Uint16 *)ppixel;
-
-		case 3:
-			if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				return ppixel[0] << 16 | ppixel[1] << 8 | ppixel[2];
+			if (fillCircle)
+			{
+				SDL_RenderDrawLine(renderer, x0 + x, y0 + y, x0 - x, y0 + y);	// Octant 1 <-> 4
+				SDL_RenderDrawLine(renderer, x0 + y, y0 + x, x0 - y, y0 + x);	// Octant 2 <-> 3
+				SDL_RenderDrawLine(renderer, x0 - x, y0 - y, x0 + x, y0 - y);	// Octant 5 <-> 8
+				SDL_RenderDrawLine(renderer, x0 - y, y0 - x, x0 + y, y0 - x);	// Octant 6 <-> 7
+			}
 			else
-				return ppixel[0] | ppixel[1] << 8 | ppixel[2] << 16;
-
-		case 4:
-			return *(Uint32 *)ppixel;
-
-		default:
-			return 0;       /* shouldn't happen, but avoids warnings */
+			{
+				SDL_RenderDrawPoint(renderer, x0 + x, y0 + y);		// Octant 1
+				SDL_RenderDrawPoint(renderer, x0 + y, y0 + x);		// Octant 2
+				SDL_RenderDrawPoint(renderer, x0 - y, y0 + x);		// Octant 3
+				SDL_RenderDrawPoint(renderer, x0 - x, y0 + y);		// Octant 4
+				SDL_RenderDrawPoint(renderer, x0 - x, y0 - y);		// Octant 5
+				SDL_RenderDrawPoint(renderer, x0 - y, y0 - x);		// Octant 6
+				SDL_RenderDrawPoint(renderer, x0 + y, y0 - x);		// Octant 7
+				SDL_RenderDrawPoint(renderer, x0 + x, y0 - y);		// Octant 8
+			}
+			y++;
+			if (decisionOver2 <= 0)
+			{
+				decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+			}
+			else
+			{
+				x--;
+				decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+			}
 		}
 	}
 
-	/*
-	* source https://www.libsdl.org/release/SDL-1.2.15/docs/html/guidevideo.html example 2-5
-	* Set the pixel at (x, y) to the given value
-	* NOTE: The surface must be locked before calling this!
-	*/
-	void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+	void drawCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c)
 	{
-		int bytesPerPixelOfSurface = surface->format->BytesPerPixel;
-		/* Here ppixel is the address to the pixel we want to set */
-		Uint8 *ppixel = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixelOfSurface;
-
-		switch (bytesPerPixelOfSurface) {
-		case 1:
-			*ppixel = pixel;
-			break;
-
-		case 2:
-			*(Uint16 *)ppixel = pixel;
-			break;
-
-		case 3:
-			if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				ppixel[0] = (pixel >> 16) & 0xff;
-				ppixel[1] = (pixel >> 8) & 0xff;
-				ppixel[2] = pixel & 0xff;
-			}
-			else {
-				ppixel[0] = pixel & 0xff;
-				ppixel[1] = (pixel >> 8) & 0xff;
-				ppixel[2] = (pixel >> 16) & 0xff;
-			}
-			break;
-
-		case 4:
-			*(Uint32 *)ppixel = pixel;
-			break;
-		}
+		drawCircleImpl(renderer, circleCenterX, circleCenterY, radius, c, false);
 	}
 
-
+	void drawFilledCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c)
+	{
+		drawCircleImpl(renderer, circleCenterX, circleCenterY, radius, c, true);
+	}
+	
 	std::string ws2s(const std::wstring& wstr)
 	{
 		typedef std::codecvt_utf8<wchar_t> convert_typeX;

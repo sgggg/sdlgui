@@ -5,6 +5,7 @@
 #include "Frame.h"
 #include "Button.h"
 #include "Checkbox.h"
+#include "RadioButton.h"
 #include "TextLabel.h"
 #include "TextInput.h"
 #include "HBoxLayout.h"
