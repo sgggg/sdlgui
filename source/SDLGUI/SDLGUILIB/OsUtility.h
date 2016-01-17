@@ -14,4 +14,16 @@ namespace sgl
 	 * @return Value of the specified variable.
 	 */
 	std::string readEnvironmentVariable(const std::string& variable);
+
+	enum class KnownFolders
+	{
+		Fonts
+	};
+	/**
+	 * @brief Returns the path to the system folder spcified by the given parameter.
+	 *
+	 * @param folder The folder to get the path for.
+	 * @return String containing the system path to the specified location.
+	 */
+	std::string getKnownFolderPath(KnownFolders folder);
 }

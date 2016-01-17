@@ -1,13 +1,11 @@
 #include "stdafx.h"
 
 #include "Utility.h"
+#include "OsUtility.h"
 #include "SDL_ttf.h"
 #include <iostream>
 #include <string>
 #include <codecvt>				// this is used in ws2s
-#include <objbase.h>			// provides CoTaskMemFree
-#include <Shlobj.h>				// provides SHGetKnownFolderPath
-#include <Knownfolders.h>		// provides FOLDERID_Fonts
 #include <cmath>				// provides pi
 
 namespace sgl
@@ -53,12 +51,10 @@ namespace sgl
 		return newPosition;
 	}
 
-	void renderTextAtPos(SDL_Renderer* renderer, std::string textMessage, int posX, int posY, PosAlign align, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
+	void renderTextAtPos(SDL_Renderer* renderer, const std::string& textMessage, int posX, int posY, PosAlign align, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
 	{
-		wchar_t* folderPath;
-		SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);								// This stores the Windows folder path in folderPath
-		auto textFont = TTF_OpenFont((ws2s(folderPath) + "\\Arial.ttf").c_str(), fontSize);	// We have to convert folderPath to string
-		CoTaskMemFree(static_cast<void*>(folderPath));											// Manually free folderPath
+		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
+		auto textFont = TTF_OpenFont((fontPath + "\\Arial.ttf").c_str(), fontSize);
 
 		if (textFont == NULL)
 		{

@@ -15,6 +15,7 @@ namespace sgl
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
+		virtual void triggerKeyDown(SDL_Keycode keycode) override;
 
 	protected:
 		std::string defaultText_;

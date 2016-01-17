@@ -187,7 +187,7 @@ namespace sgl
 
 	bool Window::handleEvent(const SDL_Event& e)
 	{
-		if (!isActive_)
+		if (!isActive_ || !isVisible_)
 		{
 			return false;
 		}
@@ -225,7 +225,6 @@ namespace sgl
 					e.button.state == SDL_PRESSED)
 				{
 					// normal left click inside this window
-					isActive_ = true;
 					isClicked_ = true;
 					containsMouse_ = true;
 					wasHandled = true;
@@ -278,13 +277,12 @@ namespace sgl
 				{
 					// mouse entered the window area
 					triggerMouseEntered();
-					wasHandled = true;
 					containsMouse_ = true;
-					if(e.motion.state & SDL_BUTTON_LMASK && hasFocus())
+					if((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
 					{
 						isClicked_ = true;
+						wasHandled = true;
 					}
-					// TODO set isClicked_ if mouse1 is pressed
 				}
 				break;
 			}
@@ -293,8 +291,7 @@ namespace sgl
 				// handle keyboard only if we're the window with focus
 				if (manager_->hasWindowFocus(this))
 				{
-					auto keyname = SDL_GetKeyName(e.key.keysym.sym);
-					std::cout << keyname << std::endl;
+					triggerKeyDown(e.key.keysym.sym);
 					wasHandled = true;
 				}
 				break;
@@ -353,16 +350,16 @@ namespace sgl
 
 	void Window::triggerFocusGained()
 	{
-		auto isChild = parent_ != nullptr;
-		std::cout << "window " << id_ << " gained focus " << (isChild ? "(child)" : "(top-level)") << std::endl;
 	}
 
 	void Window::triggerFocusLost()
 	{
-		std::cout << "window " << id_ << " lost focus" << std::endl;
 	}
 
 	void Window::triggerWindowResize()
+	{
+	}
+	void Window::triggerKeyDown(SDL_Keycode keycode)
 	{
 	}
 }

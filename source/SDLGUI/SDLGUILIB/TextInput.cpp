@@ -67,5 +67,9 @@ namespace sgl
 		}
 	}
 
-
+	void TextInput::triggerKeyDown(SDL_Keycode keycode)
+	{
+		auto keyname = SDL_GetKeyName(keycode);
+		std::cout << keyname << std::endl;
+	}
 }

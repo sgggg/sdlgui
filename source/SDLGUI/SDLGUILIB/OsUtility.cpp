@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include "OsUtility.h"
 #include "ErrorHandling.h"
+#include "Utility.h"
 
 #include "windows.h"
+#include <objbase.h>			// provides CoTaskMemFree
+#include <Shlobj.h>				// provides SHGetKnownFolderPath
+#include <Knownfolders.h>		// provides FOLDERID_Fonts
 
 namespace sgl
 {
@@ -18,6 +22,24 @@ namespace sgl
 			return "";
 		}
 		return buffer.get();
+#endif
+	}
+	std::string getKnownFolderPath(KnownFolders folder)
+	{
+#ifdef _WIN32
+		wchar_t* folderPath = nullptr;
+		switch (folder)
+		{
+		case KnownFolders::Fonts:
+			SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);
+			break;
+		default:
+			// TODO error
+			break;
+		}
+		std::string path(ws2s(folderPath));
+		CoTaskMemFree(folderPath);
+		return path;
 #endif
 	}
 }
