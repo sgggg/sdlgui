@@ -32,6 +32,7 @@ namespace sgl
 		textBackground				= transparent;
 		textActive					= black;
 		textInactive				= darkergray;
+		textDefault					= darkergray;
 	}
 
 }

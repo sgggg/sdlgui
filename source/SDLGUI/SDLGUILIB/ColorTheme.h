@@ -26,6 +26,7 @@ namespace sgl
 		SDL_Color textBackground;
 		SDL_Color textActive;
 		SDL_Color textInactive;
+		SDL_Color textDefault;
 		
 	};
 

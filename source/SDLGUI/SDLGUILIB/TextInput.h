@@ -20,5 +20,6 @@ namespace sgl
 	protected:
 		std::string defaultText_;
 		std::string currentText_;
+		int curserPosition_;
 	};
 }
