@@ -18,8 +18,15 @@ namespace sgl
 		virtual void triggerKeyDown(SDL_Keycode keycode) override;
 
 	protected:
-		std::string defaultText_;
-		std::string currentText_;
-		int curserPosition_;
+		std::string defaultText_;			///< stores the text that is shown in the input box when it is empty
+		std::string currentText_;			///< stores the text currently entered into the input box
+		int cursorPosition_;				///< stores the index into currentText_ where the cursor is positioned.
+		int selectionStart_;				///< stores the index into currentText_ where the selection starts if characters are selected.
+
+		// helpers
+		void drawCursor(SDL_Renderer* renderer, int relativeX);
+		void removeCharacterRange(int leftIndex, int rightIndex);
+		void addCharacterRange(int index, const std::string& characters);
+		void addCharacter(int index, char character);
 	};
 }

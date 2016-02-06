@@ -97,6 +97,27 @@ namespace sgl
 		}
 	}
 
+	SDL_Surface* renderTextToSurface(const std::string& textMessage, SDL_Color textColor, int fontSize)
+	{
+		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
+		auto textFont = TTF_OpenFont((fontPath + "\\Arial.ttf").c_str(), fontSize);
+		SDL_Surface* surface = nullptr;
+		if (textFont == NULL)
+		{
+			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
+		}
+		else
+		{
+			surface = TTF_RenderText_Solid(textFont, textMessage.c_str(), textColor);
+			if (surface == NULL)
+			{
+				std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
+			}
+			TTF_CloseFont(textFont);
+		}
+		return surface;
+	}
+
 	void drawRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c)
 	{
 		SDL_Rect outlineRect = { posX, posY, width, height };

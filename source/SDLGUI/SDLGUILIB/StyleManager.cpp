@@ -18,7 +18,7 @@ namespace sgl
 		return currentColorTheme_;
 	}
 
-	const WindowStyle & StyleManager::getWindowStyle() const
+	const WindowStyle& StyleManager::getWindowStyle() const
 	{
 		return currentWindowStyle_;
 	}

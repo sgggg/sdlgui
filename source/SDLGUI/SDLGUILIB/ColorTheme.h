@@ -36,5 +36,6 @@ namespace sgl
 		int fontSize				= 12;
 		int frameBorderSize			= 3;
 		int buttonBorderSize		= 1;
+		int innerPadding			= 2;
 	};
 }
