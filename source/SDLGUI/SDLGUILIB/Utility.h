@@ -41,6 +41,8 @@ namespace sgl
 
 	SDL_Surface* renderTextToSurface(const std::string& textMessage, SDL_Color textColor = { 255, 255, 255, 255 }, int fontSize = 12);
 
+	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int posX, int posY, PosAlign align = PosAlign::TopLeft);
+
 	void drawRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c);
 
 	void drawFilledRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c);

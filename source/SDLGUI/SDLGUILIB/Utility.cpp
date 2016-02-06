@@ -118,6 +118,31 @@ namespace sgl
 		return surface;
 	}
 
+	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int posX, int posY, PosAlign align)
+	{
+		// Get width and height from surface so we don't have to use SDL_QueryTexture
+		auto width = surface->w;
+		auto height = surface->h;
+
+		auto textureMessage = SDL_CreateTextureFromSurface(renderer, surface);
+		if (textureMessage == NULL)
+		{
+			std::cerr << "Unable to create texture from surface! Error: " << SDL_GetError() << std::endl;
+		}
+		else
+		{
+			// Copy texture to renderer
+			auto alignedPos = alignRectangle({ posX, posY, width, height }, align);
+			SDL_Rect destRect = { alignedPos.x, alignedPos.y, width, height };
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
+			SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
+
+			// Free resources
+			SDL_DestroyTexture(textureMessage);
+		}
+		SDL_FreeSurface(surface);
+	}
+
 	void drawRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c)
 	{
 		SDL_Rect outlineRect = { posX, posY, width, height };

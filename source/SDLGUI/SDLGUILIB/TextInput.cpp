@@ -44,13 +44,7 @@ namespace sgl
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlTextAreaBackground);
 				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
-				if (hasFocus())
-				{
-					if (manager_->getApplicationTime() % 1000 < 500)
-					{
-						drawCursor(renderer, screenPosX_ + windowStyle.innerPadding);	// TODO relative X should be according to position of cursor inside text
-					}
-				}
+				auto cursorPosX = screenPosX_ + windowStyle.innerPadding;
 				// render text, stored in currentText_
 				if (currentText_.empty())
 				{
@@ -59,17 +53,35 @@ namespace sgl
 				}
 				else
 				{
-					// render entered text
-					renderTextAtPos(renderer, currentText_, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+					// render current text in two parts, the part to the left of the cursor, and the part to the right
+					// then draw the cursor in between
+					auto firstString = currentText_.substr(0, cursorPosition_);
+					auto lastString = currentText_.substr(cursorPosition_);
+					if (!firstString.empty())
+					{
+						auto firstStrSurface = renderTextToSurface(firstString, colorTheme.textActive);
+						cursorPosX += firstStrSurface->w;
+						renderAndFreeSurface(renderer, firstStrSurface, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left);
+					}
+					if (!lastString.empty())
+					{
+						auto lastStrSurface = renderTextToSurface(lastString, colorTheme.textActive);
+						renderAndFreeSurface(renderer, lastStrSurface, cursorPosX, screenPosY_ + height_ / 2, PosAlign::Left);
+					}
+				}
+				if (hasFocus())
+				{
+					if (manager_->getApplicationTime() % 1000 < 500)
+					{
+						drawCursor(renderer, cursorPosX);
+					}
 				}
 			}
 			else
 			{
 				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlBackgroundInactive);
 				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameInactive);
-				// render text, stored in currentText_
-				// TODO use color for inactive text
-
+				renderTextAtPos(renderer, defaultText_, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left, colorTheme.textInactive, colorTheme.textBackground);
 			}
 		}
 	}

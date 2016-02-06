@@ -56,9 +56,10 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
-			auto boxSize = 12;
-			auto labelOffset = 8 + boxSize;
 			auto colorTheme = manager_->getStyleManager().getColorTheme();
+			auto windowStyle = manager_->getStyleManager().getWindowStyle();
+			auto boxSize = windowStyle.checkboxSize;
+			auto labelOffset = windowStyle.innerPadding + boxSize;
 
 			if (isActive_)
 			{
