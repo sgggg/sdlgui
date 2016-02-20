@@ -58,7 +58,7 @@ namespace sgl
 		virtual void triggerFocusGained();
 		virtual void triggerFocusLost();
 		virtual void triggerWindowResize();
-		virtual void triggerKeyDown(SDL_Keycode keycode);
+		virtual void triggerKeyDown(SDL_Keysym key);
 
 		// helper functions
 		bool isInsideWindowBounds(int x, int y) const;

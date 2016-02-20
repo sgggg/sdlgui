@@ -27,7 +27,7 @@ namespace sgl
 		return currentText_;
 	}
 
-	void TextInput::setText(const std::string & newText)
+	void TextInput::setText(const std::string& newText)
 	{
 		currentText_ = newText;
 	}
@@ -86,10 +86,10 @@ namespace sgl
 		}
 	}
 
-	void TextInput::triggerKeyDown(SDL_Keycode keycode)
+	void TextInput::triggerKeyDown(SDL_Keysym key)
 	{
-		if (keycode >= 91 && keycode <= 122 ||
-			keycode >= 32 && keycode <= 64)
+		auto keycode = key.sym;
+		if (keycode >= 32 && keycode <= 122)
 		{
 			// these are the printable characters
 			addCharacter(cursorPosition_, static_cast<char>(keycode));

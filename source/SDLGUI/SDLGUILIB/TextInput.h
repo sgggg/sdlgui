@@ -15,7 +15,7 @@ namespace sgl
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
-		virtual void triggerKeyDown(SDL_Keycode keycode) override;
+		virtual void triggerKeyDown(SDL_Keysym key) override;
 
 	protected:
 		std::string defaultText_;			///< stores the text that is shown in the input box when it is empty

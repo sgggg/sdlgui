@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include <functional>
 
 namespace sgl
 {
@@ -38,5 +39,17 @@ namespace sgl
 		int buttonBorderSize		= 1;
 		int innerPadding			= 4;
 		int checkboxSize			= 12;
+	};
+
+	class GraphicsResources
+	{
+	public:
+		typedef std::unique_ptr<SDL_Surface, std::function<void(SDL_Surface*)>> ManagedSurface;
+
+		GraphicsResources();
+
+		void loadDefault();
+
+		std::map<char, ManagedSurface> prerenderedCharacters_;
 	};
 }

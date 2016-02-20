@@ -91,6 +91,12 @@
     <ClInclude Include="RadioButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EditableText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAssistant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -148,6 +154,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RadioButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderAssistant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

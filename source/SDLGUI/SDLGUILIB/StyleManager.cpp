@@ -8,6 +8,7 @@ namespace sgl
 {
 	StyleManager::StyleManager()
 		:currentColorTheme_()
+		,currentWindowStyle_()
 	{
 		loadDefaultColorTheme();
 		loadDefaultWindowStyle();
@@ -27,6 +28,7 @@ namespace sgl
 	{
 		currentColorTheme_.loadDefault();
 	}
+
 	void StyleManager::loadDefaultWindowStyle()
 	{
 		currentWindowStyle_ = WindowStyle();

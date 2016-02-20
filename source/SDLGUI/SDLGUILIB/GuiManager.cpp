@@ -29,14 +29,19 @@ namespace sgl
 		return instance.get();
 	}
 
-	InputHandler & GuiManager::getInputHandler()
+	InputHandler& GuiManager::getInputHandler()
 	{
 		return inputHandler_;
 	}
 
-	StyleManager & GuiManager::getStyleManager()
+	StyleManager& GuiManager::getStyleManager()
 	{
 		return styleManager_;
+	}
+
+	RenderAssistant& GuiManager::getRenderAssistant()
+	{
+		return renderAssistant_;
 	}
 
 	std::list<Window*>& GuiManager::getWindowStack()
@@ -185,6 +190,7 @@ namespace sgl
 	GuiManager::GuiManager()
 		:inputHandler_(this)
 		,styleManager_()
+		,renderAssistant_()
 		,windows_()
 		,windowStack_()
 		,windowWithFocus_(nullptr)

@@ -2,6 +2,7 @@
 
 #include "StyleManager.h"
 #include "InputHandler.h"
+#include "RenderAssistant.h"
 #include "EventProcessor.h"
 #include <memory>
 #include <list>
@@ -42,6 +43,7 @@ namespace sgl
 		 * @return Reference to the style manager.
 		 */
 		StyleManager& getStyleManager();
+		RenderAssistant& getRenderAssistant();
 		/*
 		 * @brief Returns a reference to the window stack.
 		 * @return Reference to the window stack.
@@ -124,6 +126,7 @@ namespace sgl
 		static std::unique_ptr<GuiManager> instance;	///< Singleton instance of GuiManager
 		InputHandler inputHandler_;						///< Manages input through `SDL_Event`s and passes it to the windows according to `windowStack_` order
 		StyleManager styleManager_;						///< Manages window appearance
+		RenderAssistant renderAssistant_;				///< Provides utility for rendering GUI elements
 		std::list<Window*> windows_;					///< Non-owning pointers to all Window instances
 		std::list<Window*> windowStack_;				///< Non-owning pointers to all top-level windows. Input to windows and drawing of windows is done according to this list (first item drawn last)
 		Window* windowWithFocus_;						///< Points to the window with focus

@@ -291,7 +291,7 @@ namespace sgl
 				// handle keyboard only if we're the window with focus
 				if (manager_->hasWindowFocus(this))
 				{
-					triggerKeyDown(e.key.keysym.sym);
+					triggerKeyDown(e.key.keysym);
 					wasHandled = true;
 				}
 				break;
@@ -359,7 +359,7 @@ namespace sgl
 	void Window::triggerWindowResize()
 	{
 	}
-	void Window::triggerKeyDown(SDL_Keycode keycode)
+	void Window::triggerKeyDown(SDL_Keysym key)
 	{
 	}
 }

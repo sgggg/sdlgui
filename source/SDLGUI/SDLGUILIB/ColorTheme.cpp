@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "ColorTheme.h"
+#include "Utility.h"
+#include "OsUtility.h"
+#include "SDL_ttf.h"
 
 namespace sgl
 {
@@ -35,4 +38,42 @@ namespace sgl
 		textDefault					= darkergray;
 	}
 
+	GraphicsResources::GraphicsResources()
+		:prerenderedCharacters_()
+	{
+	}
+
+	static std::map<char, GraphicsResources::ManagedSurface> prerenderCharacters(const std::string& fontPath, int fontSize, SDL_Color textColor)
+	{
+		std::map<char, GraphicsResources::ManagedSurface> renderedCharacters;
+		auto textFont = TTF_OpenFont(fontPath.c_str(), fontSize);
+		if (textFont == nullptr)
+		{
+			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
+		}
+		else
+		{
+			char charAsString[] = { '\0', '\0' };
+			for (int i = 32; i <= 122; ++i)	// ASCII range of printable characters
+			{
+				charAsString[0] = static_cast<char>(i);
+				auto surface = TTF_RenderText_Solid(textFont, charAsString, textColor);
+				if (surface == nullptr)
+				{
+					std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
+				}
+				auto msurface = GraphicsResources::ManagedSurface(surface, SDL_FreeSurface);
+				renderedCharacters.emplace(std::make_pair(charAsString[0], std::move(msurface)));
+			}
+			TTF_CloseFont(textFont);
+		}
+		return renderedCharacters;
+	}
+
+	void GraphicsResources::loadDefault()
+	{
+		// prerender characters
+		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
+		prerenderedCharacters_ = prerenderCharacters(fontPath + "\\Arial.ttf", 12, SDL_Color{ 0, 0, 0, 0xFF });
+	}
 }
