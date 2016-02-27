@@ -43,6 +43,10 @@ namespace sgl
 		 * @return Reference to the style manager.
 		 */
 		StyleManager& getStyleManager();
+		/**
+		* @brief Returns a reference to the render assistant.
+		* @return Reference to the render assistant.
+		*/
 		RenderAssistant& getRenderAssistant();
 		/*
 		 * @brief Returns a reference to the window stack.
@@ -114,8 +118,26 @@ namespace sgl
 		 * @param window Pointer to the window to be moved to the top of the window stack.
 		 */
 		void stackOnTop(Window* window);
+		/**
+		 * @brief Recalculates the window stack from scratch.
+		 *
+		 * Usually this is only necessary if the child/parent relationships of windows change. In that case
+		 * recalculating the windows stack ensures that a child window is always drawn on top of its parent.
+		 */
 		void updateWindowStack();
+		/**
+		* @brief Set the current application time.
+		*
+		* The application time is used for animations and timed events.
+		* @param New application time in milliseconds.
+		*/
 		void setApplicationTime(int64_t time);
+		/**
+		 * @brief Get the current application time previously set by `setApplicationTime()`.
+		 *
+		 * The application time is used for animations and timed events.
+		 * @return Application time in milliseconds.
+		 */
 		int64_t getApplicationTime() const;
 
 	private:

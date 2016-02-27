@@ -43,9 +43,9 @@ namespace sgl
 	{
 	}
 
-	static std::map<char, GraphicsResources::ManagedSurface> prerenderCharacters(const std::string& fontPath, int fontSize, SDL_Color textColor)
+	static GraphicsResources::PrerendCharMap prerenderCharacters(const std::string& fontPath, int fontSize, SDL_Color textColor)
 	{
-		std::map<char, GraphicsResources::ManagedSurface> renderedCharacters;
+		GraphicsResources::PrerendCharMap renderedCharacters;
 		auto textFont = TTF_OpenFont(fontPath.c_str(), fontSize);
 		if (textFont == nullptr)
 		{
@@ -62,7 +62,13 @@ namespace sgl
 				{
 					std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 				}
+				// auto texture = SDL_CreateTextureFromSurface(renderer, surface);
+				// if (texture == nullptr)
+				// {
+				// 	std::cerr << "Unable to create texture from surface! Error: " << SDL_GetError() << std::endl;
+				// }
 				auto msurface = GraphicsResources::ManagedSurface(surface, SDL_FreeSurface);
+				// auto mtexture = GraphicsResources::ManagedTexture(texture, SDL_DestroyTexture);
 				renderedCharacters.emplace(std::make_pair(charAsString[0], std::move(msurface)));
 			}
 			TTF_CloseFont(textFont);

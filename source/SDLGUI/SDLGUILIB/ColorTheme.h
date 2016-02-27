@@ -45,11 +45,13 @@ namespace sgl
 	{
 	public:
 		typedef std::unique_ptr<SDL_Surface, std::function<void(SDL_Surface*)>> ManagedSurface;
+		typedef std::unique_ptr<SDL_Texture, std::function<void(SDL_Texture*)>> ManagedTexture;
+		typedef std::map<char,ManagedSurface> PrerendCharMap;
 
 		GraphicsResources();
 
 		void loadDefault();
 
-		std::map<char, ManagedSurface> prerenderedCharacters_;
+		PrerendCharMap prerenderedCharacters_;
 	};
 }
