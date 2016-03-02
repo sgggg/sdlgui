@@ -30,6 +30,18 @@ namespace sgl
 	{
 		if (isVisible_)
 		{
+			// auto& colorTheme = manager_->getStyleManager().getColorTheme();
+			// auto& renderAssist = manager_->getRenderAssistant();
+			// if (isActive_)
+			// {
+			// 	renderAssist.renderString(renderer, text_, TextMode::Active, screenPosX_, screenPosY_);
+			// }
+			// else
+			// {
+			// 	renderAssist.renderString(renderer, text_, TextMode::Inactive, screenPosX_, screenPosY_);
+			// }
+			auto& colorTheme = manager_->getStyleManager().getColorTheme();
+			auto& renderAssist = manager_->getRenderAssistant();
 			if (isActive_)
 			{
 				auto colorTheme = manager_->getStyleManager().getColorTheme();

@@ -43,9 +43,10 @@ namespace sgl
 	{
 	}
 
-	static GraphicsResources::PrerendCharMap prerenderCharacters(const std::string& fontPath, int fontSize, SDL_Color textColor)
+	static GraphicsResources::PrerendCharSet prerenderCharacters(const std::string& fontPath, int fontSize, 
+		SDL_Color textColor, SDL_Color backgroundColor)
 	{
-		GraphicsResources::PrerendCharMap renderedCharacters;
+		GraphicsResources::PrerendCharSet renderedCharacters;
 		auto textFont = TTF_OpenFont(fontPath.c_str(), fontSize);
 		if (textFont == nullptr)
 		{
@@ -80,6 +81,10 @@ namespace sgl
 	{
 		// prerender characters
 		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
-		prerenderedCharacters_ = prerenderCharacters(fontPath + "\\Arial.ttf", 12, SDL_Color{ 0, 0, 0, 0xFF });
+		// render with default color theme and style
+		ColorTheme ctheme;
+		WindowStyle wstyle;
+		prerenderedCharacters_.emplace(TextMode::Active, prerenderCharacters(fontPath + "\\Arial.ttf", wstyle.fontSize, ctheme.textActive, ctheme.textBackground));
+		prerenderedCharacters_.emplace(TextMode::Inactive, prerenderCharacters(fontPath + "\\Arial.ttf", wstyle.fontSize, ctheme.textInactive, ctheme.textBackground));
 	}
 }
