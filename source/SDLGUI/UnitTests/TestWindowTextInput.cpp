@@ -73,17 +73,6 @@ namespace UnitTests
 			Assert::AreEqual(default_text, text_input.getDefaultText());
 		}
 
-		TEST_METHOD(CheckMovingCursor)
-		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
-			text_input.setVisible(true);
-
-			Assert::AreEqual(""s, text_input.getText());
-
-			Assert::Fail(L"Not Implemented");
-		}
-
 		TEST_METHOD(CheckEnterTextAtCursor)
 		{
 			auto default_text = "default text"s;
@@ -118,39 +107,6 @@ namespace UnitTests
 		}
 
 		TEST_METHOD(CheckEnterAndRemoveTextAtCursor)
-		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
-			text_input.setVisible(true);
-
-			Assert::AreEqual(""s, text_input.getText());
-
-			Assert::Fail(L"Not Implemented");
-		}
-
-		TEST_METHOD(CheckMakeSelection)
-		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
-			text_input.setVisible(true);
-
-			Assert::AreEqual(""s, text_input.getText());
-
-			Assert::Fail(L"Not Implemented");
-		}
-
-		TEST_METHOD(CheckRemoveSelectionWithDelete)
-		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
-			text_input.setVisible(true);
-
-			Assert::AreEqual(""s, text_input.getText());
-
-			Assert::Fail(L"Not Implemented");
-		}
-
-		TEST_METHOD(CheckRemoveSelectionWithBackspace)
 		{
 			auto default_text = "default text"s;
 			sgl::TextInput text_input(nullptr, default_text);

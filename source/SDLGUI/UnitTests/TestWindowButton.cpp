@@ -18,7 +18,7 @@ namespace UnitTests
 		std::string button_label_;
 		sgl::Button button_;
 		bool callback_button_was_pressed_ = false;
-		sgl::EventType callback_received_event_type_ = sgl::EventType::Default;
+		sgl::EventType callback_received_event_type_ = sgl::EventType::Invalid;
 
 		TestWindowButton()
 			:button_label_("Button Label")
@@ -47,7 +47,7 @@ namespace UnitTests
 			button_.handleEvent(leftMouseDown(1, 2));
 
 			Assert::IsFalse(callback_button_was_pressed_);
-			Assert::AreEqual(sgl::EventType::Default, callback_received_event_type_);
+			Assert::AreEqual(sgl::EventType::Invalid, callback_received_event_type_);
 
 			button_.handleEvent(leftMouseUp(4, 5));
 

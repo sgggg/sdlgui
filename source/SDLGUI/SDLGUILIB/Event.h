@@ -12,7 +12,7 @@ namespace sgl
 
 	enum class EventType
 	{
-		Default,
+		Invalid,
 		ButtonPressed,
 		CheckBoxChecked,
 		CheckBoxUnchecked
@@ -21,7 +21,7 @@ namespace sgl
 	class Event
 	{
 	public:
-		EventType type_ = EventType::Default;
+		EventType type_ = EventType::Invalid;
 		EventTime time_ = 0;
 	};
 
