@@ -16,7 +16,7 @@ namespace sgl
 	typedef int WindowId;
 	class GuiManager;
 
-	class SDLGUILIB_API Window : public Drawable, EventProcessor
+	class SDLGUILIB_API Window : public Drawable, public EventProcessor
 	{
 	public:
 		Window();

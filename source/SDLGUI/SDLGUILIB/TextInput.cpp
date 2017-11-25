@@ -27,9 +27,19 @@ namespace sgl
 		return current_text_;
 	}
 
+	std::string TextInput::getDefaultText() const
+	{
+		return default_text_;
+	}
+
 	void TextInput::setText(const std::string& new_text)
 	{
 		current_text_ = new_text;
+	}
+
+	void TextInput::setDefaultText(const std::string new_default_text)
+	{
+		default_text_ = new_default_text;
 	}
 	
 	void TextInput::draw(SDL_Renderer* renderer)
@@ -92,7 +102,13 @@ namespace sgl
 		if (keycode >= 32 && keycode <= 122)
 		{
 			// these are the printable characters
-			addCharacter(cursor_position_, static_cast<char>(keycode));
+			auto character = static_cast<char>(keycode);
+			if (character >= 'a' && character <= 'z' && key.mod & KMOD_SHIFT)
+			{
+				// make char uppercase
+				character -= 'a' - 'A';
+			}
+			addCharacter(cursor_position_, character);
 		}
 		else
 		{

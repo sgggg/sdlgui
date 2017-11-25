@@ -173,7 +173,7 @@ namespace sgl
 	void GuiManager::updateWindowStack()
 	{
 		window_stack_.clear();
-		// TODO replace this with and stdlib algorithm
+		// TODO replace this with an stdlib algorithm
 		for (const auto win : windows_)
 		{
 			if (win->getParent() == nullptr)

@@ -11,7 +11,9 @@ namespace sgl
 		TextInput();
 		TextInput(Window* parent, const std::string& default_text);
 		virtual std::string getText() const;
+		virtual std::string getDefaultText() const;
 		virtual void setText(const std::string& new_text);
+		virtual void setDefaultText(const std::string new_default_text);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;

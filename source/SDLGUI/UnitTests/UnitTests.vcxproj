@@ -207,6 +207,7 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGL.dll" "$(OutDir)"</Comm
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestWindowFocus.cpp" />
+    <ClCompile Include="TestWindowTextInput.cpp" />
     <ClCompile Include="TestWindowTextLabel.cpp" />
     <ClCompile Include="UserInputGeneration.cpp" />
     <ClCompile Include="TestWindowButton.cpp" />

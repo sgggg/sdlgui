@@ -7,6 +7,7 @@
 #include "UserInputGeneration.h"
 #include "ExtendedAssert.h"
 
+using namespace std::string_literals;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTests
@@ -35,7 +36,7 @@ namespace UnitTests
 		{
 			Assert::AreEqual(button_label_, button_.getLabel());
 
-			auto new_label = std::string("New Button Label");
+			auto new_label = "New Button Label"s;
 			button_.setLabel(new_label);
 
 			Assert::AreEqual(new_label, button_.getLabel());

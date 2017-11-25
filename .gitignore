@@ -2,7 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/source/SDLGUI/SDLGUILIB/Debug/SDLGUILIB.tlog
 *.suo
 *.ipch
 *.tlog
@@ -24,3 +23,4 @@
 /source/SDLGUI/UnitTests/x64
 /source/SDLGUI/UnitTests/x86
 /source/SDLGUI/x86
+/source/SDLGUI/x64

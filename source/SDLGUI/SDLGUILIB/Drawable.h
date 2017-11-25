@@ -34,6 +34,6 @@ namespace sgl
 		 * next call to `draw()`. If `false`, drawing this object will have no effect.
 		 */
 		virtual void setVisible(bool is_visible) = 0;
-		virtual ~Drawable() {};
+		virtual ~Drawable() = default;
 	};
 }

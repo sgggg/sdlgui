@@ -15,6 +15,6 @@ namespace sgl
 		 * `false` otherwise.
 		 */
 		virtual bool handleEvent(const SDL_Event& e) = 0;
-		virtual ~EventProcessor() {};
+		virtual ~EventProcessor() = default;
 	};
 }

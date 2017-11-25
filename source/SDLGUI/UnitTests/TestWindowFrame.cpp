@@ -6,6 +6,7 @@
 #include "../SDLGUILIB/SGL.h"
 #include "UserInputGeneration.h"
 
+using namespace std::string_literals;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTests
@@ -21,11 +22,11 @@ namespace UnitTests
 
 		TEST_METHOD(CheckFrameTitle)
 		{
-			auto expected_title = std::string("Main Window");
+			auto expected_title = "Main Window"s;
 			sgl::Frame main_frame(nullptr, expected_title);
 			Assert::AreEqual(expected_title, main_frame.getTitle());
 
-			auto new_title = std::string("New Title");
+			auto new_title = "New Title"s;
 			main_frame.setTitle(new_title);
 			Assert::AreEqual(new_title, main_frame.getTitle());
 		}
