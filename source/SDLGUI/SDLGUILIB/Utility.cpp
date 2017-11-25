@@ -5,159 +5,159 @@
 #include "SDL_ttf.h"
 #include <iostream>
 #include <string>
-#include <codecvt>				// this is used in ws2s
+#include <codecvt>				// this is used in convert_wide_to_narrow_string
 #include <cmath>				// provides pi
 
 namespace sgl
 {
-	Point alignRectangle(SDL_Rect rect, PosAlign newAlignment)
+	Point alignRectangle(SDL_Rect rect, PosAlign new_alignment)
 	{
-		Point newPosition = { rect.x, rect.y };
-		switch (newAlignment)
+		auto new_position = Point{ rect.x, rect.y };
+		switch (new_alignment)
 		{
 		case PosAlign::TopLeft:
 			break;
 		case PosAlign::Top:
-			newPosition.x = rect.x - rect.w / 2;
+			new_position.x = rect.x - rect.w / 2;
 			break;
 		case PosAlign::TopRight:
-			newPosition.x = rect.x - rect.w;
+			new_position.x = rect.x - rect.w;
 			break;
 		case PosAlign::Left:
-			newPosition.y = rect.y - rect.h / 2;
+			new_position.y = rect.y - rect.h / 2;
 			break;
 		case PosAlign::Center:
-			newPosition.x = rect.x - rect.w / 2;
-			newPosition.y = rect.y - rect.h / 2;
+			new_position.x = rect.x - rect.w / 2;
+			new_position.y = rect.y - rect.h / 2;
 			break;
 		case PosAlign::Right:
-			newPosition.x = rect.x - rect.w;
-			newPosition.y = rect.y - rect.h / 2;
+			new_position.x = rect.x - rect.w;
+			new_position.y = rect.y - rect.h / 2;
 			break;
 		case PosAlign::BottomLeft:
-			newPosition.y = rect.y - rect.h;
+			new_position.y = rect.y - rect.h;
 			break;
 		case PosAlign::Bottom:
-			newPosition.x = rect.x - rect.w / 2;
-			newPosition.y = rect.y - rect.h;
+			new_position.x = rect.x - rect.w / 2;
+			new_position.y = rect.y - rect.h;
 			break;
 		case PosAlign::BottomRight:
-			newPosition.x = rect.x - rect.w;
-			newPosition.y = rect.y - rect.h;
+			new_position.x = rect.x - rect.w;
+			new_position.y = rect.y - rect.h;
 			break;
 		default:
 			break;
 		}
-		return newPosition;
+		return new_position;
 	}
 
-	void renderTextAtPos(SDL_Renderer* renderer, const std::string& textMessage, int posX, int posY, PosAlign align, SDL_Color textColor, SDL_Color backgroundColor, int fontSize)
+	void renderTextAtPos(SDL_Renderer* renderer, const std::string& text_message, int pos_x, int pos_y, PosAlign align, SDL_Color text_color, SDL_Color background_color, int font_size)
 	{
-		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
-		auto textFont = TTF_OpenFont((fontPath + "\\Arial.ttf").c_str(), fontSize);
+		auto font_path = getKnownFolderPath(KnownFolders::Fonts);
+		auto text_font = TTF_OpenFont((font_path + "\\Arial.ttf").c_str(), font_size);
 
-		if (textFont == NULL)
+		if (text_font == NULL)
 		{
 			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
 		}
 		else
 		{
-			auto surfaceMessage = TTF_RenderText_Solid(textFont, textMessage.c_str(), textColor);
-			if (surfaceMessage == NULL)
+			auto surface_message = TTF_RenderText_Solid(text_font, text_message.c_str(), text_color);
+			if (surface_message == NULL)
 			{
 				std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 			}
 			else
 			{
 				// Get width and height from surface so we don't have to use SDL_QueryTexture
-				auto width = surfaceMessage->w;
-				auto height = surfaceMessage->h;
+				auto width = surface_message->w;
+				auto height = surface_message->h;
 
-				auto textureMessage = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-				if (textureMessage == NULL)
+				auto texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
+				if (texture_message == NULL)
 				{
 					std::cerr << "Unable to create texture from surface! Error: " << SDL_GetError() << std::endl;
 				}
 				else
 				{
 					// Copy texture to renderer
-					auto alignedPos = alignRectangle({ posX, posY, width, height }, align);
-					SDL_Rect destRect = { alignedPos.x, alignedPos.y, width, height };
+					auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+					auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-					SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
-					SDL_RenderFillRect(renderer, &destRect);
-					SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
+					SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
+					SDL_RenderFillRect(renderer, &dest_rect);
+					SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
 
 					// Free resources
-					SDL_DestroyTexture(textureMessage);
+					SDL_DestroyTexture(texture_message);
 				}
-				SDL_FreeSurface(surfaceMessage);
+				SDL_FreeSurface(surface_message);
 			}
-			TTF_CloseFont(textFont);
+			TTF_CloseFont(text_font);
 		}
 	}
 
-	SDL_Surface* renderTextToSurface(const std::string& textMessage, SDL_Color textColor, int fontSize)
+	SDL_Surface* renderTextToSurface(const std::string& text_message, SDL_Color text_color, int font_size)
 	{
-		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
-		auto textFont = TTF_OpenFont((fontPath + "\\Arial.ttf").c_str(), fontSize);
+		auto font_path = getKnownFolderPath(KnownFolders::Fonts);
+		auto text_font = TTF_OpenFont((font_path + "\\Arial.ttf").c_str(), font_size);
 		SDL_Surface* surface = nullptr;
-		if (textFont == NULL)
+		if (text_font == NULL)
 		{
 			std::cerr << "Unable to open font! Error: " << TTF_GetError() << std::endl;
 		}
 		else
 		{
-			surface = TTF_RenderText_Solid(textFont, textMessage.c_str(), textColor);
+			surface = TTF_RenderText_Solid(text_font, text_message.c_str(), text_color);
 			if (surface == NULL)
 			{
 				std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 			}
-			TTF_CloseFont(textFont);
+			TTF_CloseFont(text_font);
 		}
 		return surface;
 	}
 
-	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int posX, int posY, PosAlign align)
+	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int pos_x, int pos_y, PosAlign align)
 	{
 		// Get width and height from surface so we don't have to use SDL_QueryTexture
 		auto width = surface->w;
 		auto height = surface->h;
 
-		auto textureMessage = SDL_CreateTextureFromSurface(renderer, surface);
-		if (textureMessage == NULL)
+		auto texture_message = SDL_CreateTextureFromSurface(renderer, surface);
+		if (texture_message == NULL)
 		{
 			std::cerr << "Unable to create texture from surface! Error: " << SDL_GetError() << std::endl;
 		}
 		else
 		{
 			// Copy texture to renderer
-			auto alignedPos = alignRectangle({ posX, posY, width, height }, align);
-			SDL_Rect destRect = { alignedPos.x, alignedPos.y, width, height };
+			auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+			auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-			SDL_RenderCopy(renderer, textureMessage, NULL, &destRect);
+			SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
 
 			// Free resources
-			SDL_DestroyTexture(textureMessage);
+			SDL_DestroyTexture(texture_message);
 		}
 		SDL_FreeSurface(surface);
 	}
 
-	void drawRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c)
+	void drawRectangle(SDL_Renderer* renderer, int pos_x, int pos_y, int width, int height, SDL_Color c)
 	{
-		SDL_Rect outlineRect = { posX, posY, width, height };
+		auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-		SDL_RenderDrawRect(renderer, &outlineRect);
+		SDL_RenderDrawRect(renderer, &outline_rect);
 	}
 
-	void drawFilledRectangle(SDL_Renderer* renderer, int posX, int posY, int width, int height, SDL_Color c)
+	void drawFilledRectangle(SDL_Renderer* renderer, int pos_x, int pos_y, int width, int height, SDL_Color c)
 	{
-		SDL_Rect outlineRect = { posX, posY, width, height };
+		auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-		SDL_RenderFillRect(renderer, &outlineRect);
+		SDL_RenderFillRect(renderer, &outline_rect);
 	}
 
-	void drawCircleImpl(SDL_Renderer* renderer, int x0, int y0, int radius, SDL_Color c, bool fillCircle)
+	void drawCircleImpl(SDL_Renderer* renderer, int x0, int y0, int radius, SDL_Color c, bool fill_circle)
 	{
 		// This function implements the Midpoint circle algorithm, 
 		// see wikipedia https://en.wikipedia.org/wiki/Midpoint_circle_algorithm
@@ -167,11 +167,11 @@ namespace sgl
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 		auto x = radius;
 		auto y = 0;
-		auto decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+		auto decision_over_2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
 
 		while (y <= x)
 		{
-			if (fillCircle)
+			if (fill_circle)
 			{
 				SDL_RenderDrawLine(renderer, x0 + x, y0 + y, x0 - x, y0 + y);	// Octant 1 <-> 4
 				SDL_RenderDrawLine(renderer, x0 + y, y0 + x, x0 - y, y0 + x);	// Octant 2 <-> 3
@@ -190,33 +190,33 @@ namespace sgl
 				SDL_RenderDrawPoint(renderer, x0 + x, y0 - y);		// Octant 8
 			}
 			y++;
-			if (decisionOver2 <= 0)
+			if (decision_over_2 <= 0)
 			{
-				decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+				decision_over_2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
 			}
 			else
 			{
 				x--;
-				decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+				decision_over_2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
 			}
 		}
 	}
 
-	void drawCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c)
+	void drawCircle(SDL_Renderer* renderer, int circle_center_x, int circle_center_y, int radius, SDL_Color c)
 	{
-		drawCircleImpl(renderer, circleCenterX, circleCenterY, radius, c, false);
+		drawCircleImpl(renderer, circle_center_x, circle_center_y, radius, c, false);
 	}
 
-	void drawFilledCircle(SDL_Renderer* renderer, int circleCenterX, int circleCenterY, int radius, SDL_Color c)
+	void drawFilledCircle(SDL_Renderer* renderer, int circle_center_x, int circle_center_y, int radius, SDL_Color c)
 	{
-		drawCircleImpl(renderer, circleCenterX, circleCenterY, radius, c, true);
+		drawCircleImpl(renderer, circle_center_x, circle_center_y, radius, c, true);
 	}
 	
-	std::string ws2s(const std::wstring& wstr)
+	std::string convert_wide_to_narrow_string(const std::wstring& wide_string)
 	{
 		typedef std::codecvt_utf8<wchar_t> convert_typeX;
 		std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-		return converterX.to_bytes(wstr);
+		return converterX.to_bytes(wide_string);
 	}
 }

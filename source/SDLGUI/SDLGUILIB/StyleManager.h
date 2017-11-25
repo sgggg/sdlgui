@@ -11,11 +11,11 @@ namespace sgl
 
 		const ColorTheme& getColorTheme() const;
 		const WindowStyle& getWindowStyle() const;
-		void loadDefaultColorTheme();
-		void loadDefaultWindowStyle();
+		void load_default_color_theme();
+		void load_default_window_style();
 
 	private:
-		ColorTheme currentColorTheme_;
-		WindowStyle currentWindowStyle_;
+		ColorTheme current_color_theme_;
+		WindowStyle current_window_style_;
 	};
 }

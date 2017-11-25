@@ -25,9 +25,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorHandling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -46,9 +43,6 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TextLabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,13 +52,7 @@
     <ClInclude Include="Checkbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColorTheme.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StyleManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OsUtility.h">
@@ -73,13 +61,25 @@
     <ClInclude Include="TextInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HBoxLayout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Frame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GuiManager.h">
+    <ClInclude Include="RadioButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderAssistant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorTheme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GridLayout.h">
@@ -88,13 +88,13 @@
     <ClInclude Include="GroupBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RadioButton.h">
+    <ClInclude Include="GuiManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EditableText.h">
+    <ClInclude Include="HBoxLayout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderAssistant.h">
+    <ClInclude Include="InputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -103,9 +103,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ErrorHandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
@@ -126,40 +123,43 @@
     <ClCompile Include="StyleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorTheme.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OsUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HBoxLayout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridLayout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RadioButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderAssistant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HBoxLayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridLayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorHandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="EditableText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderAssistant.cpp">
+    <ClCompile Include="ColorTheme.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

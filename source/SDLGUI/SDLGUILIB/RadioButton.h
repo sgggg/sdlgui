@@ -13,7 +13,7 @@ namespace sgl
 		virtual std::string getLabel() const;
 		virtual void setLabel(const std::string& text);
 		virtual bool isChecked() const;
-		virtual void setChecked(bool isChecked);
+		virtual void setChecked(bool is_checked);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
@@ -22,6 +22,6 @@ namespace sgl
 
 	protected:
 		std::string label_;
-		bool isChecked_;
+		bool is_checked_;
 	};
 }

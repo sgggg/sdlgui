@@ -10,7 +10,7 @@ namespace sgl
 		TextLabel();
 		TextLabel(Window* parent, const std::string& text);
 		virtual std::string getText() const;
-		virtual void setText(const std::string& newText);
+		virtual void setText(const std::string& new_text);
 
 		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;

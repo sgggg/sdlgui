@@ -7,14 +7,14 @@ namespace sgl
 	Checkbox::Checkbox()
 		:Window()
 		,label_()
-		,isChecked_(false)
+		,is_checked_(false)
 	{
 	}
 
 	Checkbox::Checkbox(Window* parent, const std::string& label)
 		:Window(parent)
 		,label_(label)
-		,isChecked_(false)
+		,is_checked_(false)
 	{
 	}
 
@@ -30,60 +30,60 @@ namespace sgl
 
 	bool Checkbox::isChecked() const
 	{
-		return isChecked_;
+		return is_checked_;
 	}
 
-	void Checkbox::setChecked(bool isChecked)
+	void Checkbox::setChecked(bool is_checked)
 	{
-		isChecked_ = isChecked;
+		is_checked_ = is_checked;
 	}
 
 	void Checkbox::triggerClicked()
 	{
-		isChecked_ = !isChecked_;
-		auto eventType = isChecked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
-		auto evHandler = eventHandlers_.find(eventType);
-		if (evHandler != std::end(eventHandlers_))
+		is_checked_ = !is_checked_;
+		auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
+		auto event_handler = event_handlers_.find(event_type);
+		if (event_handler != std::end(event_handlers_))
 		{
 			Event e;
-			e.type_ = eventType;
-			e.time_ = manager_->getApplicationTime();
-			evHandler->second(e);
+			e.type_ = event_type;
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
 		}
 	}
 	
 	void Checkbox::draw(SDL_Renderer* renderer)
 	{
-		if (isVisible_)
+		if (is_visible_)
 		{
-			auto colorTheme = manager_->getStyleManager().getColorTheme();
-			auto windowStyle = manager_->getStyleManager().getWindowStyle();
-			auto boxSize = windowStyle.checkboxSize;
-			auto labelOffset = windowStyle.innerPadding + boxSize;
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
+			const auto& window_style = manager_->getStyleManager().getWindowStyle();
+			auto box_size = window_style.checkbox_size;
+			auto label_offset = window_style.inner_padding + box_size;
 
-			if (isActive_)
+			if (is_active_)
 			{
 				// draw box
-				if (containsMouse_)
+				if (contains_mouse_)
 				{
-					drawFilledRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlContainsMouse);
+					drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_contains_mouse);
 				}
 				else
 				{
-					drawFilledRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlBackgroundActive);
+					drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_background_active);
 				}
-				drawRectangle(renderer, screenPosX_, screenPosY_, boxSize, boxSize, colorTheme.controlFrameActive);
-				if (isChecked_)
+				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_frame_active);
+				if (is_checked_)
 				{
 					// draw checkbox in checked state
-					drawFilledRectangle(renderer, screenPosX_ + 2, screenPosY_ + 2, boxSize - 4, boxSize - 4, colorTheme.controlFrameActive);
+					drawFilledRectangle(renderer, screen_pos_x_ + 2, screen_pos_y_ + 2, box_size - 4, box_size - 4, color_theme.control_frame_active);
 				}
 				else
 				{
 					// draw checkbox in unchecked state -> no fill
 				}
 				// draw label next to check box
-				renderTextAtPos(renderer, label_, screenPosX_ + labelOffset, screenPosY_ + boxSize / 2, PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+				renderTextAtPos(renderer, label_, screen_pos_x_ + label_offset, screen_pos_y_ + box_size / 2, PosAlign::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{

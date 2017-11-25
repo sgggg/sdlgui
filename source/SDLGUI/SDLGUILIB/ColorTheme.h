@@ -2,6 +2,8 @@
 
 #include "SDL.h"
 #include <functional>
+#include <map>
+#include <memory>
 
 namespace sgl
 {
@@ -18,33 +20,33 @@ namespace sgl
 
 		void loadDefault();
 
-		SDL_Color windowBackground;
-		SDL_Color windowTitlebar;
-		SDL_Color windowFrameFocus;
-		SDL_Color windowFrameNoFocus;
-		SDL_Color controlBackgroundActive;
-		SDL_Color controlBackgroundInactive;
-		SDL_Color controlFrameActive;
-		SDL_Color controlFrameInactive;
-		SDL_Color controlContainsMouse;
-		SDL_Color controlPressed;
-		SDL_Color controlTextAreaBackground;
-		SDL_Color controlInputCursor;
-		SDL_Color textBackground;
-		SDL_Color textActive;
-		SDL_Color textInactive;
-		SDL_Color textDefault;
+		SDL_Color window_background;
+		SDL_Color window_titlebar;
+		SDL_Color window_frame_focus;
+		SDL_Color window_frame_no_focus;
+		SDL_Color control_background_active;
+		SDL_Color control_background_inactive;
+		SDL_Color control_frame_active;
+		SDL_Color control_frame_inactive;
+		SDL_Color control_contains_mouse;
+		SDL_Color control_pressed;
+		SDL_Color control_text_area_background;
+		SDL_Color control_input_cursor;
+		SDL_Color text_background;
+		SDL_Color text_active;
+		SDL_Color text_inactive;
+		SDL_Color text_default;
 		
 	};
 
 	class WindowStyle
 	{
 	public:
-		int fontSize				= 12;
-		int frameBorderSize			= 3;
-		int buttonBorderSize		= 1;
-		int innerPadding			= 4;
-		int checkboxSize			= 12;
+		int font_size				= 12;
+		int frame_border_size		= 3;
+		int button_border_size		= 1;
+		int inner_padding			= 4;
+		int checkbox_size			= 12;
 	};
 
 	class GraphicsResources
@@ -59,6 +61,6 @@ namespace sgl
 
 		void loadDefault();
 
-		PrerendCharMap prerenderedCharacters_;
+		PrerendCharMap prerendered_characters_;
 	};
 }

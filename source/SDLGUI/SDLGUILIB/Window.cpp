@@ -10,25 +10,25 @@ namespace sgl
 		:id_(-1)
 		,width_(0)
 		,height_(0)
-		,relativePosX_(0)
-		,relativePosY_(0)
-		,screenPosX_(0)
-		,screenPosY_(0)
-		,isVisible_(false)
-		,isActive_(true)
-		,isClicked_(false)
-		,containsMouse_(false)
+		,relative_pos_x_(0)
+		,relative_pos_y_(0)
+		,screen_pos_x_(0)
+		,screen_pos_y_(0)
+		,is_visible_(false)
+		,is_active_(true)
+		,is_clicked_(false)
+		,contains_mouse_(false)
 		,parent_(nullptr)
 		,children_()
-		,eventHandlers_()
+		,event_handlers_()
 		,manager_(GuiManager::GetInstance())
 	{
 	}
 
-	Window::Window(Window* parentWindow)
+	Window::Window(Window* parent_window)
 		:Window()
 	{
-		setParent(parentWindow);
+		setParent(parent_window);
 		setPosition(0, 0);
 		manager_->registerWindow(this, id_);
 		std::cout << "Window " << id_ << " constructed and registered" << std::endl;
@@ -49,17 +49,17 @@ namespace sgl
 		return id_;
 	}
 
-	void Window::addChild(Window& childWindow)
+	void Window::addChild(Window& child_window)
 	{
-		childWindow.setParent(this);
+		child_window.setParent(this);
 	}
 
-	void Window::removeChild(Window& childWindow)
+	void Window::removeChild(Window& child_window)
 	{
-		childWindow.setParent(nullptr);
+		child_window.setParent(nullptr);
 	}
 
-	void Window::setParent(Window* newParent)
+	void Window::setParent(Window* new_parent)
 	{
 		// 1. remove this window from children of old parent, if there was one
 		if (parent_ != nullptr)
@@ -71,12 +71,12 @@ namespace sgl
 			}
 		}
 		// 2. add this window to new parents children if new parent exists
-		if (newParent != nullptr)
+		if (new_parent != nullptr)
 		{
-			newParent->children_.push_back(this);
+			new_parent->children_.push_back(this);
 		}
 		// 3. set this windows parent
-		parent_ = newParent;
+		parent_ = new_parent;
 		assert(parent_ != this);	// window can't be its own child
 		// 4. notify manager that parent relationships have changed
 		manager_->updateWindowStack();
@@ -107,25 +107,25 @@ namespace sgl
 	{
 		// TODO check that window is always positioned fully inside parent window
 		// TODO make sure that all child windows are moved together with their parent
-		auto newPosX = x;
-		auto newPosY = y;
-		relativePosX_ = newPosX;
-		relativePosY_ = newPosY;
+		auto new_pos_x = x;
+		auto new_pos_y = y;
+		relative_pos_x_ = new_pos_x;
+		relative_pos_y_ = new_pos_y;
 		if (parent_ == nullptr)
 		{
-			screenPosX_ = newPosX;
-			screenPosY_ = newPosY;
+			screen_pos_x_ = new_pos_x;
+			screen_pos_y_ = new_pos_y;
 		}
 		else
 		{
-			screenPosX_ = parent_->screenPosX_ + newPosX;
-			screenPosY_ = parent_->screenPosY_ + newPosY;
+			screen_pos_x_ = parent_->screen_pos_x_ + new_pos_x;
+			screen_pos_y_ = parent_->screen_pos_y_ + new_pos_y;
 		}
 	}
 
 	Point Window::getPosition() const
 	{
-		return Point{ relativePosX_, relativePosY_ };
+		return Point{ relative_pos_x_, relative_pos_y_ };
 	}
 
 	//void Window::setPositionFixed(bool isFixed)
@@ -153,57 +153,52 @@ namespace sgl
 
 	void Window::setActive(bool isActive)
 	{
-		isActive_ = isActive;
+		is_active_ = isActive;
 	}
 
 	bool Window::isActive() const
 	{
-		return isActive_;
+		return is_active_;
 	}
 
 	void Window::addEventCallback(EventType eventType, EventCallback handler)
 	{
-		eventHandlers_[eventType] = handler;
+		event_handlers_[eventType] = handler;
 	}
 
 	void Window::removeEventCallback(EventType eventType)
 	{
-		eventHandlers_.erase(eventType);
+		event_handlers_.erase(eventType);
 	}
 
 	bool Window::isVisible()
 	{
-		return isVisible_;
+		return is_visible_;
 	}
 
-	void Window::setVisible(bool isVisible)
+	void Window::setVisible(bool is_visible)
 	{
-		isVisible_ = isVisible;
+		is_visible_ = is_visible;
 		for (auto child : children_)
 		{
-			child->setVisible(isVisible);
+			child->setVisible(is_visible);
 		}
 	}
 
 	bool Window::handleEvent(const SDL_Event& e)
 	{
-		if (!isActive_ || !isVisible_)
+		if (!is_active_ || !is_visible_)
 		{
 			return false;
 		}
 		// since child windows are on top of their parents, 
 		// we first pass the event down to the children to handle.
 		// If none of the children handle the event, we process it ourselves.
-		auto wasHandled = false;
-		for (const auto& child : children_)
-		{
-			wasHandled = child->handleEvent(e);
-			if (wasHandled)
-			{
-				break;
-			}
-		}
-		if (!wasHandled)
+		auto handling_child = std::find_if(children_.begin(), children_.end(), [&](auto child) {
+			return child->handleEvent(e);
+		});
+		auto was_handled = handling_child != children_.end();
+		if (!was_handled)
 		{
 			// if the event was not handled by any child
 			// check if it concerns this window
@@ -225,9 +220,9 @@ namespace sgl
 					e.button.state == SDL_PRESSED)
 				{
 					// normal left click inside this window
-					isClicked_ = true;
-					containsMouse_ = true;
-					wasHandled = true;
+					is_clicked_ = true;
+					contains_mouse_ = true;
+					was_handled = true;
 					setFocus();
 					triggerMouseDown();
 				}
@@ -240,14 +235,14 @@ namespace sgl
 					e.button.state == SDL_RELEASED)
 				{
 					// normal left mouse up inside this window
-					if (isClicked_)
+					if (is_clicked_)
 					{
 						triggerMouseUp();
 						triggerClicked();
 					}
-					isClicked_ = false;
-					containsMouse_ = true;
-					wasHandled = true;
+					is_clicked_ = false;
+					contains_mouse_ = true;
+					was_handled = true;
 				}
 				break;
 			}
@@ -259,29 +254,29 @@ namespace sgl
 				// - releasing mouse-down when leaving the window with pressed lmouse
 				// - resuming mouse-down when re-entering with pressed lmouse
 				// TODO
-				auto didContainMouse = containsMouse_;
-				containsMouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
-				if (didContainMouse && containsMouse_)
+				auto did_contain_mouse = contains_mouse_;
+				contains_mouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
+				if (did_contain_mouse && contains_mouse_)
 				{
 					// mouse moved within the window area
-					wasHandled = true;
+					was_handled = true;
 				}
-				else if (didContainMouse && !containsMouse_)
+				else if (did_contain_mouse && !contains_mouse_)
 				{
 					// mouse left the window area
 					triggerMouseLeft();
-					containsMouse_ = false;
-					isClicked_ = false;
+					contains_mouse_ = false;
+					is_clicked_ = false;
 				}
-				else if (!didContainMouse && containsMouse_)
+				else if (!did_contain_mouse && contains_mouse_)
 				{
 					// mouse entered the window area
 					triggerMouseEntered();
-					containsMouse_ = true;
+					contains_mouse_ = true;
 					if((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
 					{
-						isClicked_ = true;
-						wasHandled = true;
+						is_clicked_ = true;
+						was_handled = true;
 					}
 				}
 				break;
@@ -292,7 +287,7 @@ namespace sgl
 				if (manager_->hasWindowFocus(this))
 				{
 					triggerKeyDown(e.key.keysym);
-					wasHandled = true;
+					was_handled = true;
 				}
 				break;
 			}
@@ -302,26 +297,26 @@ namespace sgl
 				break;
 			}
 		}
-		return wasHandled;
+		return was_handled;
 	}
 
 	bool Window::isInsideWindowBounds(int x, int y) const
 	{
-		return	x >= screenPosX_ &&
-				x <= screenPosX_ + width_ &&
-				y >= screenPosY_ &&
-				y <= screenPosY_ + height_;
+		return	x >= screen_pos_x_ &&
+				x <= screen_pos_x_ + width_ &&
+				y >= screen_pos_y_ &&
+				y <= screen_pos_y_ + height_;
 	}
 
 	Window* Window::getRootParent(Window* window)
 	{
 		assert(window != nullptr);
-		auto rootParent = window;
-		while (rootParent->parent_ != nullptr)
+		auto root_parent = window;
+		while (root_parent->parent_ != nullptr)
 		{
-			rootParent = rootParent->parent_;
+			root_parent = root_parent->parent_;
 		}
-		return rootParent;
+		return root_parent;
 	}
 	
 	void Window::triggerClicked()
@@ -359,7 +354,8 @@ namespace sgl
 	void Window::triggerWindowResize()
 	{
 	}
-	void Window::triggerKeyDown(SDL_Keysym key)
+
+	void Window::triggerKeyDown(SDL_Keysym )
 	{
 	}
 }

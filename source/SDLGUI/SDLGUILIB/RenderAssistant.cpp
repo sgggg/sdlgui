@@ -4,37 +4,38 @@
 namespace sgl
 {
 	RenderAssistant::RenderAssistant()
-		:graphicsResources_()
+		:graphics_resources_()
 	{
-		graphicsResources_.loadDefault();
+		graphics_resources_.loadDefault();
 	}
 
-	SDL_Point RenderAssistant::renderCharacter(SDL_Renderer* renderer, char charToRender, TextMode mode, int posX, int posY) const
+	SDL_Point RenderAssistant::renderCharacter(SDL_Renderer* renderer, char char_to_render, TextMode mode, SDL_Point position) const
 	{
-		const auto prerenderedChar = graphicsResources_.prerenderedCharacters_.find(mode)->second.find(charToRender)->second.get();
-		auto charTexture = SDL_CreateTextureFromSurface(renderer, prerenderedChar);
-		if (charTexture == nullptr)
+		const auto prerendered_char = graphics_resources_.prerendered_characters_.find(mode)->second.find(char_to_render)->second.get();
+		auto char_texture = SDL_CreateTextureFromSurface(renderer, prerendered_char);
+		if (char_texture == nullptr)
 		{
 			std::cerr << "Unable to create texture from surface! Error: " << SDL_GetError() << std::endl;
 		}
-		auto charDestRect = SDL_Rect{posX, posY, prerenderedChar->w, prerenderedChar->h };
-		auto ret = SDL_RenderCopy(renderer, charTexture, NULL, &charDestRect);
+		auto char_dest_rect = SDL_Rect{position.x, position.y, prerendered_char->w, prerendered_char->h };
+		auto ret = SDL_RenderCopy(renderer, char_texture, NULL, &char_dest_rect);
 		if (ret < 0)
 		{
 			std::cerr << "Unable to copy texture to renderer! Error: " << SDL_GetError() << std::endl;
 		}
-		SDL_DestroyTexture(charTexture);
-		return SDL_Point{ posX + prerenderedChar->w, posY + prerenderedChar->h };
+		SDL_DestroyTexture(char_texture);
+		return SDL_Point{ position.x + prerendered_char->w, position.y + prerendered_char->h };
 	}
 
-	SDL_Point RenderAssistant::renderString(SDL_Renderer* renderer, const std::string& stringToRender, TextMode mode, int posX, int posY) const
+	SDL_Point RenderAssistant::renderString(SDL_Renderer* renderer, const std::string& string_to_render, TextMode mode, int posX, int posY) const
 	{
-		auto endOfString = SDL_Point{ posX, posY };
-		for (const auto character : stringToRender)
+		auto end_of_string = SDL_Point{ posX, posY };
+		// TODO replace this with an stdlib algorithm
+		for (const auto character : string_to_render)
 		{
-			endOfString.y = posY;
-			endOfString = renderCharacter(renderer, character, mode, endOfString.x, endOfString.y);
+			end_of_string.y = posY;
+			end_of_string = renderCharacter(renderer, character, mode, end_of_string);
 		}
-		return endOfString;
+		return end_of_string;
 	}
 }

@@ -15,9 +15,14 @@ namespace sgl
 		return GuiManager::GetInstance()->getInputHandler().handleEvent(*e);
 	}
 
-	void SetApplicationTime(int64_t absoluteTime)
+	void SetApplicationTime(std::chrono::milliseconds absoluteTime)
 	{
 		GuiManager::GetInstance()->setApplicationTime(absoluteTime);
+	}
+
+	std::chrono::milliseconds GetApplicationTime()
+	{
+		return GuiManager::GetInstance()->getApplicationTime();
 	}
 
 	GuiManager* GuiManager::GetInstance()
@@ -31,22 +36,22 @@ namespace sgl
 
 	InputHandler& GuiManager::getInputHandler()
 	{
-		return inputHandler_;
+		return input_handler_;
 	}
 
 	StyleManager& GuiManager::getStyleManager()
 	{
-		return styleManager_;
+		return style_manager_;
 	}
 
 	RenderAssistant& GuiManager::getRenderAssistant()
 	{
-		return renderAssistant_;
+		return render_assistant_;
 	}
 
 	std::list<Window*>& GuiManager::getWindowStack()
 	{
-		return windowStack_;
+		return window_stack_;
 	}
 
 	void GuiManager::drawGui(SDL_Renderer* renderer)
@@ -55,9 +60,9 @@ namespace sgl
 		// because all those with parents are drawn by their 
 		// parents draw() function
 		// we're going through the list in reverse order so that the first item is drawn on top
-		for (auto windowIt = std::rbegin(windowStack_); windowIt != std::rend(windowStack_); ++windowIt)
+		for (auto window_it = std::rbegin(window_stack_); window_it != std::rend(window_stack_); ++window_it)
 		{
-			(*windowIt)->draw(renderer);
+			(*window_it)->draw(renderer);
 		}
 	}
 
@@ -72,12 +77,12 @@ namespace sgl
 		// the draw order of top-level windows is saved in the window stack
 		if (window->getParent() == nullptr)
 		{
-			windowStack_.push_front(window);
+			window_stack_.push_front(window);
 		}
 		// if this is the first window created, set it as focused
 		if (windows_.size() == 1)
 		{
-			windowWithFocus_ = window;
+			window_with_focus_ = window;
 		}
 	}
 
@@ -85,67 +90,67 @@ namespace sgl
 	{
 		// TODO currently O(#windows), could be O(1)
 		// remove the window from all data structures
-		auto windowIt = std::find(std::begin(windows_), std::end(windows_), window);
-		if (windowIt != std::end(windows_))
+		auto window_it = std::find(std::begin(windows_), std::end(windows_), window);
+		if (window_it != std::end(windows_))
 		{
-			windows_.erase(windowIt);
+			windows_.erase(window_it);
 		}
-		auto windowStackIt = std::find(std::begin(windowStack_), std::end(windowStack_), window);
-		if (windowStackIt != std::end(windowStack_))
+		auto window_stack_it = std::find(std::begin(window_stack_), std::end(window_stack_), window);
+		if (window_stack_it != std::end(window_stack_))
 		{
-			windowStack_.erase(windowStackIt);
+			window_stack_.erase(window_stack_it);
 		}
 		freeWindowId(window->GetId());
 		// move focus to another existing window, if the destroyed had focus
-		if (window == windowWithFocus_)
+		if (window == window_with_focus_)
 		{
-			if (windowStack_.size() > 0)
+			if (window_stack_.size() > 0)
 			{
-				windowWithFocus_ = *std::begin(windowStack_);
+				window_with_focus_ = *std::begin(window_stack_);
 			}
 			else
 			{
 				// this one was the last window
-				windowWithFocus_ = nullptr;
+				window_with_focus_ = nullptr;
 			}
 		}
 	}
 
-	void GuiManager::setWindowFocus(Window* windowWithFocus)
+	void GuiManager::setWindowFocus(Window* window_with_focus)
 	{
-		assert(windowWithFocus != nullptr);
-		if (windowWithFocus_ != windowWithFocus)
+		assert(window_with_focus != nullptr);
+		if (window_with_focus_ != window_with_focus)
 		{
-			auto previousFocusWindow = windowWithFocus_;
+			auto previous_focus_window = window_with_focus_;
 			// first we remove focus from the old window
-			// this is done by setting windowWithFocus_ to nullptr
-			windowWithFocus_ = nullptr;
+			// this is done by setting window_with_focus_ to nullptr
+			window_with_focus_ = nullptr;
 			// then we notify the window that it lost focus
 			// this also triggers user-defined event callbacks
-			previousFocusWindow->triggerFocusLost();
+			previous_focus_window->triggerFocusLost();
 			// then we set focus to the new window
-			windowWithFocus_ = windowWithFocus;
+			window_with_focus_ = window_with_focus;
 			// then we notify the new window that it gained focus
 			// this also triggers user-defined event callbacks
-			windowWithFocus->triggerFocusGained();
+			window_with_focus->triggerFocusGained();
 		}
 	}
 
 	bool GuiManager::hasWindowFocus(const Window* window) const
 	{
-		if (windowWithFocus_ == nullptr)
+		if (window_with_focus_ == nullptr)
 		{
 			return false;
 		}
 		else
 		{
-			return windowWithFocus_ == window;
+			return window_with_focus_ == window;
 		}
 	}
 
 	WindowId GuiManager::getAvailableWindowId()
 	{
-		return windowIdCounter_++;
+		return window_id_counter_++;
 	}
 
 	void GuiManager::freeWindowId(WindowId id)
@@ -153,49 +158,50 @@ namespace sgl
 		// TODO implement
 	}
 
-	void GuiManager::stackOnTop(Window* newTopWindow)
+	void GuiManager::stackOnTop(Window* new_top_window)
 	{
-		auto windowIt = std::find(std::begin(windowStack_), std::end(windowStack_), newTopWindow);
-		assert(windowIt != std::end(windowStack_));	// setting focus to unregistered window!
-		if (windowIt != std::begin(windowStack_))
+		auto window_it = std::find(std::begin(window_stack_), std::end(window_stack_), new_top_window);
+		assert(window_it != std::end(window_stack_));	// setting focus to unregistered window!
+		if (window_it != std::begin(window_stack_))
 		{
 			// move to front of window stack if it is not already
-			windowStack_.erase(windowIt);
-			windowStack_.push_front(newTopWindow);
+			window_stack_.erase(window_it);
+			window_stack_.push_front(new_top_window);
 		}
 	}
 
 	void GuiManager::updateWindowStack()
 	{
-		windowStack_.clear();
+		window_stack_.clear();
+		// TODO replace this with and stdlib algorithm
 		for (const auto win : windows_)
 		{
 			if (win->getParent() == nullptr)
 			{
-				windowStack_.push_back(win);
+				window_stack_.push_back(win);
 			}
 		}
 	}
 
-	void GuiManager::setApplicationTime(int64_t time)
+	void GuiManager::setApplicationTime(std::chrono::milliseconds time)
 	{
-		applicationTime_ = time;
+		application_time_ = time;
 	}
 
-	int64_t GuiManager::getApplicationTime() const
+	std::chrono::milliseconds GuiManager::getApplicationTime() const
 	{
-		return applicationTime_;
+		return application_time_;
 	}
 
 	GuiManager::GuiManager()
-		:inputHandler_(this)
-		,styleManager_()
-		,renderAssistant_()
+		:input_handler_(this)
+		,style_manager_()
+		,render_assistant_()
 		,windows_()
-		,windowStack_()
-		,windowWithFocus_(nullptr)
-		,windowIdCounter_(0)
-		,applicationTime_(0)
+		,window_stack_()
+		,window_with_focus_(nullptr)
+		,window_id_counter_(0)
+		,application_time_(0)
 	{
 	}
 

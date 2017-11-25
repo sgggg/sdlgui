@@ -7,30 +7,30 @@
 namespace sgl
 {
 	StyleManager::StyleManager()
-		:currentColorTheme_()
-		,currentWindowStyle_()
+		:current_color_theme_()
+		,current_window_style_()
 	{
-		loadDefaultColorTheme();
-		loadDefaultWindowStyle();
+		load_default_color_theme();
+		load_default_window_style();
 	}
 
 	const ColorTheme& StyleManager::getColorTheme() const
 	{
-		return currentColorTheme_;
+		return current_color_theme_;
 	}
 
 	const WindowStyle& StyleManager::getWindowStyle() const
 	{
-		return currentWindowStyle_;
+		return current_window_style_;
 	}
 
-	void StyleManager::loadDefaultColorTheme()
+	void StyleManager::load_default_color_theme()
 	{
-		currentColorTheme_.loadDefault();
+		current_color_theme_.loadDefault();
 	}
 
-	void StyleManager::loadDefaultWindowStyle()
+	void StyleManager::load_default_window_style()
 	{
-		currentWindowStyle_ = WindowStyle();
+		current_window_style_ = WindowStyle{};
 	}
 }

@@ -1,15 +1,16 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
+
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "../SDLGUILIB/SGL.h"
-#include <chrono>
-#include <thread>
 
 
 int main(int /*argc*/, char* /*args*/[])
 {
-	const int SCREEN_WIDTH = 640;
-	const int SCREEN_HEIGHT = 480;
+	const int kScreenWidth = 800;
+	const int kScreenHeight = 600;
 
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -25,23 +26,20 @@ int main(int /*argc*/, char* /*args*/[])
 	}
 
 	//Create window
-	auto sdlWindow = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-	if (sdlWindow == nullptr)
+	auto sdl_window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, kScreenWidth, kScreenHeight, SDL_WINDOW_SHOWN);
+	if (sdl_window == nullptr)
 	{
 		std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 	}
-
-	// get 2D rendering context
-	auto renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
 	
 	// create new window
-	sgl::Frame mainFrame(nullptr, "Main Window");
-	mainFrame.setSize(400, 300);
-	mainFrame.setTitleBarVisible(true);
+	sgl::Frame main_frame(nullptr, "Main Window");
+	main_frame.setSize(400, 300);
+	main_frame.setTitleBar(true);
 
 	// add button to window
-	sgl::Button b(&mainFrame, "Press Me!");
+	sgl::Button b(&main_frame, "Press Me!");
 	b.setPosition(5, 155);
 	b.setSize(100, 40);
 	auto f1 = [](const sgl::Event& /*e*/) {
@@ -50,7 +48,7 @@ int main(int /*argc*/, char* /*args*/[])
 	b.addEventCallback(sgl::EventType::ButtonPressed, f1);
 
 	// add checkbox to window
-	sgl::Checkbox c(&mainFrame, "Hide Button \"Press Me!\"");
+	sgl::Checkbox c(&main_frame, "Hide Button \"Press Me!\"");
 	c.setPosition(200, 100);
 	c.setSize(100, 40);
 	auto f2 = [&b](const sgl::Event& /*e*/) {
@@ -62,7 +60,7 @@ int main(int /*argc*/, char* /*args*/[])
 	c.addEventCallback(sgl::EventType::CheckBoxChecked, f2);
 	c.addEventCallback(sgl::EventType::CheckBoxUnchecked, f3);
 
-	sgl::Checkbox check2(&mainFrame, "Deactivate Button \"Press Me!\"");
+	sgl::Checkbox check2(&main_frame, "Deactivate Button \"Press Me!\"");
 	check2.setPosition(200, 150);
 	check2.setSize(100, 40);
 	auto f4 = [&b](const sgl::Event& /*e*/) {
@@ -75,17 +73,17 @@ int main(int /*argc*/, char* /*args*/[])
 	check2.addEventCallback(sgl::EventType::CheckBoxUnchecked, f5);
 
 	//add textlabel to window
-	sgl::TextLabel t(&mainFrame, "hello world");
+	sgl::TextLabel t(&main_frame, "hello world");
 	t.setPosition(10, 20);
 	t.setSize(10, 10);
 
 	//add textinput to window
-	sgl::TextInput i(&mainFrame, "Der defaultText");
+	sgl::TextInput i(&main_frame, "Der defaultText");
 	i.setPosition(20,40);
 	i.setSize(100,40);
 
 	//add window with grid layout
-	sgl::GridLayout gl(&mainFrame);
+	sgl::GridLayout gl(&main_frame);
 	gl.setPosition(0, 200);
 	gl.setSize(400, 100);
 	sgl::Button b2(&gl, "Press Me 2!");
@@ -97,32 +95,35 @@ int main(int /*argc*/, char* /*args*/[])
 	gl.updateLayout();
 
 	// create second window
-	sgl::Frame secondFrame(nullptr, "Other Window");
-	secondFrame.setSize(400, 300);
-	secondFrame.setPosition(100, 100);
-	secondFrame.setTitleBarVisible(true);
+	sgl::Frame second_frame(nullptr, "Other Window");
+	second_frame.setSize(400, 300);
+	second_frame.setPosition(100, 100);
+	second_frame.setTitleBar(true);
 
 	// add radio button to window
-	sgl::RadioButton radioButton(&secondFrame, "Radio?");
-	radioButton.setPosition(200, 50);
-	radioButton.setSize(100, 40);
+	sgl::RadioButton radio_button(&second_frame, "Radio?");
+	radio_button.setPosition(200, 50);
+	radio_button.setSize(100, 40);
 
 	// make everything visible
-	mainFrame.setVisible(true);
-	secondFrame.setVisible(true);
+	main_frame.setVisible(true);
+	second_frame.setVisible(true);
 
+
+	// get 2D rendering context
+	auto renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
 	auto running = true;
 	SDL_Event e;
-	std::chrono::high_resolution_clock clock;
+	std::chrono::system_clock clock;
 	const auto maxFps = 60;
-	const auto frameTime = std::chrono::microseconds(1000000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
+	const auto frame_time = std::chrono::microseconds(1000000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
 	while (running)
 	{
 		// begin new frame
-		auto frameStart = clock.now();
+		auto frame_start = clock.now();
 
 		// 1. advance state of application to the current time
-		sgl::SetApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()).count());
+		sgl::SetApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()));
 
 		// 2. handle all input
 		while (0 != SDL_PollEvent(&e))
@@ -142,14 +143,14 @@ int main(int /*argc*/, char* /*args*/[])
 		SDL_RenderPresent(renderer);
 
 		// 4. wait until frame time is over
-		auto elapsed = clock.now() - frameStart;
-		auto timeLeftInFrame = frameTime - elapsed;
-		std::this_thread::sleep_for(timeLeftInFrame);
+		auto elapsed = clock.now() - frame_start;
+		auto time_left_in_frame = frame_time - elapsed;
+		std::this_thread::sleep_for(time_left_in_frame);
 	}
 
 	// clean up allocated resources
 	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(sdlWindow);
+	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
 
 	return 0;

@@ -1,19 +1,22 @@
 #pragma once
 
+#include <memory>
+#include <chrono>
+#include <list>
+
 #include "StyleManager.h"
 #include "InputHandler.h"
 #include "RenderAssistant.h"
 #include "EventProcessor.h"
-#include <memory>
-#include <list>
 
 namespace sgl
 {
 	// global functions for GUI control
 	void SDLGUILIB_API DrawGui(SDL_Renderer* renderer);
 	bool SDLGUILIB_API HandleEvent(SDL_Event* e);
-	void SDLGUILIB_API SetApplicationTime(int64_t absoluteTime);
-	//void SDLGUILIB_API AdvanceApplicationTime(int64_t deltaTime);
+	void SDLGUILIB_API SetApplicationTime(std::chrono::milliseconds absolute_time);
+	std::chrono::milliseconds SDLGUILIB_API GetApplicationTime();
+		//void SDLGUILIB_API AdvanceApplicationTime(int64_t deltaTime);
 
 
 	class Window;
@@ -84,9 +87,9 @@ namespace sgl
 		 * focus for all windows. If a window should gain focus, it can call this function
 		 * to gain focus from the manager, who also removes focus from the window that had
 		 * focus before.
-		 * @param windowWithFocus The window that will receive focus.
+		 * @param window_with_focus The window that will receive focus.
 		 */
-		void setWindowFocus(Window* windowWithFocus);
+		void setWindowFocus(Window* window_with_focus);
 		/** 
 		 * @brief Returns `true` if the given window has focus.
 		 * 
@@ -131,14 +134,14 @@ namespace sgl
 		* The application time is used for animations and timed events.
 		* @param New application time in milliseconds.
 		*/
-		void setApplicationTime(int64_t time);
+		void setApplicationTime(std::chrono::milliseconds time);
 		/**
 		 * @brief Get the current application time previously set by `setApplicationTime()`.
 		 *
 		 * The application time is used for animations and timed events.
 		 * @return Application time in milliseconds.
 		 */
-		int64_t getApplicationTime() const;
+		std::chrono::milliseconds getApplicationTime() const;
 
 	private:
 		GuiManager();
@@ -146,13 +149,13 @@ namespace sgl
 		GuiManager& operator=(const GuiManager&) = delete;
 
 		static std::unique_ptr<GuiManager> instance;	///< Singleton instance of GuiManager
-		InputHandler inputHandler_;						///< Manages input through `SDL_Event`s and passes it to the windows according to `windowStack_` order
-		StyleManager styleManager_;						///< Manages window appearance
-		RenderAssistant renderAssistant_;				///< Provides utility for rendering GUI elements
+		InputHandler input_handler_;					///< Manages input through `SDL_Event`s and passes it to the windows according to `window_stack_` order
+		StyleManager style_manager_;					///< Manages window appearance
+		RenderAssistant render_assistant_;				///< Provides utility for rendering GUI elements
 		std::list<Window*> windows_;					///< Non-owning pointers to all Window instances
-		std::list<Window*> windowStack_;				///< Non-owning pointers to all top-level windows. Input to windows and drawing of windows is done according to this list (first item drawn last)
-		Window* windowWithFocus_;						///< Points to the window with focus
-		int64_t windowIdCounter_;						///< TODO temporarily used to generate Window IDs
-		int64_t applicationTime_;						///< saves the current time the GUI uses for all things that need to be timed
+		std::list<Window*> window_stack_;				///< Non-owning pointers to all top-level windows. Input to windows and drawing of windows is done according to this list (first item drawn last)
+		Window* window_with_focus_;						///< Points to the window with focus
+		int64_t window_id_counter_;						///< TODO temporarily used to generate Window IDs
+		std::chrono::milliseconds application_time_;	///< saves the current time the GUI uses for all things that need to be timed
 	};
 }

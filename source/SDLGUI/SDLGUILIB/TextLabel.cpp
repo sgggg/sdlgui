@@ -21,35 +21,23 @@ namespace sgl
 		return text_;
 	}
 
-	void TextLabel::setText(const std::string & newText)
+	void TextLabel::setText(const std::string & new_text)
 	{
-		text_ = newText;
+		text_ = new_text;
 	}
 
 	void TextLabel::draw(SDL_Renderer* renderer)
 	{
-		if (isVisible_)
+		if (is_visible_)
 		{
-			// auto& colorTheme = manager_->getStyleManager().getColorTheme();
-			// auto& renderAssist = manager_->getRenderAssistant();
-			// if (isActive_)
-			// {
-			// 	renderAssist.renderString(renderer, text_, TextMode::Active, screenPosX_, screenPosY_);
-			// }
-			// else
-			// {
-			// 	renderAssist.renderString(renderer, text_, TextMode::Inactive, screenPosX_, screenPosY_);
-			// }
-			auto& colorTheme = manager_->getStyleManager().getColorTheme();
-			auto& renderAssist = manager_->getRenderAssistant();
-			if (isActive_)
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
+			if (is_active_)
 			{
-				auto colorTheme = manager_->getStyleManager().getColorTheme();
-				renderTextAtPos(renderer, text_, screenPosX_, screenPosY_, PosAlign::TopLeft, colorTheme.textActive, colorTheme.textBackground);
+				renderTextAtPos(renderer, text_, screen_pos_x_, screen_pos_y_, PosAlign::TopLeft, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{
-				// TODO draw inactive text (grayed out)
+				renderTextAtPos(renderer, text_, screen_pos_x_, screen_pos_y_, PosAlign::TopLeft, color_theme.text_inactive, color_theme.text_background);
 			}
 		}
 	}

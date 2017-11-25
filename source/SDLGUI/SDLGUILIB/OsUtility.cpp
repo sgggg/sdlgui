@@ -13,10 +13,10 @@ namespace sgl
 	std::string sgl::readEnvironmentVariable(const std::string& variable)
 	{
 #ifdef _WIN32
-		auto bufSize = 32767;	// see https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
-		auto buffer = std::unique_ptr<char[]>(new char[bufSize]);
-		auto numChars = GetEnvironmentVariableA(variable.c_str(), buffer.get(), bufSize);
-		if (numChars == 0)
+		auto buffer_size = 32767;	// see https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
+		auto buffer = std::unique_ptr<char[]>(new char[buffer_size]);
+		auto num_chars = GetEnvironmentVariableA(variable.c_str(), buffer.get(), buffer_size);
+		if (num_chars == 0)
 		{
 			// TODO error
 			return "";
@@ -27,18 +27,18 @@ namespace sgl
 	std::string getKnownFolderPath(KnownFolders folder)
 	{
 #ifdef _WIN32
-		wchar_t* folderPath = nullptr;
+		wchar_t* folder_path = nullptr;
 		switch (folder)
 		{
 		case KnownFolders::Fonts:
-			SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folderPath);
+			SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &folder_path);
 			break;
 		default:
 			// TODO error
 			break;
 		}
-		std::string path(ws2s(folderPath));
-		CoTaskMemFree(folderPath);
+		std::string path(convert_wide_to_narrow_string(folder_path));
+		CoTaskMemFree(folder_path);
 		return path;
 #endif
 	}

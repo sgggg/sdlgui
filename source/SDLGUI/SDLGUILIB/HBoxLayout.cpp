@@ -8,39 +8,39 @@ namespace sgl
 	{
 	}
 
-	HBoxLayout::HBoxLayout(Window* parentWindow)
-		:Window(parentWindow)
+	HBoxLayout::HBoxLayout(Window* parent_window)
+		:Window(parent_window)
 	{
 	}
 
 	void HBoxLayout::setHorizontalPadding(int d)
 	{
-		horizontalPadding_ = d;
+		horizontal_padding_ = d;
 	}
 
 	void HBoxLayout::setMarginTop(int t)
 	{
-		marginTop_ = t;
+		margin_top_ = t;
 	}
 
 	void HBoxLayout::setMarginBottom(int b)
 	{
-		marginBottom_ = b;
+		margin_bottom_ = b;
 	}
 
 	void HBoxLayout::updateLayout()
 	{
-		auto widthPerChild = width_ / children_.size();
+		auto width_per_child = width_ / children_.size();
 		auto i = 0;
 		for (auto child : children_)
 		{
-			child->setSize( widthPerChild - 2*horizontalPadding_, height_ - marginTop_ - marginBottom_);
-			child->setPosition(i*widthPerChild + horizontalPadding_, 0);
+			child->setSize(width_per_child - 2 * horizontal_padding_, height_ - margin_top_ - margin_bottom_);
+			child->setPosition(i * width_per_child + horizontal_padding_, 0);
 			i++;
 		}
 	}
 
-	void HBoxLayout::draw(SDL_Renderer * renderer)
+	void HBoxLayout::draw(SDL_Renderer* renderer)
 	{
 		// draw all windows inside the layout
 		for (const auto& child : children_)

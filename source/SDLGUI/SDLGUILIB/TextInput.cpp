@@ -6,82 +6,82 @@ namespace sgl
 {
 	TextInput::TextInput()
 		:Window()
-		,defaultText_()
-		,currentText_()
-		,cursorPosition_(0)
-		,selectionStart_(-1)
+		,default_text_()
+		,current_text_()
+		,cursor_position_(0)
+		,selection_start_(-1)
 	{
 	}
 
-	TextInput::TextInput(Window* parent, const std::string& defaultText)
+	TextInput::TextInput(Window* parent, const std::string& default_text)
 		:Window(parent)
-		,defaultText_(defaultText)
-		,currentText_()
-		,cursorPosition_(0)
-		,selectionStart_(-1)
+		,default_text_(default_text)
+		,current_text_()
+		,cursor_position_(0)
+		,selection_start_(-1)
 	{
 	}
 
 	std::string TextInput::getText() const
 	{
-		return currentText_;
+		return current_text_;
 	}
 
-	void TextInput::setText(const std::string& newText)
+	void TextInput::setText(const std::string& new_text)
 	{
-		currentText_ = newText;
+		current_text_ = new_text;
 	}
 	
 	void TextInput::draw(SDL_Renderer* renderer)
 	{
-		if (isVisible_) 
+		if (is_visible_) 
 		{
-			auto colorTheme = manager_->getStyleManager().getColorTheme();
-			auto windowStyle = manager_->getStyleManager().getWindowStyle();
-			SDL_Color colorInputFill, colorInputFrame, colorInputText;
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
-			if (isActive_)
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
+			const auto& window_style = manager_->getStyleManager().getWindowStyle();
+			SDL_Color color_input_fill, colorInputFrame, colorInputText;
+			auto outline_rect = SDL_Rect{ screen_pos_x_, screen_pos_y_, width_, height_ };
+			if (is_active_)
 			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlTextAreaBackground);
-				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameActive);
-				auto cursorPosX = screenPosX_ + windowStyle.innerPadding;
-				// render text, stored in currentText_
-				if (currentText_.empty())
+				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_text_area_background);
+				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_frame_active);
+				auto cursor_pos_x = screen_pos_x_ + window_style.inner_padding;
+				// render text, stored in current_text_
+				if (current_text_.empty())
 				{
 					// render default text
-					renderTextAtPos(renderer, defaultText_, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left, colorTheme.textDefault, colorTheme.textBackground);
+					//renderTextAtPos(renderer, default_text_, screen_pos_x_ + window_style.inner_padding, screen_pos_y_ + height_ / 2, PosAlign::Left, color_theme.text_default, color_theme.text_background);
 				}
 				else
 				{
 					// render current text in two parts, the part to the left of the cursor, and the part to the right
 					// then draw the cursor in between
-					auto firstString = currentText_.substr(0, cursorPosition_);
-					auto lastString = currentText_.substr(cursorPosition_);
-					if (!firstString.empty())
+					auto first_string = current_text_.substr(0, cursor_position_);
+					auto last_string = current_text_.substr(cursor_position_);
+					if (!first_string.empty())
 					{
-						auto firstStrSurface = renderTextToSurface(firstString, colorTheme.textActive);
-						cursorPosX += firstStrSurface->w;
-						renderAndFreeSurface(renderer, firstStrSurface, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left);
+						auto first_string_surface = renderTextToSurface(first_string, color_theme.text_active);
+						cursor_pos_x += first_string_surface->w;
+						renderAndFreeSurface(renderer, first_string_surface, screen_pos_x_ + window_style.inner_padding, screen_pos_y_ + height_ / 2, PosAlign::Left);
 					}
-					if (!lastString.empty())
+					if (!last_string.empty())
 					{
-						auto lastStrSurface = renderTextToSurface(lastString, colorTheme.textActive);
-						renderAndFreeSurface(renderer, lastStrSurface, cursorPosX, screenPosY_ + height_ / 2, PosAlign::Left);
+						auto last_string_surface = renderTextToSurface(last_string, color_theme.text_active);
+						renderAndFreeSurface(renderer, last_string_surface, cursor_pos_x, screen_pos_y_ + height_ / 2, PosAlign::Left);
 					}
 				}
 				if (hasFocus())
 				{
-					if (manager_->getApplicationTime() % 1000 < 500)
+					if (manager_->getApplicationTime().count() % 1000 < 500)
 					{
-						drawCursor(renderer, cursorPosX);
+						drawCursor(renderer, cursor_pos_x);
 					}
 				}
 			}
 			else
 			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlBackgroundInactive);
-				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.controlFrameInactive);
-				renderTextAtPos(renderer, defaultText_, screenPosX_ + windowStyle.innerPadding, screenPosY_ + height_ / 2, PosAlign::Left, colorTheme.textInactive, colorTheme.textBackground);
+				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_background_inactive);
+				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_frame_inactive);
+				renderTextAtPos(renderer, default_text_, screen_pos_x_ + window_style.inner_padding, screen_pos_y_ + height_ / 2, PosAlign::Left, color_theme.text_inactive, color_theme.text_background);
 			}
 		}
 	}
@@ -92,56 +92,56 @@ namespace sgl
 		if (keycode >= 32 && keycode <= 122)
 		{
 			// these are the printable characters
-			addCharacter(cursorPosition_, static_cast<char>(keycode));
+			addCharacter(cursor_position_, static_cast<char>(keycode));
 		}
 		else
 		{
 			switch (keycode)
 			{
 			case SDLK_BACKSPACE:
-				if (!currentText_.empty())
+				if (!current_text_.empty())
 				{
 					// if text is selected, remove selected text
-					if (selectionStart_ != -1)
+					if (selection_start_ != -1)
 					{
 						// remove the selected characters
-						auto markers = std::minmax(cursorPosition_, selectionStart_);
+						auto markers = std::minmax(cursor_position_, selection_start_);
 						removeCharacterRange(markers.first, markers.second);
 					}
-					else if (cursorPosition_ > 0)
+					else if (cursor_position_ > 0)
 					{
 						// remove the character to the _left_ of the current cursor position
-						removeCharacterRange(cursorPosition_ - 1, cursorPosition_);
+						removeCharacterRange(cursor_position_ - 1, cursor_position_);
 					}
 				}
 				break;
 			case SDLK_DELETE:
-				if (!currentText_.empty())
+				if (!current_text_.empty())
 				{
 					// if text is selected, remove selected text
-					if (selectionStart_ != -1)
+					if (selection_start_ != -1)
 					{
 						// remove the selected characters
-						auto markers = std::minmax(cursorPosition_, selectionStart_);
+						auto markers = std::minmax(cursor_position_, selection_start_);
 						removeCharacterRange(markers.first, markers.second);
 					}
-					else if (cursorPosition_ < currentText_.size())
+					else if (cursor_position_ < current_text_.size())
 					{
 						// remove the character to the _right_ of the current cursor position
-						removeCharacterRange(cursorPosition_, cursorPosition_ + 1);
+						removeCharacterRange(cursor_position_, cursor_position_ + 1);
 					}
 				}
 				break;
 			case SDLK_RIGHT:
-				if (currentText_.size() > cursorPosition_)
+				if (current_text_.size() > cursor_position_)
 				{
-					++cursorPosition_;
+					++cursor_position_;
 				}
 				break;
 			case SDLK_LEFT:
-				if (cursorPosition_ > 0)
+				if (cursor_position_ > 0)
 				{
-					--cursorPosition_;
+					--cursor_position_;
 				}
 				break;
 			default:
@@ -150,52 +150,52 @@ namespace sgl
 				break;
 			}
 		}
-		std::cout << "DEBUG: cursor position: " << cursorPosition_ << std::endl;
+		std::cout << "DEBUG: cursor position: " << cursor_position_ << std::endl;
 	}
 
-	void TextInput::drawCursor(SDL_Renderer* renderer, int relativeX)
+	void TextInput::drawCursor(SDL_Renderer* renderer, int relative_x)
 	{
-		auto colorTheme = manager_->getStyleManager().getColorTheme();
-		auto windowStyle = manager_->getStyleManager().getWindowStyle();
+		const auto& color_theme = manager_->getStyleManager().getColorTheme();
+		const auto& window_style = manager_->getStyleManager().getWindowStyle();
 		// draw cursor inside text box at the appropriate position 
 		// and with the correct height (depending on font size)
-		SDL_SetRenderDrawColor(renderer, colorTheme.controlInputCursor.r, colorTheme.controlInputCursor.g,
-			colorTheme.controlInputCursor.b, colorTheme.controlInputCursor.a);
-		Point cursorStart	= { relativeX, screenPosY_ + (height_ / 2) - (windowStyle.fontSize / 2) };
-		Point cursorEnd		= { relativeX, cursorStart.y + windowStyle.fontSize };
-		SDL_RenderDrawLine(renderer, cursorStart.x, cursorStart.y, cursorEnd.x, cursorEnd.y);
+		SDL_SetRenderDrawColor(renderer, color_theme.control_input_cursor.r, color_theme.control_input_cursor.g,
+			color_theme.control_input_cursor.b, color_theme.control_input_cursor.a);
+		auto cursor_start	= Point{ relative_x, screen_pos_y_ + (height_ / 2) - (window_style.font_size / 2) };
+		auto cursor_end		= Point{ relative_x, cursor_start.y + window_style.font_size };
+		SDL_RenderDrawLine(renderer, cursor_start.x, cursor_start.y, cursor_end.x, cursor_end.y);
 	}
 
-	void TextInput::removeCharacterRange(int leftIndex, int rightIndex)
+	void TextInput::removeCharacterRange(int left_index, int right_index)
 	{
 		// remove the selected characters
-		auto leftStr = currentText_.substr(0, leftIndex);
-		auto rightStr = currentText_.substr(rightIndex);
-		currentText_ = leftStr + rightStr;
-		cursorPosition_ = leftIndex;
+		auto left_str = current_text_.substr(0, left_index);
+		auto right_str = current_text_.substr(right_index);
+		current_text_ = left_str + right_str;
+		cursor_position_ = left_index;
 	}
 
 	void TextInput::addCharacterRange(int index, const std::string& characters)
 	{
 		// insert given characters at specified position
-		auto leftStr = currentText_.substr(0, index);
-		auto rightStr = currentText_.substr(index);
-		currentText_ = leftStr + characters + rightStr;
-		cursorPosition_ = leftStr.size() + characters.size();
+		auto left_str = current_text_.substr(0, index);
+		auto right_str = current_text_.substr(index);
+		current_text_ = left_str + characters + right_str;
+		cursor_position_ = left_str.size() + characters.size();
 	}
 
 	void TextInput::addCharacter(int index, char character)
 	{
-		if (index == currentText_.size())
+		if (index == current_text_.size())
 		{
-			currentText_.push_back(character);
+			current_text_.push_back(character);
 		}
 		else
 		{
-			auto leftStr = currentText_.substr(0, index);
-			auto rightStr = currentText_.substr(index);
-			currentText_ = leftStr + character + rightStr;
+			auto left_str = current_text_.substr(0, index);
+			auto right_str = current_text_.substr(index);
+			current_text_ = left_str + character + right_str;
 		}
-		++cursorPosition_;
+		++cursor_position_;
 	}
 }

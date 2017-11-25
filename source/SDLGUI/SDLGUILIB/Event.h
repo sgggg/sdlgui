@@ -28,6 +28,6 @@ namespace sgl
 	class CommandEvent : public Event
 	{
 	public:
-		bool isChecked_ = false;
+		bool is_checked_ = false;
 	};
 }

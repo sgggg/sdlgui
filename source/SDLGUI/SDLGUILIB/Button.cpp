@@ -28,56 +28,56 @@ namespace sgl
 
 	void Button::draw(SDL_Renderer* renderer)
 	{
-		if (isVisible_)
+		if (is_visible_)
 		{
-			auto colorTheme = manager_->getStyleManager().getColorTheme();
-			SDL_Color colorButtonFill, colorButtonFrame, colorButtonLabel;
-			if (isActive_)
+			auto color_theme = manager_->getStyleManager().getColorTheme();
+			SDL_Color color_button_fill, color_button_frame, color_button_label;
+			if (is_active_)
 			{
-				if (isClicked_)
+				if (is_clicked_)
 				{
 					// draw button in pressed state
-					colorButtonFill = colorTheme.controlPressed;
+					color_button_fill = color_theme.control_pressed;
 				}
-				else if (containsMouse_)
+				else if (contains_mouse_)
 				{
 					// draw button in mouse-over state
-					colorButtonFill = colorTheme.controlContainsMouse;
+					color_button_fill = color_theme.control_contains_mouse;
 				}
 				else
 				{
 					// draw button in normal state (not pressed, not mouse-over)
-					colorButtonFill = colorTheme.controlBackgroundActive;
+					color_button_fill = color_theme.control_background_active;
 				}
-				colorButtonFrame = colorTheme.controlFrameActive;
-				colorButtonLabel = colorTheme.textActive;
+				color_button_frame = color_theme.control_frame_active;
+				color_button_label = color_theme.text_active;
 			}
 			else
 			{
-				colorButtonFill = colorTheme.controlBackgroundInactive;
-				colorButtonFrame = colorTheme.controlFrameInactive;
-				colorButtonLabel = colorTheme.textInactive;
+				color_button_fill = color_theme.control_background_inactive;
+				color_button_frame = color_theme.control_frame_inactive;
+				color_button_label = color_theme.text_inactive;
 			}
 			// draw button fill color
-			drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorButtonFill);
+			drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_button_fill);
 			// draw outline
-			SDL_Rect outlineRect = { screenPosX_, screenPosY_, width_, height_ };
-			drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorButtonFrame);
+			auto outline_rect = SDL_Rect{ screen_pos_x_, screen_pos_y_, width_, height_ };
+			drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_button_frame);
 			// draw button label
-			auto buttonCenter = getCenter({ screenPosX_, screenPosY_, width_, height_ });
-			renderTextAtPos(renderer, label_, buttonCenter.x, buttonCenter.y, PosAlign::Center, colorButtonLabel, colorTheme.textBackground);
+			auto button_center = getCenter({ screen_pos_x_, screen_pos_y_, width_, height_ });
+			renderTextAtPos(renderer, label_, button_center.x, button_center.y, PosAlign::Center, color_button_label, color_theme.text_background);
 		}
 	}
 
 	void Button::triggerClicked()
 	{
-		auto evHandler = eventHandlers_.find(EventType::ButtonPressed);
-		if (evHandler != std::end(eventHandlers_))
+		auto event_handler = event_handlers_.find(EventType::ButtonPressed);
+		if (event_handler != std::end(event_handlers_))
 		{
 			Event e;
 			e.type_ = EventType::ButtonPressed;
-			e.time_ = manager_->getApplicationTime();
-			evHandler->second(e);
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
 		}
 	}
 }

@@ -5,46 +5,46 @@
 
 namespace sgl
 {
-	GridLayout::GridLayout()
-		:Window()
-		,grid_()
+	GridLayout::GridLayout() :
+		Window(),
+		grid_()
 	{
 	}
 
-	GridLayout::GridLayout(Window* parentWindow)
-		:Window(parentWindow)
-		,grid_()
+	GridLayout::GridLayout(Window* parent_window) :
+		Window(parent_window),
+		grid_()
 	{
 	}
 
 	void GridLayout::setPadding(int top, int bottom, int left, int right)
 	{
-		paddingTop_ = top;
-		paddingBottom_ = bottom;
-		paddingLeft_ = left;
-		paddingRight_ = right;
+		padding_top_ = top;
+		padding_bottom_ = bottom;
+		padding_left_ = left;
+		padding_right_ = right;
 	}
 
 	void GridLayout::setMargin(int top, int bottom, int left, int right)
 	{
-		marginTop_ = top;
-		marginBottom_ = bottom;
-		marginLeft_ = left;
-		marginRight_ = right;
+		margin_top_ = top;
+		margin_bottom_ = bottom;
+		margin_left_ = left;
+		margin_right_ = right;
 	}
 
 	void GridLayout::updateLayout()
 	{
-		auto widthPerCell = (width_ - marginLeft_ - marginRight_) / (maxH_ + 1);	//use (maxH_+1) because positioning starts at index 0
-		auto heightPerCell = (height_ - marginTop_ - marginBottom_) / (maxV_ + 1);
-		auto widthPerChild = widthPerCell - paddingLeft_ - paddingRight_;
-		auto heightPerChild = heightPerCell - paddingTop_ - paddingBottom_;
-		for (auto gridElem : grid_)
+		auto width_per_cell = (width_ - margin_left_ - margin_right_) / (max_horizontal_index_ + 1);	//use (max_horizontal_index_+1) because positioning starts at index 0
+		auto height_per_cell = (height_ - margin_top_ - margin_bottom_) / (max_vertical_index_ + 1);
+		auto width_per_child = width_per_cell - padding_left_ - padding_right_;
+		auto height_per_child = height_per_cell - padding_top_ - padding_bottom_;
+		for (auto grid_element : grid_)
 		{
-			gridElem.first->setSize( widthPerChild + (widthPerChild + paddingLeft_ + paddingRight_) * (gridElem.second.width -1),
-									 heightPerChild + (heightPerChild + paddingTop_ + paddingBottom_) * (gridElem.second.height - 1));
-			gridElem.first->setPosition( marginLeft_ + gridElem.second.hPos * widthPerCell  + paddingLeft_,
-										 marginTop_  + gridElem.second.vPos * heightPerCell + paddingTop_ );
+			grid_element.first->setSize(width_per_child + (width_per_child + padding_left_ + padding_right_) * (grid_element.second.width - 1),
+				height_per_child + (height_per_child + padding_top_ + padding_bottom_) * (grid_element.second.height - 1));
+			grid_element.first->setPosition(margin_left_ + grid_element.second.horizontal_position * width_per_cell + padding_left_,
+				margin_top_ + grid_element.second.vertical_position * height_per_cell + padding_top_);
 		}
 	}
 
@@ -57,13 +57,13 @@ namespace sgl
 		}
 	}
 
-	void GridLayout::setGridPolicy(Window& childWindow, unsigned int vPos, unsigned int hPos, unsigned int height, unsigned int width)
+	void GridLayout::setGridPolicy(Window& child_window, unsigned int vertical_position, unsigned int horizontal_position, unsigned int height, unsigned int width)
 	{
-		assert(std::find(children_.begin(), children_.end(), &childWindow) != children_.end()); // Assert that childWindow is element of GridLayout
-		grid_.erase(&childWindow);
-		grid_.insert(std::make_pair(&childWindow, gridPolicy{vPos, hPos, width, height}));
+		assert(std::find(children_.begin(), children_.end(), &child_window) != children_.end()); // Assert that child_window is element of GridLayout
+		grid_.erase(&child_window);
+		grid_.insert(std::make_pair(&child_window, GridPolicy{vertical_position, horizontal_position, width, height}));
 
-		maxH_ = std::max(maxH_, hPos);
-		maxV_ = std::max(maxV_, vPos);
+		max_horizontal_index_ = std::max(max_horizontal_index_, horizontal_position);
+		max_vertical_index_ = std::max(max_vertical_index_, vertical_position);
 	}
 }

@@ -15,56 +15,56 @@ void sgl::internals::EditableText::processKeyPress(SDL_Keysym key)
 		keycode >= 32 && keycode <= 64)
 	{
 		// these are the printable characters
-		addCharacter(cursorPosition_, static_cast<char>(keycode));
+		addCharacter(cursor_position_, static_cast<char>(keycode));
 	}
 	else
 	{
 		switch (keycode)
 		{
 		case SDLK_BACKSPACE:
-			if (!currentText_.empty())
+			if (!current_text_.empty())
 			{
 				// if text is selected, remove selected text
-				if (selectionStart_ != -1)
+				if (selection_start_ != -1)
 				{
 					// remove the selected characters
-					auto markers = std::minmax(cursorPosition_, selectionStart_);
+					auto markers = std::minmax(cursor_position_, selection_start_);
 					removeCharacterRange(markers.first, markers.second);
 				}
-				else if (cursorPosition_ > 0)
+				else if (cursor_position_ > 0)
 				{
 					// remove the character to the _left_ of the current cursor position
-					removeCharacterRange(cursorPosition_ - 1, cursorPosition_);
+					removeCharacterRange(cursor_position_ - 1, cursor_position_);
 				}
 			}
 			break;
 		case SDLK_DELETE:
-			if (!currentText_.empty())
+			if (!current_text_.empty())
 			{
 				// if text is selected, remove selected text
-				if (selectionStart_ != -1)
+				if (selection_start_ != -1)
 				{
 					// remove the selected characters
-					auto markers = std::minmax(cursorPosition_, selectionStart_);
+					auto markers = std::minmax(cursor_position_, selection_start_);
 					removeCharacterRange(markers.first, markers.second);
 				}
-				else if (cursorPosition_ < currentText_.size())
+				else if (cursor_position_ < current_text_.size())
 				{
 					// remove the character to the _right_ of the current cursor position
-					removeCharacterRange(cursorPosition_, cursorPosition_ + 1);
+					removeCharacterRange(cursor_position_, cursor_position_ + 1);
 				}
 			}
 			break;
 		case SDLK_RIGHT:
-			if (currentText_.size() > cursorPosition_)
+			if (current_text_.size() > cursor_position_)
 			{
-				++cursorPosition_;
+				++cursor_position_;
 			}
 			break;
 		case SDLK_LEFT:
-			if (cursorPosition_ > 0)
+			if (cursor_position_ > 0)
 			{
-				--cursorPosition_;
+				--cursor_position_;
 			}
 			break;
 		default:
@@ -73,7 +73,7 @@ void sgl::internals::EditableText::processKeyPress(SDL_Keysym key)
 			break;
 		}
 	}
-	std::cout << "DEBUG: cursor position: " << cursorPosition_ << std::endl;
+	std::cout << "DEBUG: cursor position: " << cursor_position_ << std::endl;
 }
 
 std::string sgl::internals::EditableText::getText() const

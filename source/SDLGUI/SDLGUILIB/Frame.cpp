@@ -4,54 +4,57 @@
 
 namespace sgl
 {
-	Frame::Frame()
-		:Window()
-		,title_()
-		,hasTitleBar_(false)
-	{
-	}
-
 	Frame::Frame(Window* parent, const std::string& title)
 		:Window(parent)
 		,title_(title)
-		,hasTitleBar_(false)
+		,has_title_bar_(false)
 	{
 	}
 
-	void Frame::setTitleBarVisible(bool isTitleBarVisible)
+	void Frame::setTitleBar(bool is_title_bar_visible)
 	{
-		hasTitleBar_ = isTitleBarVisible;
+		has_title_bar_ = is_title_bar_visible;
 	}
 
 	bool Frame::hasTitleBar() const
 	{
-		return hasTitleBar_;
+		return has_title_bar_;
+	}
+
+	void Frame::setTitle(const std::string& title)
+	{
+		title_ = title;
+	}
+
+	std::string Frame::getTitle() const 
+	{
+		return title_;
 	}
 
 	void Frame::draw(SDL_Renderer* renderer)
 	{
-		if (isVisible_)
+		if (is_visible_)
 		{
-			auto colorTheme = manager_->getStyleManager().getColorTheme();
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
 			// draw this window
-			if (isActive_)
+			if (is_active_)
 			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
-				drawRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowFrameFocus);
-				if (hasTitleBar_)
+				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.window_background);
+				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.window_frame_focus);
+				if (has_title_bar_)
 				{
-					auto titleBarHeight = 16;
-					auto titleBarMargin = 2;
-					auto titleBarTextOffset = 8;
-					SDL_Rect titleBarArea = { screenPosX_ + titleBarMargin, screenPosY_ + titleBarMargin, width_ - 2 * titleBarMargin, titleBarHeight };
-					drawFilledRectangle(renderer, titleBarArea.x, titleBarArea.y, titleBarArea.w, titleBarArea.h, colorTheme.windowTitlebar);
-					renderTextAtPos(renderer, title_, titleBarArea.x + titleBarTextOffset, titleBarArea.y + titleBarHeight / 2,
-						PosAlign::Left, colorTheme.textActive, colorTheme.textBackground);
+					auto title_bar_height = 16;
+					auto title_bar_margin = 2;
+					auto title_bar_text_offset = 8;
+					auto title_bar_area = SDL_Rect{ screen_pos_x_ + title_bar_margin, screen_pos_y_ + title_bar_margin, width_ - 2 * title_bar_margin, title_bar_height };
+					drawFilledRectangle(renderer, title_bar_area.x, title_bar_area.y, title_bar_area.w, title_bar_area.h, color_theme.window_titlebar);
+					renderTextAtPos(renderer, title_, title_bar_area.x + title_bar_text_offset, title_bar_area.y + title_bar_height / 2,
+						PosAlign::Left, color_theme.text_active, color_theme.text_background);
 				}
 			}
 			else
 			{
-				drawFilledRectangle(renderer, screenPosX_, screenPosY_, width_, height_, colorTheme.windowBackground);
+				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.window_background);
 			}
 
 			// draw children

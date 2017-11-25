@@ -24,9 +24,9 @@ namespace sgl
 		~Window();
 
 		virtual WindowId GetId() const;
-		virtual void addChild(Window& childWindow);
-		virtual void removeChild(Window& childWindow);
-		virtual void setParent(Window* newParent);
+		virtual void addChild(Window& child_window);
+		virtual void removeChild(Window& child_window);
+		virtual void setParent(Window* new_parent);
 		virtual Window* getParent() const;
 		virtual void setSize(int width, int height);
 		virtual Size getSize() const;
@@ -36,14 +36,14 @@ namespace sgl
 		//virtual void setPositionFixed(bool isFixed);
 		virtual void setFocus();
 		virtual bool hasFocus() const;
-		virtual void setActive(bool isActive);
+		virtual void setActive(bool is_active);
 		virtual bool isActive() const;
-		virtual void addEventCallback(EventType eventType, EventCallback handler);
-		virtual void removeEventCallback(EventType eventType);
+		virtual void addEventCallback(EventType event_type, EventCallback handler);
+		virtual void removeEventCallback(EventType event_type);
 
 		// inherited functions
 		virtual bool isVisible() override;
-		virtual void setVisible(bool isVisible) override;
+		virtual void setVisible(bool is_visible) override;
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	protected:
@@ -67,19 +67,19 @@ namespace sgl
 		WindowId id_;										///< unique identifier for this window
 		int width_;											///< Width of this window in pixels
 		int height_;										///< Height of this window in pixels
-		//bool isSizeFixed_;									///< If `true`, window can not be resized
-		int relativePosX_;									///< Position of this window along X axis relative to parent window
-		int relativePosY_;									///< Position of this window along Y axis relative to parent window
-		int screenPosX_;									///< Position of this window in screen (SDL window) coordinates
-		int screenPosY_;									///< Position of this window in screen (SDL window) coordinates
-		//bool isPositionFixed_;								///< If `true`, window position can not be changed (ignored if parent is moved)
-		bool isVisible_;									///< If true, this window and none of the children will be drawn
-		bool isActive_;										///< Ignores all received events if window is inactive.
-		bool isClicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
-		bool containsMouse_;								///< `true` if the mouse pointer is currently inside this window
+		//bool isSizeFixed_;								///< If `true`, window can not be resized
+		int relative_pos_x_;								///< Position of this window along X axis relative to parent window
+		int relative_pos_y_;								///< Position of this window along Y axis relative to parent window
+		int screen_pos_x_;									///< Position of this window in screen (SDL window) coordinates
+		int screen_pos_y_;									///< Position of this window in screen (SDL window) coordinates
+		//bool isPositionFixed_;							///< If `true`, window position can not be changed (ignored if parent is moved)
+		bool is_visible_;									///< If true, this window and none of the children will be drawn
+		bool is_active_;									///< Ignores all received events if window is inactive.
+		bool is_clicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
+		bool contains_mouse_;								///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;									///< Non-owning pointer to parent window
 		std::list<Window*> children_;						///< Non-owning pointers to all children of this window
-		std::map<EventType, EventCallback> eventHandlers_;	///< List of registered event callback functions
+		std::map<EventType, EventCallback> event_handlers_;	///< List of registered event callback functions
 		GuiManager* manager_;								///< Non-owning pointer to the global GUI manager
 
 	private:

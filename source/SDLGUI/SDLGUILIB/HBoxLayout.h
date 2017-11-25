@@ -9,7 +9,7 @@ namespace sgl
 	{
 	public:
 		HBoxLayout();
-		HBoxLayout(Window* parentWindow);
+		HBoxLayout(Window* parent_window);
 		void setHorizontalPadding(int d);
 		void setMarginTop(int t);
 		void setMarginBottom(int b);
@@ -18,8 +18,8 @@ namespace sgl
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:
-		int horizontalPadding_ = 5;
-		int marginTop_ = 5,
-			marginBottom_ = 5;
+		int horizontal_padding_ = 5;
+		int margin_top_ = 5;
+		int margin_bottom_ = 5;
 	};
 }

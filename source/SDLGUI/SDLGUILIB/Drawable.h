@@ -16,7 +16,7 @@ namespace sgl
 		/**
 		 * @brief Draw this object to the given renderer.
 		 * 
-		 * This function should be implemented in a way that only if `isVisible()` returns
+		 * This function should be implemented in a way that only if `is_visible()` returns
 		 * `true`, this object is drawn to the passed renderer.
 		 * @param renderer SDL renderer object this object will be drawn onto.
 		 */
@@ -30,10 +30,10 @@ namespace sgl
 		/**
 		 * @brief Set the visibility of this object.
 		 * 
-		 * @param isVisible If `true`, this object will be drawn to the renderer with the 
+		 * @param is_visible If `true`, this object will be drawn to the renderer with the 
 		 * next call to `draw()`. If `false`, drawing this object will have no effect.
 		 */
-		virtual void setVisible(bool isVisible) = 0;
+		virtual void setVisible(bool is_visible) = 0;
 		virtual ~Drawable() {};
 	};
 }

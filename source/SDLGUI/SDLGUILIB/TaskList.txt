@@ -30,7 +30,6 @@ Task List
 - change mouse cursor (e.g. when hovering text input controls or when resizing/moving a window) via SDL_CreateSystemCursor
 - add functionality to (minimize/)maximize windows
 - add title bar buttons for (minimizing/)maximizing
-- add test project to unit test basic functionality
 - add reference implementations using the developed GUI functionality to implement a simple calculator
 
 
