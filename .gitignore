@@ -14,11 +14,13 @@
 *.pch
 *.sdf
 *.opendb
+*.db
+*.idb
 /thirdparty/SDL2-2.0.3_source
 /source/SDLGUI/Runtime/x64
 /source/SDLGUI/Runtime/x86
 /source/SDLGUI/SDLGUILIB/x86
 /source/SDLGUI/SDLGUILIB/x64
+/source/SDLGUI/UnitTests/x64
+/source/SDLGUI/UnitTests/x86
 /source/SDLGUI/x86
-/source/SDLGUI/x64
-/source/SDLGUI/SDLGUI.VC.db
