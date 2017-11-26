@@ -6,13 +6,6 @@
 #pragma once
 
 #include "targetver.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <list>
-#include <memory>
-#include <algorithm>
 
 
 /*
@@ -22,4 +15,12 @@
 */
 
 
-// TODO: reference additional headers your program requires here
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <list>
+#include <memory>
+#include <functional>
+#include <algorithm>
+

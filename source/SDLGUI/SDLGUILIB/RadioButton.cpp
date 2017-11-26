@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "RadioButton.h"
 #include "GuiManager.h"
@@ -7,14 +6,15 @@ namespace sgl
 {
 	RadioButton::RadioButton()
 		:Window()
-		,label_()
+		, label_()
+		, is_checked_(false)
 	{
 	}
 
 	RadioButton::RadioButton(Window* parent, const std::string& label)
 		:Window(parent)
-		,label_(label)
-		,is_checked_(false)
+		, label_(label)
+		, is_checked_(false)
 	{
 	}
 
@@ -69,7 +69,7 @@ namespace sgl
 				{
 					// draw in unchecked state -> no fill
 				}
-				// draw label next to check box
+				// draw label next to control
 				renderTextAtPos(renderer, label_, screen_pos_x_ + label_offset, screen_pos_y_ + circle_radius, PosAlign::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
@@ -82,12 +82,14 @@ namespace sgl
 	void RadioButton::triggerClicked()
 	{
 		is_checked_ = !is_checked_;
-		/*auto evhandler = eventhandlers_.find(eventtype::button);
-		if (evhandler != std::end(eventhandlers_))
+		auto event_type = is_checked_ ? EventType::RadioButtonChecked : EventType::RadioButtonChecked;
+		auto event_handler = event_handlers_.find(event_type);
+		if (event_handler != std::end(event_handlers_))
 		{
-			event e;
-			e.type = eventtype::button;
-			evhandler->second(e);
-		}*/
+			Event e;
+			e.type_ = event_type;
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
+		}
 	}
 }

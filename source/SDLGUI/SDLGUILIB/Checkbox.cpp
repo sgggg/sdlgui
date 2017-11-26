@@ -6,15 +6,15 @@ namespace sgl
 {
 	Checkbox::Checkbox()
 		:Window()
-		,label_()
-		,is_checked_(false)
+		, label_()
+		, is_checked_(false)
 	{
 	}
 
 	Checkbox::Checkbox(Window* parent, const std::string& label)
 		:Window(parent)
-		,label_(label)
-		,is_checked_(false)
+		, label_(label)
+		, is_checked_(false)
 	{
 	}
 
@@ -38,20 +38,6 @@ namespace sgl
 		is_checked_ = is_checked;
 	}
 
-	void Checkbox::triggerClicked()
-	{
-		is_checked_ = !is_checked_;
-		auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
-		auto event_handler = event_handlers_.find(event_type);
-		if (event_handler != std::end(event_handlers_))
-		{
-			Event e;
-			e.type_ = event_type;
-			e.time_ = manager_->getApplicationTime().count();
-			event_handler->second(e);
-		}
-	}
-	
 	void Checkbox::draw(SDL_Renderer* renderer)
 	{
 		if (is_visible_)
@@ -75,21 +61,33 @@ namespace sgl
 				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_frame_active);
 				if (is_checked_)
 				{
-					// draw checkbox in checked state
 					drawFilledRectangle(renderer, screen_pos_x_ + 2, screen_pos_y_ + 2, box_size - 4, box_size - 4, color_theme.control_frame_active);
 				}
 				else
 				{
-					// draw checkbox in unchecked state -> no fill
+					// draw in unchecked state -> no fill
 				}
-				// draw label next to check box
+				// draw label next to control
 				renderTextAtPos(renderer, label_, screen_pos_x_ + label_offset, screen_pos_y_ + box_size / 2, PosAlign::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{
-				// TODO draw checkbox in inactive state (grayed out)
+				// TODO draw in inactive state (grayed out)
 			}
 		}
 	}
 
+	void Checkbox::triggerClicked()
+	{
+		is_checked_ = !is_checked_;
+		auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
+		auto event_handler = event_handlers_.find(event_type);
+		if (event_handler != std::end(event_handlers_))
+		{
+			Event e;
+			e.type_ = event_type;
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
+		}
+	}
 }

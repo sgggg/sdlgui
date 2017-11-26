@@ -24,7 +24,7 @@ namespace sgl
 		void updateLayout();
 
 		virtual void draw(SDL_Renderer* renderer) override;
-		void setGridPolicy(Window& child_window, unsigned int vertical_position, unsigned int horizontal_position, unsigned int height = 1, unsigned int width = 1);
+		void setGridPolicy(Window& child_window, unsigned int horizontal_position, unsigned int vertical_position, unsigned int width = 1, unsigned int height = 1);
 
 	protected:
 		int padding_top_ = 5;		// Padding in pixels

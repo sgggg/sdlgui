@@ -5,16 +5,16 @@ Known Bugs List
 	* The part with text should be handled like this, i think: drawTextAtPos should return a texture/surface and not render directly.
 	  Then inside the window we can either increase the window size according to the texture/surface size or copy only the part of the 
 	  texture/surface to the renderer that is inside the window bounds.
-- for some reason the text rendering currently looks shit (the 't's seem to be aligned incorrectly). Maybe this is a font/size problem?
+- for some reason the text rendering currently looks shit (the 't's seem to be aligned incorrectly). Maybe this is a font/size problem? There are also differen font (render) qualities in SDL?
 
 
 
 Task List
 * This list will contain all tasks that still need to be completed.
 
+- add possibility to change text alignment in TextLabel control
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
-- finish text input control
 - finish radio button control
 - add grouping window (GroupBox) for radio buttons and other controls
 - add scroll bars

@@ -15,12 +15,11 @@ namespace sgl
 		virtual bool isChecked() const;
 		virtual void setChecked(bool is_checked);
 
-		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 
+	protected:
 		virtual void triggerClicked() override;
 
-	protected:
 		std::string label_;
 		bool is_checked_;
 	};

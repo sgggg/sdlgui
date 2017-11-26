@@ -17,7 +17,9 @@ namespace sgl
 		ButtonUp,
 		ButtonPressed,
 		CheckBoxChecked,
-		CheckBoxUnchecked
+		CheckBoxUnchecked,
+		RadioButtonChecked,
+		RadioButtonUnchecked,
 	};
 	
 	class Event

@@ -2,7 +2,6 @@
 
 #include "Window.h"
 #include "GuiManager.h"
-#include <assert.h>
 
 namespace sgl
 {
@@ -176,7 +175,7 @@ namespace sgl
 
 	bool Window::handleEvent(const SDL_Event& e)
 	{
-		if (!is_active_ || !is_visible_)
+		if (!canHandleEvent())
 		{
 			return false;
 		}
@@ -217,6 +216,11 @@ namespace sgl
 			}
 		}
 		return was_handled;
+	}
+
+	bool Window::canHandleEvent() const
+	{
+		return is_active_ && is_visible_;
 	}
 
 	bool Window::handleEventByChildren(const SDL_Event& e)

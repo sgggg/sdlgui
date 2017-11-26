@@ -57,7 +57,7 @@ namespace sgl
 		}
 	}
 
-	void GridLayout::setGridPolicy(Window& child_window, unsigned int vertical_position, unsigned int horizontal_position, unsigned int height, unsigned int width)
+	void GridLayout::setGridPolicy(Window& child_window, unsigned int horizontal_position, unsigned int vertical_position, unsigned int width, unsigned int height)
 	{
 		assert(std::find(children_.begin(), children_.end(), &child_window) != children_.end()); // Assert that child_window is element of GridLayout
 		grid_.erase(&child_window);

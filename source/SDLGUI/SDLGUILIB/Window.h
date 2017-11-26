@@ -1,15 +1,15 @@
 #pragma once
 
+#include <list>
+#include <string>
+#include <map>
+#include <assert.h>
+
 #include "SDLGUILIB_API.h"
 #include "Drawable.h"
 #include "Event.h"
 #include "Utility.h"
 #include "EventProcessor.h"
-#include <list>
-#include <memory>
-#include <string>
-#include <functional>
-#include <map>
 
 namespace sgl
 {
@@ -45,6 +45,7 @@ namespace sgl
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	protected:
+		bool canHandleEvent() const;
 		bool handleEventByChildren(const SDL_Event& e);
 		bool handleMouseButtonDown(const SDL_Event& e);
 		bool handleMouseButtonUp(const SDL_Event& e);

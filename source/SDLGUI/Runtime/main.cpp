@@ -89,9 +89,9 @@ int main(int /*argc*/, char* /*args*/[])
 	sgl::Button b2(&gl, "Press Me 2!");
 	sgl::Button b3(&gl, "Press Me 3!");
 	sgl::Button b4(&gl, "Press Me 4!");
-	gl.setGridPolicy(b2, 1, 0, 1, 2);
+	gl.setGridPolicy(b2, 0, 1, 2, 1);
 	gl.setGridPolicy(b3, 0, 0);
-	gl.setGridPolicy(b4, 0, 1);
+	gl.setGridPolicy(b4, 1, 0);
 	gl.updateLayout();
 
 	// create second window
@@ -108,7 +108,6 @@ int main(int /*argc*/, char* /*args*/[])
 	// make everything visible
 	main_frame.setVisible(true);
 	second_frame.setVisible(true);
-
 
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
