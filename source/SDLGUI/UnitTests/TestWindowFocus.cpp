@@ -56,17 +56,17 @@ namespace UnitTests
 			right_frame.setPosition(100, 0);
 			right_frame.setVisible(true);
 
-			clickScreenPosition(150, 50);
+			globalClickScreenPosition(150, 50);
 
 			Assert::IsFalse(left_frame.hasFocus());
 			Assert::IsTrue(right_frame.hasFocus());
 
-			clickScreenPosition(50, 50);
+			globalClickScreenPosition(50, 50);
 
 			Assert::IsTrue(left_frame.hasFocus());
 			Assert::IsFalse(right_frame.hasFocus());
 
-			clickScreenPosition(150, 50);
+			globalClickScreenPosition(150, 50);
 
 			Assert::IsFalse(left_frame.hasFocus());
 			Assert::IsTrue(right_frame.hasFocus());
@@ -91,35 +91,35 @@ namespace UnitTests
 			right_button.setPosition(200, 0);
 			right_button.setVisible(true);
 
-			clickOnWindow(frame);
+			globalClickWindow(frame);
 
 			Assert::IsTrue(frame.hasFocus());
 			Assert::IsFalse(left_button.hasFocus());
 			Assert::IsFalse(center_button.hasFocus());
 			Assert::IsFalse(right_button.hasFocus());
 
-			clickOnWindow(left_button);
+			globalClickWindow(left_button);
 
 			Assert::IsFalse(frame.hasFocus());
 			Assert::IsTrue(left_button.hasFocus());
 			Assert::IsFalse(center_button.hasFocus());
 			Assert::IsFalse(right_button.hasFocus());
 
-			clickOnWindow(center_button);
+			globalClickWindow(center_button);
 
 			Assert::IsFalse(frame.hasFocus());
 			Assert::IsFalse(left_button.hasFocus());
 			Assert::IsTrue(center_button.hasFocus());
 			Assert::IsFalse(right_button.hasFocus());
 
-			clickOnWindow(right_button);
+			globalClickWindow(right_button);
 
 			Assert::IsFalse(frame.hasFocus());
 			Assert::IsFalse(left_button.hasFocus());
 			Assert::IsFalse(center_button.hasFocus());
 			Assert::IsTrue(right_button.hasFocus());
 
-			clickOnWindow(frame);
+			globalClickWindow(frame);
 
 			Assert::IsTrue(frame.hasFocus());
 			Assert::IsFalse(left_button.hasFocus());
@@ -142,21 +142,21 @@ namespace UnitTests
 			right_event_window.setPosition(100, 0);
 			right_event_window.setVisible(true);
 
-			clickOnWindow(left_event_window);
+			globalClickWindow(left_event_window);
 			auto first_key_press = pressCharacterKey('A');
 			sgl::HandleEvent(&first_key_press);
 
 			Assert::AreEqual(first_key_press.key.keysym.sym, left_event_window.last_received_key_down_.sym);
 			Assert::AreEqual(0, right_event_window.last_received_key_down_.sym);
 			
-			clickOnWindow(right_event_window);
+			globalClickWindow(right_event_window);
 			auto second_key_press = pressCharacterKey('B');
 			sgl::HandleEvent(&second_key_press);
 
 			Assert::AreEqual(first_key_press.key.keysym.sym, left_event_window.last_received_key_down_.sym);
 			Assert::AreEqual(second_key_press.key.keysym.sym, right_event_window.last_received_key_down_.sym);
 
-			clickOnWindow(left_event_window);
+			globalClickWindow(left_event_window);
 			auto third_key_press = pressCharacterKey('C');
 			sgl::HandleEvent(&third_key_press);
 

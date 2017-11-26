@@ -15,87 +15,121 @@ namespace UnitTests
 	TEST_CLASS(TestWindowCheckbox)
 	{
 	public:
+		std::string checkbox_label_;
+		sgl::Checkbox checkbox_;
+		bool callback_was_checked_ = false;
+		bool callback_was_unchecked_ = false;
+
+		TestWindowCheckbox()
+			:checkbox_label_("Label Text")
+			,checkbox_(nullptr, checkbox_label_)
+		{
+			checkbox_.setSize(200, 80);
+			checkbox_.setVisible(true);
+			checkbox_.addEventCallback(sgl::EventType::CheckBoxChecked, [this](const auto& e) {
+				callback_was_checked_ = true;
+			});
+			checkbox_.addEventCallback(sgl::EventType::CheckBoxUnchecked, [this](const auto& e) {
+				callback_was_unchecked_ = true;
+			});
+		}
+
 		TEST_METHOD(CheckSetAndGetLabelText)
 		{
-			auto label_text = "label text"s;
-			sgl::Checkbox checkbox(nullptr, label_text);
+			Assert::AreEqual(checkbox_label_, checkbox_.getLabel());
 
-			Assert::AreEqual(label_text, checkbox.getLabel());
+			checkbox_label_ = "new label text"s;
+			checkbox_.setLabel(checkbox_label_);
 
-			label_text = "new label text"s;
-			checkbox.setLabel(label_text);
-
-			Assert::AreEqual(label_text, checkbox.getLabel());
+			Assert::AreEqual(checkbox_label_, checkbox_.getLabel());
 		}
 
 		TEST_METHOD(CheckSetCheckedAndUnchecked)
 		{
-			sgl::Checkbox checkbox(nullptr, "label text"s);
+			Assert::IsFalse(checkbox_.isChecked());
 
-			Assert::IsFalse(checkbox.isChecked());
+			checkbox_.setChecked(true);
 
-			checkbox.setChecked(true);
+			Assert::IsTrue(checkbox_.isChecked());
 
-			Assert::IsTrue(checkbox.isChecked());
+			checkbox_.setChecked(false);
 
-			checkbox.setChecked(false);
+			Assert::IsFalse(checkbox_.isChecked());
+		}
+		
+		TEST_METHOD(CheckCheckboxCheckedUncheckedCallback)
+		{
+			Assert::IsFalse(callback_was_checked_);
+			Assert::IsFalse(callback_was_unchecked_);
 
-			Assert::IsFalse(checkbox.isChecked());
+			localClickWindow(checkbox_);
+
+			Assert::IsTrue(callback_was_checked_);
+			Assert::IsFalse(callback_was_unchecked_);
+
+			localClickWindow(checkbox_);
+
+			Assert::IsTrue(callback_was_checked_);
+			Assert::IsTrue(callback_was_unchecked_);
+
 		}
 
 		TEST_METHOD(CheckSetCheckedAndUncheckedWhenInactive)
 		{
-			sgl::Checkbox checkbox(nullptr, "label text"s);
-			checkbox.setActive(false);
+			checkbox_.setActive(false);
 
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
 
-			checkbox.setChecked(true);
+			checkbox_.setChecked(true);
 
-			Assert::IsTrue(checkbox.isChecked());
+			Assert::IsTrue(checkbox_.isChecked());
 
-			checkbox.setChecked(false);
+			checkbox_.setChecked(false);
 
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
+		}
+
+		TEST_METHOD(CheckSetCheckedAndUncheckedWhenNotVisible)
+		{
+			checkbox_.setVisible(false);
+
+			Assert::IsFalse(checkbox_.isChecked());
+
+			checkbox_.setChecked(true);
+
+			Assert::IsTrue(checkbox_.isChecked());
+
+			checkbox_.setChecked(false);
+
+			Assert::IsFalse(checkbox_.isChecked());
 		}
 
 		TEST_METHOD(CheckSetCheckedAndUncheckedViaMouse)
 		{
-			sgl::Checkbox checkbox(nullptr, "label text"s);
-			checkbox.setSize(200, 80);
-			checkbox.setVisible(true);
+			Assert::IsFalse(checkbox_.isChecked());
 
-			Assert::IsFalse(checkbox.isChecked());
+			localClickWindow(checkbox_);
 
-			checkbox.handleEvent(leftMouseDown(100, 40));
-			checkbox.handleEvent(leftMouseUp(101, 42));
+			Assert::IsTrue(checkbox_.isChecked());
 
-			Assert::IsTrue(checkbox.isChecked());
+			localClickWindow(checkbox_);
 
-			checkbox.handleEvent(leftMouseDown(100, 40));
-			checkbox.handleEvent(leftMouseUp(101, 42));
-
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
 		}
 
 		TEST_METHOD(CheckSetCheckedAndUncheckedViaMouseWhenInactive)
 		{
-			sgl::Checkbox checkbox(nullptr, "label text"s);
-			checkbox.setSize(200, 80);
-			checkbox.setVisible(true);
-			checkbox.setActive(false);
+			checkbox_.setActive(false);
 
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
 
-			checkbox.handleEvent(leftMouseDown(100, 40));
-			checkbox.handleEvent(leftMouseUp(101, 42));
+			localClickWindow(checkbox_);
 
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
 
-			checkbox.handleEvent(leftMouseDown(100, 40));
-			checkbox.handleEvent(leftMouseUp(101, 42));
+			localClickWindow(checkbox_);
 
-			Assert::IsFalse(checkbox.isChecked());
+			Assert::IsFalse(checkbox_.isChecked());
 		}
 	};
 }

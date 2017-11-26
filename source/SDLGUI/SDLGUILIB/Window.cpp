@@ -8,20 +8,20 @@ namespace sgl
 {
 	Window::Window()
 		:id_(-1)
-		,width_(0)
-		,height_(0)
-		,relative_pos_x_(0)
-		,relative_pos_y_(0)
-		,screen_pos_x_(0)
-		,screen_pos_y_(0)
-		,is_visible_(false)
-		,is_active_(true)
-		,is_clicked_(false)
-		,contains_mouse_(false)
-		,parent_(nullptr)
-		,children_()
-		,event_handlers_()
-		,manager_(GuiManager::GetInstance())
+		, width_(0)
+		, height_(0)
+		, relative_pos_x_(0)
+		, relative_pos_y_(0)
+		, screen_pos_x_(0)
+		, screen_pos_y_(0)
+		, is_visible_(false)
+		, is_active_(true)
+		, is_clicked_(false)
+		, contains_mouse_(false)
+		, parent_(nullptr)
+		, children_()
+		, event_handlers_()
+		, manager_(GuiManager::GetInstance())
 	{
 	}
 
@@ -94,7 +94,7 @@ namespace sgl
 
 	Size Window::getSize() const
 	{
-		return Size{ width_, height_ };
+		return Size{width_, height_};
 	}
 
 	void Window::setPosition(int x, int y)
@@ -119,7 +119,7 @@ namespace sgl
 
 	Point Window::getPosition() const
 	{
-		return Point{ relative_pos_x_, relative_pos_y_ };
+		return Point{relative_pos_x_, relative_pos_y_};
 	}
 
 	void Window::setFocus()
@@ -262,7 +262,7 @@ namespace sgl
 					// mouse entered the window area
 					triggerMouseEntered();
 					contains_mouse_ = true;
-					if((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
+					if ((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
 					{
 						is_clicked_ = true;
 						was_handled = true;
@@ -292,9 +292,9 @@ namespace sgl
 	bool Window::isInsideWindowBounds(int x, int y) const
 	{
 		return	x >= screen_pos_x_ &&
-				x <= screen_pos_x_ + width_ &&
-				y >= screen_pos_y_ &&
-				y <= screen_pos_y_ + height_;
+			x <= screen_pos_x_ + width_ &&
+			y >= screen_pos_y_ &&
+			y <= screen_pos_y_ + height_;
 	}
 
 	Window* Window::getRootParent(Window* window)
@@ -307,7 +307,7 @@ namespace sgl
 		}
 		return root_parent;
 	}
-	
+
 	void Window::triggerClicked()
 	{
 	}
@@ -344,7 +344,7 @@ namespace sgl
 	{
 	}
 
-	void Window::triggerKeyDown(SDL_Keysym )
+	void Window::triggerKeyDown(SDL_Keysym)
 	{
 	}
 }

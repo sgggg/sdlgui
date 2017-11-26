@@ -2,7 +2,7 @@
 #include "UserInputGeneration.h"
 #include "../SDLGUILIB/SGL.h"
 
-void clickScreenPosition(int x, int y)
+void globalClickScreenPosition(int x, int y)
 {
 	auto press = leftMouseDown(x, y);
 	auto release = leftMouseUp(x, y);
@@ -10,7 +10,7 @@ void clickScreenPosition(int x, int y)
 	sgl::HandleEvent(&release);
 }
 
-void clickOnWindow(sgl::Window& window_to_click)
+void globalClickWindow(sgl::Window& window_to_click)
 {
 	auto position = window_to_click.getPosition();
 	auto size = window_to_click.getSize();
@@ -21,13 +21,15 @@ void clickOnWindow(sgl::Window& window_to_click)
 	sgl::HandleEvent(&release);
 }
 
-void typeText(sgl::EventProcessor& event_processor, const std::string& text_to_type)
+void localClickWindow(sgl::Window& window_to_click)
 {
-	for (auto character : text_to_type)
-	{
-		auto key_press_event = pressCharacterKey(character);
-		event_processor.handleEvent(key_press_event);
-	}
+	auto position = window_to_click.getPosition();
+	auto size = window_to_click.getSize();
+	auto center_of_window = sgl::Point{position.x + size.width / 2, position.y + size.height / 2};
+	auto press = leftMouseDown(center_of_window.x, center_of_window.y);
+	auto release = leftMouseUp(center_of_window.x, center_of_window.y);
+	window_to_click.handleEvent(press);
+	window_to_click.handleEvent(release);
 }
 
 void moveCursorLeft(sgl::EventProcessor & event_processor, int num_spaces)
@@ -52,6 +54,15 @@ void moveCursorRight(sgl::EventProcessor & event_processor, int num_spaces)
 		key_press_event.key.keysym.scancode = SDL_SCANCODE_RIGHT;
 		key_press_event.key.keysym.sym = SDLK_RIGHT;
 		key_press_event.key.keysym.mod = 0;
+		event_processor.handleEvent(key_press_event);
+	}
+}
+
+void typeText(sgl::EventProcessor& event_processor, const std::string& text_to_type)
+{
+	for (auto character : text_to_type)
+	{
+		auto key_press_event = pressCharacterKey(character);
 		event_processor.handleEvent(key_press_event);
 	}
 }
