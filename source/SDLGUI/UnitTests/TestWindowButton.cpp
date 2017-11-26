@@ -18,16 +18,26 @@ namespace UnitTests
 		std::string button_label_;
 		sgl::Button button_;
 		bool callback_button_was_pressed_ = false;
+		bool callback_button_went_down_ = false;
+		bool callback_button_went_up_ = false;
 		sgl::EventType callback_received_event_type_ = sgl::EventType::Invalid;
 
 		TestWindowButton()
 			:button_label_("Button Label")
 			,button_(nullptr, button_label_)
 		{
-			button_.setSize(300, 80);
+			button_.setSize(200, 200);
 			button_.setVisible(true);
 			button_.addEventCallback(sgl::EventType::ButtonPressed, [this](const auto& e) {
 				callback_button_was_pressed_ = true;
+				callback_received_event_type_ = e.type_;
+			});
+			button_.addEventCallback(sgl::EventType::ButtonDown, [this](const auto& e) {
+				callback_button_went_down_ = true;
+				callback_received_event_type_ = e.type_;
+			});
+			button_.addEventCallback(sgl::EventType::ButtonUp, [this](const auto& e) {
+				callback_button_went_up_ = true;
 				callback_received_event_type_ = e.type_;
 			});
 		}
@@ -47,71 +57,99 @@ namespace UnitTests
 			button_.handleEvent(leftMouseDown(1, 2));
 
 			Assert::IsFalse(callback_button_was_pressed_);
-			Assert::AreEqual(sgl::EventType::Invalid, callback_received_event_type_);
 
 			button_.handleEvent(leftMouseUp(4, 5));
 
 			Assert::IsTrue(callback_button_was_pressed_);
-			Assert::AreEqual(sgl::EventType::ButtonPressed, callback_received_event_type_);
 		}
 
-		TEST_METHOD(CheckButtonNotPressedIfMouseNotOnButton)
+		TEST_METHOD(CheckButtonUpCallback)
+		{
+			Assert::IsFalse(callback_button_went_up_);
+
+			button_.handleEvent(leftMouseUp(4, 5));
+
+			Assert::IsFalse(callback_button_went_up_);
+		}
+
+		TEST_METHOD(CheckNoButtonEventsIfMouseNotOnButton)
 		{
 			button_.handleEvent(leftMouseDown(301, 302));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 
 			button_.handleEvent(leftMouseUp(303, 304));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 		}
 
-		TEST_METHOD(CheckButtonNotPressedIfNotVisible)
+		TEST_METHOD(CheckNoButtonEventsIfNotVisible)
 		{
 			button_.setVisible(false);
 
 			button_.handleEvent(leftMouseDown(1, 2));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 
 			button_.handleEvent(leftMouseUp(4, 5));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 		}
 
-		TEST_METHOD(CheckButtonNotPressedIfNotActive)
+		TEST_METHOD(CheckNoButtonEventsIfNotActive)
 		{
 			button_.setActive(false);
 
 			button_.handleEvent(leftMouseDown(1, 2));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 
 			button_.handleEvent(leftMouseUp(4, 5));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 		}
 
-		TEST_METHOD(CheckButtonNotPressedIfMouseLeavesAfterDown)
-		{
-			button_.handleEvent(leftMouseDown(401, 402));
-
-			Assert::IsFalse(callback_button_was_pressed_);
-
-			button_.handleEvent(leftMouseUp(4, 5));
-
-			Assert::IsFalse(callback_button_was_pressed_);
-		}
-
-		TEST_METHOD(CheckButtonNotPressedIfMouseEntersAfterDown)
+		TEST_METHOD(CheckButtonEventsIfMouseLeavesAfterDown)
 		{
 			button_.handleEvent(leftMouseDown(1, 2));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsTrue(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 
-			button_.handleEvent(leftMouseUp(404, 405));
+			button_.handleEvent(leftMouseUp(400, 401));
 
 			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsTrue(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
 		}
+
+		TEST_METHOD(CheckButtonEventsIfMouseEntersAfterDown)
+		{
+			button_.handleEvent(leftMouseDown(400, 401));
+
+			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
+
+			button_.handleEvent(leftMouseUp(4, 5));
+
+			Assert::IsFalse(callback_button_was_pressed_);
+			Assert::IsFalse(callback_button_went_down_);
+			Assert::IsFalse(callback_button_went_up_);
+		}
+
 	};
 }

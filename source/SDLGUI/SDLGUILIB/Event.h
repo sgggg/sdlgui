@@ -13,6 +13,8 @@ namespace sgl
 	enum class EventType
 	{
 		Invalid,
+		ButtonDown,
+		ButtonUp,
 		ButtonPressed,
 		CheckBoxChecked,
 		CheckBoxUnchecked

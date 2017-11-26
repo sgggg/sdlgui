@@ -97,11 +97,6 @@ namespace sgl
 		return Size{ width_, height_ };
 	}
 
-	//void Window::setSizeFixed(bool isFixed)
-	//{
-	//	isSizeFixed_ = isFixed;
-	//}
-
 	void Window::setPosition(int x, int y)
 	{
 		// TODO check that window is always positioned fully inside parent window
@@ -126,11 +121,6 @@ namespace sgl
 	{
 		return Point{ relative_pos_x_, relative_pos_y_ };
 	}
-
-	//void Window::setPositionFixed(bool isFixed)
-	//{
-	//	isPositionFixed_ = isFixed;
-	//}
 
 	void Window::setFocus()
 	{

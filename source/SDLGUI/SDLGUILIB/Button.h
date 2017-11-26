@@ -17,6 +17,8 @@ namespace sgl
 
 	protected:
 		virtual void triggerClicked() override;
+		virtual void triggerMouseDown() override;
+		virtual void triggerMouseUp() override;
 
 		std::string label_;
 	};

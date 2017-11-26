@@ -71,11 +71,38 @@ namespace sgl
 
 	void Button::triggerClicked()
 	{
-		auto event_handler = event_handlers_.find(EventType::ButtonPressed);
+		auto event_type = EventType::ButtonPressed;
+		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{
 			Event e;
-			e.type_ = EventType::ButtonPressed;
+			e.type_ = event_type;
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
+		}
+	}
+
+	void Button::triggerMouseDown()
+	{
+		auto event_type = EventType::ButtonDown;
+		auto event_handler = event_handlers_.find(event_type);
+		if (event_handler != std::end(event_handlers_))
+		{
+			Event e;
+			e.type_ = event_type;
+			e.time_ = manager_->getApplicationTime().count();
+			event_handler->second(e);
+		}
+	}
+
+	void Button::triggerMouseUp()
+	{
+		auto event_type = EventType::ButtonUp;
+		auto event_handler = event_handlers_.find(event_type);
+		if (event_handler != std::end(event_handlers_))
+		{
+			Event e;
+			e.type_ = event_type;
 			e.time_ = manager_->getApplicationTime().count();
 			event_handler->second(e);
 		}
