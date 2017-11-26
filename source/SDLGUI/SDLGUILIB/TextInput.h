@@ -23,12 +23,17 @@ namespace sgl
 		std::string default_text_;			///< stores the text that is shown in the input box when it is empty
 		std::string current_text_;			///< stores the text currently entered into the input box
 		int cursor_position_;				///< stores the index into current_text_ where the cursor is positioned.
-		int selection_start_;				///< stores the index into current_text_ where the selection starts if characters are selected.
 
 		// helpers
+		bool isPrintableKey(SDL_Keycode keycode) const;
+		void handlePrintableKeyInput(SDL_Keysym key);
+		void handleControlKeyInput(SDL_Keysym key);
+		int drawText(SDL_Renderer* renderer, int cursor_pos_x);
 		void drawCursor(SDL_Renderer* renderer, int relative_x);
-		void removeCharacterRange(int left_index, int right_index);
-		void addCharacterRange(int index, const std::string& characters);
+		void moveCursorRight();
+		void moveCursorLeft();
 		void addCharacter(int index, char character);
+		void addCharacterRange(int index, const std::string& characters);
+		void removeCharacterRange(int left_index, int right_index);
 	};
 }

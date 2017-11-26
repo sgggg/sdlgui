@@ -75,46 +75,101 @@ namespace UnitTests
 
 		TEST_METHOD(CheckEnterTextAtCursor)
 		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
+			sgl::TextInput text_input(nullptr, "default text"s);
 			text_input.setVisible(true);
 
 			Assert::AreEqual(""s, text_input.getText());
 
-			Assert::Fail(L"Not Implemented");
+			auto typed_blue = "Blue "s;
+			auto typed_elephants = "Elephants"s;
+			auto expected_text = typed_blue + typed_elephants;
+			typeText(text_input, expected_text);
+
+			Assert::AreEqual(expected_text, text_input.getText());
+
+			moveCursorLeft(text_input, expected_text.size());
+			auto typed_i_like = "I Like "s;
+			expected_text = typed_i_like + typed_blue + typed_elephants;
+			typeText(text_input, typed_i_like);
+
+			Assert::AreEqual(expected_text, text_input.getText());
+
+			moveCursorRight(text_input, typed_blue.size());
+			auto typed_and_green = "and Green "s;
+			expected_text = typed_i_like + typed_blue + typed_and_green + typed_elephants;
+			typeText(text_input, typed_and_green);
+
+			Assert::AreEqual(expected_text, text_input.getText());
 		}
 
 		TEST_METHOD(CheckRemoveTextWithBackspaceAtCursor)
 		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
+			sgl::TextInput text_input(nullptr, "default text"s);
 			text_input.setVisible(true);
 
-			Assert::AreEqual(""s, text_input.getText());
+			auto expected_text = "AbCdEf"s;
+			typeText(text_input, expected_text);
 
-			Assert::Fail(L"Not Implemented");
+			Assert::AreEqual(expected_text, text_input.getText());
+
+			moveCursorLeft(text_input, 3);
+			typeBackspace(text_input, 2);
+
+			Assert::AreEqual("AdEf"s, text_input.getText());
+
+			moveCursorRight(text_input, 3);
+			typeBackspace(text_input, 2);
+
+			Assert::AreEqual("Ad"s, text_input.getText());
+
+			moveCursorLeft(text_input, 2);
+			typeBackspace(text_input, 4);
+
+			Assert::AreEqual("Ad"s, text_input.getText());
 		}
 
 		TEST_METHOD(CheckRemoveTextWithDeleteAtCursor)
 		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
+			sgl::TextInput text_input(nullptr, "default text"s);
 			text_input.setVisible(true);
 
-			Assert::AreEqual(""s, text_input.getText());
+			auto typed_text = "AbCdEf"s;
+			typeText(text_input, typed_text);
 
-			Assert::Fail(L"Not Implemented");
+			Assert::AreEqual(typed_text, text_input.getText());
+
+			moveCursorLeft(text_input, 5);
+			typeDelete(text_input, 2);
+
+			Assert::AreEqual("AdEf"s, text_input.getText());
+
+			moveCursorRight(text_input, 2);
+			typeDelete(text_input, 5);
+
+			Assert::AreEqual("AdE"s, text_input.getText());
 		}
-
+		
 		TEST_METHOD(CheckEnterAndRemoveTextAtCursor)
 		{
-			auto default_text = "default text"s;
-			sgl::TextInput text_input(nullptr, default_text);
+			sgl::TextInput text_input(nullptr, "default text"s);
 			text_input.setVisible(true);
 
-			Assert::AreEqual(""s, text_input.getText());
+			auto typed_text = "AbCdEf"s;
+			typeText(text_input, typed_text);
 
-			Assert::Fail(L"Not Implemented");
+			Assert::AreEqual(typed_text, text_input.getText());
+
+			moveCursorLeft(text_input, 3);
+			typeText(text_input, "...");
+			typeBackspace(text_input, 2);
+
+			Assert::AreEqual("AbC.dEf"s, text_input.getText());
+
+			moveCursorRight(text_input, 2);
+			typeDelete(text_input, 3);
+			typeText(text_input, "//");
+
+			Assert::AreEqual("AbC.dE//"s, text_input.getText());
 		}
 	};
 }
