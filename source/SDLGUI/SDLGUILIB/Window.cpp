@@ -183,10 +183,7 @@ namespace sgl
 		// since child windows are on top of their parents, 
 		// we first pass the event down to the children to handle.
 		// If none of the children handle the event, we process it ourselves.
-		auto handling_child = std::find_if(children_.begin(), children_.end(), [&](auto child) {
-			return child->handleEvent(e);
-		});
-		auto was_handled = handling_child != children_.end();
+		auto was_handled = handleEventByChildren(e);
 		if (!was_handled)
 		{
 			// if the event was not handled by any child
@@ -195,89 +192,22 @@ namespace sgl
 			{
 			case SDL_MOUSEBUTTONDOWN:
 			{
-				// Uint32		type		the event type; SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP
-				// Uint32		timestamp	timestamp of the event
-				// Uint32		windowID	the window with mouse focus, if any
-				// Uint32		which		the mouse instance id, or SDL_TOUCH_MOUSEID; see Remarks for details
-				// Uint8		button		the button that changed; see Remarks for details
-				// Uint8		state		the state of the button; SDL_PRESSED or SDL_RELEASED
-				// Uint8		clicks		1 for single - click, 2 for double - click, etc. (>= SDL 2.0.2)
-				// Sint32		x			X coordinate, relative to window
-				// Sint32		y			Y coordinate, relative to window
-				if (isInsideWindowBounds(e.button.x, e.button.y) &&
-					e.button.button == SDL_BUTTON_LEFT &&
-					e.button.state == SDL_PRESSED)
-				{
-					// normal left click inside this window
-					is_clicked_ = true;
-					contains_mouse_ = true;
-					was_handled = true;
-					setFocus();
-					triggerMouseDown();
-				}
+				was_handled = handleMouseButtonDown(e);
 				break;
 			}
 			case SDL_MOUSEBUTTONUP:
 			{
-				if (isInsideWindowBounds(e.button.x, e.button.y) &&
-					e.button.button == SDL_BUTTON_LEFT &&
-					e.button.state == SDL_RELEASED)
-				{
-					// normal left mouse up inside this window
-					if (is_clicked_)
-					{
-						triggerMouseUp();
-						triggerClicked();
-					}
-					is_clicked_ = false;
-					contains_mouse_ = true;
-					was_handled = true;
-				}
+				was_handled = handleMouseButtonUp(e);
 				break;
 			}
 			case SDL_MOUSEMOTION:
 			{
-				// we have to cover:
-				// - drag & drop
-				// - resizing the window
-				// - releasing mouse-down when leaving the window with pressed lmouse
-				// - resuming mouse-down when re-entering with pressed lmouse
-				// TODO
-				auto did_contain_mouse = contains_mouse_;
-				contains_mouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
-				if (did_contain_mouse && contains_mouse_)
-				{
-					// mouse moved within the window area
-					was_handled = true;
-				}
-				else if (did_contain_mouse && !contains_mouse_)
-				{
-					// mouse left the window area
-					triggerMouseLeft();
-					contains_mouse_ = false;
-					is_clicked_ = false;
-				}
-				else if (!did_contain_mouse && contains_mouse_)
-				{
-					// mouse entered the window area
-					triggerMouseEntered();
-					contains_mouse_ = true;
-					if ((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
-					{
-						is_clicked_ = true;
-						was_handled = true;
-					}
-				}
+				was_handled = handleMouseMotion(e);
 				break;
 			}
 			case SDL_KEYDOWN:
 			{
-				// handle keyboard only if we're the window with focus
-				if (manager_->hasWindowFocus(this))
-				{
-					triggerKeyDown(e.key.keysym);
-					was_handled = true;
-				}
+				was_handled = handleKeyDown(e);
 				break;
 			}
 			// TODO add more event types here
@@ -285,6 +215,108 @@ namespace sgl
 				// ignore event
 				break;
 			}
+		}
+		return was_handled;
+	}
+
+	bool Window::handleEventByChildren(const SDL_Event& e)
+	{
+		auto handling_child = std::find_if(children_.begin(), children_.end(), [&](auto child) {
+			return child->handleEvent(e);
+		});
+		return handling_child != children_.end();
+	}
+
+	bool Window::handleMouseButtonDown(const SDL_Event& e)
+	{
+		// Uint32		type		the event type; SDL_MOUSEBUTTONDOWN or SDL_MOUSEBUTTONUP
+		// Uint32		timestamp	timestamp of the event
+		// Uint32		windowID	the window with mouse focus, if any
+		// Uint32		which		the mouse instance id, or SDL_TOUCH_MOUSEID; see Remarks for details
+		// Uint8		button		the button that changed; see Remarks for details
+		// Uint8		state		the state of the button; SDL_PRESSED or SDL_RELEASED
+		// Uint8		clicks		1 for single - click, 2 for double - click, etc. (>= SDL 2.0.2)
+		// Sint32		x			X coordinate, relative to window
+		// Sint32		y			Y coordinate, relative to window
+		auto was_handled = false;
+		if (isInsideWindowBounds(e.button.x, e.button.y) &&
+			e.button.button == SDL_BUTTON_LEFT &&
+			e.button.state == SDL_PRESSED)
+		{
+			// normal left click inside this window
+			is_clicked_ = true;
+			contains_mouse_ = true;
+			was_handled = true;
+			setFocus();
+			triggerMouseDown();
+		}
+		return was_handled;
+	}
+
+	bool Window::handleMouseButtonUp(const SDL_Event& e)
+	{
+		auto was_handled = false;
+		if (isInsideWindowBounds(e.button.x, e.button.y) &&
+			e.button.button == SDL_BUTTON_LEFT &&
+			e.button.state == SDL_RELEASED)
+		{
+			// normal left mouse up inside this window
+			if (is_clicked_)
+			{
+				triggerMouseUp();
+				triggerClicked();
+			}
+			is_clicked_ = false;
+			contains_mouse_ = true;
+			was_handled = true;
+		}
+		return was_handled;
+	}
+
+	bool Window::handleMouseMotion(const SDL_Event& e)
+	{				// we have to cover:
+					// - drag & drop
+					// - resizing the window
+					// - releasing mouse-down when leaving the window with pressed lmouse
+					// - resuming mouse-down when re-entering with pressed lmouse
+					// TODO
+		auto was_handled = false;
+		auto did_contain_mouse = contains_mouse_;
+		contains_mouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
+		if (did_contain_mouse && contains_mouse_)
+		{
+			// mouse moved within the window area
+			was_handled = true;
+		}
+		else if (did_contain_mouse && !contains_mouse_)
+		{
+			// mouse left the window area
+			triggerMouseLeft();
+			contains_mouse_ = false;
+			is_clicked_ = false;
+		}
+		else if (!did_contain_mouse && contains_mouse_)
+		{
+			// mouse entered the window area
+			triggerMouseEntered();
+			contains_mouse_ = true;
+			if ((e.motion.state & SDL_BUTTON_LMASK) && hasFocus())
+			{
+				is_clicked_ = true;
+				was_handled = true;
+			}
+		}
+		return was_handled;
+	}
+
+	bool Window::handleKeyDown(const SDL_Event& e)
+	{
+		// handle keyboard only if we're the window with focus
+		auto was_handled = false;
+		if (manager_->hasWindowFocus(this))
+		{
+			triggerKeyDown(e.key.keysym);
+			was_handled = true;
 		}
 		return was_handled;
 	}

@@ -116,7 +116,7 @@ int main(int /*argc*/, char* /*args*/[])
 	SDL_Event e;
 	std::chrono::system_clock clock;
 	const auto maxFps = 60;
-	const auto frame_time = std::chrono::microseconds(1000000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
+	const auto frame_time = std::chrono::microseconds(1'000'000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
 	while (running)
 	{
 		// begin new frame

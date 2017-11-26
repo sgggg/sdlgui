@@ -45,6 +45,12 @@ namespace sgl
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	protected:
+		bool handleEventByChildren(const SDL_Event& e);
+		bool handleMouseButtonDown(const SDL_Event& e);
+		bool handleMouseButtonUp(const SDL_Event& e);
+		bool handleMouseMotion(const SDL_Event& e);
+		bool handleKeyDown(const SDL_Event& e);
+
 		friend GuiManager;
 		// event generating functions
 		virtual void triggerClicked();
