@@ -1,11 +1,12 @@
 #include <iostream>
 #include <thread>
+#include <string>
 
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "SGL.h"
 
-#include "Calculator.h"
+#include "CalculatorApp.h"
 
 int CalculatorApp::run()
 {
@@ -24,56 +25,7 @@ int CalculatorApp::run()
 		return -1;
 	}
 
-	sgl::Frame main_frame(nullptr, "Calculator");
-	main_frame.setSize(kScreenWidth_, kScreenHeight_);
-
-	sgl::TextLabel calculation(&main_frame, "0");
-	calculation.setPosition(0, 0);
-	const auto output_panel_width = 50;
-	calculation.setSize(kScreenWidth_, output_panel_width);
-
-	//add window with grid layout
-	sgl::GridLayout gl(&main_frame);
-	gl.setPosition(0, 50);
-	gl.setSize(kScreenWidth_, kScreenHeight_ - output_panel_width);
-	sgl::Button button_clear(&gl, "Clear");
-	gl.setGridPolicy(button_clear, 0, 0, 2, 1);
-	sgl::Button button_negate(&gl, "+/-");
-	gl.setGridPolicy(button_negate, 2, 0);
-	sgl::Button button_divide(&gl, "/");
-	gl.setGridPolicy(button_divide, 3, 0);
-	sgl::Button button_num_7(&gl, "7");
-	gl.setGridPolicy(button_num_7, 0, 1);
-	sgl::Button button_num_8(&gl, "8");
-	gl.setGridPolicy(button_num_8, 1, 1);
-	sgl::Button button_num_9(&gl, "9");
-	gl.setGridPolicy(button_num_9, 2, 1);
-	sgl::Button button_multiply(&gl, "x");
-	gl.setGridPolicy(button_multiply, 3, 1);
-	sgl::Button button_num_4(&gl, "4");
-	gl.setGridPolicy(button_num_4, 0, 2);
-	sgl::Button button_num_5(&gl, "5");
-	gl.setGridPolicy(button_num_5, 1, 2);
-	sgl::Button button_num_6(&gl, "6");
-	gl.setGridPolicy(button_num_6, 2, 2);
-	sgl::Button button_plus(&gl, "+");
-	gl.setGridPolicy(button_plus, 3, 2);
-	sgl::Button button_num_1(&gl, "1");
-	gl.setGridPolicy(button_num_1, 0, 3);
-	sgl::Button button_num_2(&gl, "2");
-	gl.setGridPolicy(button_num_2, 1, 3);
-	sgl::Button button_num_3(&gl, "3");
-	gl.setGridPolicy(button_num_3, 2, 3);
-	sgl::Button button_minus(&gl, "-");
-	gl.setGridPolicy(button_minus, 3, 3);
-	sgl::Button button_num_0(&gl, "0");
-	gl.setGridPolicy(button_num_0, 0, 4, 2, 1);
-	sgl::Button button_decimal_point(&gl, ".");
-	gl.setGridPolicy(button_decimal_point, 2, 4);
-	sgl::Button button_equals(&gl, "=");
-	gl.setGridPolicy(button_equals, 3, 4);
-	gl.updateLayout();
-	main_frame.setVisible(true);
+	calculator_gui_.initialize(kScreenWidth_, kScreenHeight_);
 
 	auto renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -83,10 +35,6 @@ int CalculatorApp::run()
 	SDL_DestroyWindow(sdl_window);
 	SDL_Quit();
 	return 0;
-}
-
-void CalculatorApp::doOperation(Operation operation)
-{
 }
 
 int CalculatorApp::initializeSdl()
@@ -105,6 +53,10 @@ int CalculatorApp::initializeSdl()
 	}
 
 	return 0;
+}
+
+void CalculatorApp::setUpGui()
+{
 }
 
 void CalculatorApp::runUpdateLoop(SDL_Renderer* renderer)

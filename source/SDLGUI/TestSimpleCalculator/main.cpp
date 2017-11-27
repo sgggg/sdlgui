@@ -2,7 +2,7 @@
 #include "windows.h"
 #undef WIN32_LEAN_AND_MEAN
 
-#include "Calculator.h"
+#include "CalculatorApp.h"
 
 int CALLBACK WinMain(
 	_In_ HINSTANCE /*hInstance*/,
