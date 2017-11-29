@@ -4,17 +4,17 @@
 
 namespace sgl
 {
-	Checkbox::Checkbox()
-		:Window()
-		, label_()
-		, is_checked_(false)
+	Checkbox::Checkbox() :
+		Window(),
+		label_(),
+		is_checked_(false)
 	{
 	}
 
-	Checkbox::Checkbox(Window* parent, const std::string& label)
-		:Window(parent)
-		, label_(label)
-		, is_checked_(false)
+	Checkbox::Checkbox(Window* parent, const std::string& label) :
+		Window(parent),
+		label_(label),
+		is_checked_(false)
 	{
 	}
 
@@ -44,31 +44,31 @@ namespace sgl
 		{
 			const auto& color_theme = manager_->getStyleManager().getColorTheme();
 			const auto& window_style = manager_->getStyleManager().getWindowStyle();
-			auto box_size = window_style.checkbox_size;
-			auto label_offset = window_style.inner_padding + box_size;
+			const auto box_size = window_style.checkbox_size;
+			const auto label_offset = window_style.inner_padding + box_size;
 
 			if (is_active_)
 			{
 				// draw box
 				if (contains_mouse_)
 				{
-					drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_contains_mouse);
+					drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, box_size, box_size, color_theme.control_contains_mouse);
 				}
 				else
 				{
-					drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_background_active);
+					drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, box_size, box_size, color_theme.control_background_active);
 				}
-				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, box_size, box_size, color_theme.control_frame_active);
+				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, box_size, box_size, color_theme.control_frame_active);
 				if (is_checked_)
 				{
-					drawFilledRectangle(renderer, screen_pos_x_ + 2, screen_pos_y_ + 2, box_size - 4, box_size - 4, color_theme.control_frame_active);
+					drawFilledRectangle(renderer, screen_pos_.x + 2, screen_pos_.y + 2, box_size - 4, box_size - 4, color_theme.control_frame_active);
 				}
 				else
 				{
 					// draw in unchecked state -> no fill
 				}
 				// draw label next to control
-				renderTextAtPos(renderer, label_, screen_pos_x_ + label_offset, screen_pos_y_ + box_size / 2, PosAlign::Left, color_theme.text_active, color_theme.text_background);
+				renderTextAtPos(renderer, label_, screen_pos_.x + label_offset, screen_pos_.y + box_size / 2, PosAlign::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{
@@ -80,7 +80,7 @@ namespace sgl
 	void Checkbox::triggerClicked()
 	{
 		is_checked_ = !is_checked_;
-		auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
+		const auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
 		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{

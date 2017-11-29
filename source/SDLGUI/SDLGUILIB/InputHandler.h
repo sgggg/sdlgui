@@ -17,7 +17,6 @@ namespace sgl
 	public:
 		InputHandler(GuiManager* manager);
 
-		// inherited functions
 		virtual bool handleEvent(const SDL_Event& e) override;
 
 	private:

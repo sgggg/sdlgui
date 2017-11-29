@@ -35,10 +35,10 @@ namespace sgl
 
 	void GridLayout::updateLayout()
 	{
-		auto width_per_cell = (width_ - margin_left_ - margin_right_) / (max_horizontal_index_ + 1);	//use (max_horizontal_index_+1) because positioning starts at index 0
-		auto height_per_cell = (height_ - margin_top_ - margin_bottom_) / (max_vertical_index_ + 1);
-		auto width_per_child = width_per_cell - padding_left_ - padding_right_;
-		auto height_per_child = height_per_cell - padding_top_ - padding_bottom_;
+		const auto width_per_cell = (size_.width - margin_left_ - margin_right_) / (max_horizontal_index_ + 1);	//use (max_horizontal_index_+1) because positioning starts at index 0
+		const auto height_per_cell = (size_.height - margin_top_ - margin_bottom_) / (max_vertical_index_ + 1);
+		const auto width_per_child = width_per_cell - padding_left_ - padding_right_;
+		const auto height_per_child = height_per_cell - padding_top_ - padding_bottom_;
 		for (auto grid_element : grid_)
 		{
 			grid_element.first->setSize(width_per_child + (width_per_child + padding_left_ + padding_right_) * (grid_element.second.width - 1),

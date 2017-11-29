@@ -12,7 +12,6 @@ namespace sgl
 		virtual std::string getText() const;
 		virtual void setText(const std::string& new_text);
 
-		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:

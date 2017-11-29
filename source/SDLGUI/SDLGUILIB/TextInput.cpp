@@ -5,18 +5,18 @@
 namespace sgl
 {
 	TextInput::TextInput()
-		:Window()
-		, default_text_()
-		, current_text_()
-		, cursor_position_(0)
+		:Window(),
+		default_text_(),
+		current_text_(),
+		cursor_position_(0)
 	{
 	}
 
-	TextInput::TextInput(Window* parent, const std::string& default_text)
-		:Window(parent)
-		, default_text_(default_text)
-		, current_text_()
-		, cursor_position_(0)
+	TextInput::TextInput(Window* parent, const std::string& default_text) :
+		Window(parent),
+		default_text_(default_text),
+		current_text_(),
+		cursor_position_(0)
 	{
 	}
 
@@ -48,9 +48,9 @@ namespace sgl
 			const auto& window_style = manager_->getStyleManager().getWindowStyle();
 			if (is_active_)
 			{
-				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_text_area_background);
-				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_frame_active);
-				auto cursor_pos_x = screen_pos_x_ + window_style.inner_padding;
+				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_text_area_background);
+				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_active);
+				auto cursor_pos_x = screen_pos_.x + window_style.inner_padding;
 				// render text, stored in current_text_
 				if (!current_text_.empty())
 				{
@@ -66,9 +66,10 @@ namespace sgl
 			}
 			else
 			{
-				drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_background_inactive);
-				drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_theme.control_frame_inactive);
-				renderTextAtPos(renderer, default_text_, screen_pos_x_ + window_style.inner_padding, screen_pos_y_ + height_ / 2, PosAlign::Left, color_theme.text_inactive, color_theme.text_background);
+				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_background_inactive);
+				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_inactive);
+				renderTextAtPos(renderer, default_text_, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2,
+					PosAlign::Left, color_theme.text_inactive, color_theme.text_background);
 			}
 		}
 	}
@@ -143,18 +144,18 @@ namespace sgl
 		const auto& color_theme = manager_->getStyleManager().getColorTheme();
 		const auto& window_style = manager_->getStyleManager().getWindowStyle();
 		// render current text in two parts, the part to the left of the cursor, and the part to the right
-		auto first_string = current_text_.substr(0, cursor_position_);
-		auto last_string = current_text_.substr(cursor_position_);
+		const auto first_string = current_text_.substr(0, cursor_position_);
+		const auto last_string = current_text_.substr(cursor_position_);
 		if (!first_string.empty())
 		{
 			auto first_string_surface = renderTextToSurface(first_string, color_theme.text_active);
 			cursor_pos_x += first_string_surface->w;
-			renderAndFreeSurface(renderer, first_string_surface, screen_pos_x_ + window_style.inner_padding, screen_pos_y_ + height_ / 2, PosAlign::Left);
+			renderAndFreeSurface(renderer, first_string_surface, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2, PosAlign::Left);
 		}
 		if (!last_string.empty())
 		{
 			auto last_string_surface = renderTextToSurface(last_string, color_theme.text_active);
-			renderAndFreeSurface(renderer, last_string_surface, cursor_pos_x, screen_pos_y_ + height_ / 2, PosAlign::Left);
+			renderAndFreeSurface(renderer, last_string_surface, cursor_pos_x, screen_pos_.y + size_.height / 2, PosAlign::Left);
 		}
 		return cursor_pos_x;
 	}
@@ -167,8 +168,8 @@ namespace sgl
 		// and with the correct height (depending on font size)
 		SDL_SetRenderDrawColor(renderer, color_theme.control_input_cursor.r, color_theme.control_input_cursor.g,
 			color_theme.control_input_cursor.b, color_theme.control_input_cursor.a);
-		auto cursor_start = Point{relative_x, screen_pos_y_ + (height_ / 2) - (window_style.font_size / 2)};
-		auto cursor_end = Point{relative_x, cursor_start.y + window_style.font_size};
+		const auto cursor_start = Point{relative_x, screen_pos_.y + (size_.height / 2) - (window_style.font_size / 2)};
+		const auto cursor_end = Point{relative_x, cursor_start.y + window_style.font_size};
 		SDL_RenderDrawLine(renderer, cursor_start.x, cursor_start.y, cursor_end.x, cursor_end.y);
 	}
 
@@ -196,8 +197,8 @@ namespace sgl
 		}
 		else
 		{
-			auto left_str = current_text_.substr(0, index);
-			auto right_str = current_text_.substr(index);
+			const auto left_str = current_text_.substr(0, index);
+			const auto right_str = current_text_.substr(index);
 			current_text_ = left_str + character + right_str;
 		}
 		++cursor_position_;
@@ -206,8 +207,8 @@ namespace sgl
 	void TextInput::addCharacterRange(int index, const std::string& characters)
 	{
 		// insert given characters at specified position
-		auto left_str = current_text_.substr(0, index);
-		auto right_str = current_text_.substr(index);
+		const auto left_str = current_text_.substr(0, index);
+		const auto right_str = current_text_.substr(index);
 		current_text_ = left_str + characters + right_str;
 		cursor_position_ = left_str.size() + characters.size();
 	}
@@ -215,8 +216,8 @@ namespace sgl
 	void TextInput::removeCharacterRange(int left_index, int right_index)
 	{
 		// remove the selected characters
-		auto left_str = current_text_.substr(0, left_index);
-		auto right_str = current_text_.substr(right_index);
+		const auto left_str = current_text_.substr(0, left_index);
+		const auto right_str = current_text_.substr(right_index);
 		current_text_ = left_str + right_str;
 		cursor_position_ = left_index;
 	}

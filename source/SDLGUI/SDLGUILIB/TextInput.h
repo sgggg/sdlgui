@@ -15,7 +15,6 @@ namespace sgl
 		virtual void setText(const std::string& new_text);
 		virtual void setDefaultText(const std::string new_default_text);
 
-		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 		virtual void triggerKeyDown(SDL_Keysym key) override;
 
@@ -24,7 +23,6 @@ namespace sgl
 		std::string current_text_;			///< stores the text currently entered into the input box
 		int cursor_position_;				///< stores the index into current_text_ where the cursor is positioned.
 
-		// helpers
 		bool isPrintableKey(SDL_Keycode keycode) const;
 		void handlePrintableKeyInput(SDL_Keysym key);
 		void handleControlKeyInput(SDL_Keysym key);

@@ -30,11 +30,11 @@ namespace sgl
 
 	void HBoxLayout::updateLayout()
 	{
-		auto width_per_child = width_ / children_.size();
+		const auto width_per_child = size_.width / children_.size();
 		auto i = 0;
 		for (auto child : children_)
 		{
-			child->setSize(width_per_child - 2 * horizontal_padding_, height_ - margin_top_ - margin_bottom_);
+			child->setSize(width_per_child - 2 * horizontal_padding_, size_.height - margin_top_ - margin_bottom_);
 			child->setPosition(i * width_per_child + horizontal_padding_, 0);
 			i++;
 		}

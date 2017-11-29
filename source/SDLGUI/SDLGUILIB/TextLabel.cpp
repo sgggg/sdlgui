@@ -33,11 +33,11 @@ namespace sgl
 			const auto& color_theme = manager_->getStyleManager().getColorTheme();
 			if (is_active_)
 			{
-				renderTextAtPos(renderer, text_, screen_pos_x_, screen_pos_y_, PosAlign::TopLeft, color_theme.text_active, color_theme.text_background);
+				renderTextAtPos(renderer, text_, screen_pos_.x, screen_pos_.y, PosAlign::TopLeft, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{
-				renderTextAtPos(renderer, text_, screen_pos_x_, screen_pos_y_, PosAlign::TopLeft, color_theme.text_inactive, color_theme.text_background);
+				renderTextAtPos(renderer, text_, screen_pos_.x, screen_pos_.y, PosAlign::TopLeft, color_theme.text_inactive, color_theme.text_background);
 			}
 		}
 	}

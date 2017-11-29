@@ -16,12 +16,11 @@ namespace sgl
 	bool SDLGUILIB_API HandleEvent(SDL_Event* e);
 	void SDLGUILIB_API SetApplicationTime(std::chrono::milliseconds absolute_time);
 	std::chrono::milliseconds SDLGUILIB_API GetApplicationTime();
-		//void SDLGUILIB_API AdvanceApplicationTime(int64_t deltaTime);
 
 
 	class Window;
 	
-	typedef int WindowId;	// TODO remove
+	typedef std::int64_t WindowId;	// TODO remove
 
 	/**
 	 * @brief Singleton GuiManager that manages all resources and handles events and input for 

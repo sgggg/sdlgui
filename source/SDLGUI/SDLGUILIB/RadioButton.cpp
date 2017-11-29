@@ -42,12 +42,12 @@ namespace sgl
 	{
 		if (is_visible_)
 		{
-			auto box_size = 12;
-			auto label_offset = 8 + box_size;
-			auto color_theme = manager_->getStyleManager().getColorTheme();
-			auto circle_center_x = screen_pos_x_ + box_size / 2;
-			auto circle_center_y = screen_pos_y_ + box_size / 2;
-			auto circle_radius = box_size / 2;
+			constexpr auto box_size = 12;
+			constexpr auto label_offset = 8 + box_size;
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
+			const auto circle_center_x = screen_pos_.x + box_size / 2;
+			const auto circle_center_y = screen_pos_.y + box_size / 2;
+			const auto circle_radius = box_size / 2;
 
 			if (is_active_)
 			{
@@ -70,7 +70,7 @@ namespace sgl
 					// draw in unchecked state -> no fill
 				}
 				// draw label next to control
-				renderTextAtPos(renderer, label_, screen_pos_x_ + label_offset, screen_pos_y_ + circle_radius, PosAlign::Left, color_theme.text_active, color_theme.text_background);
+				renderTextAtPos(renderer, label_, screen_pos_.x + label_offset, screen_pos_.y + circle_radius, PosAlign::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{
@@ -82,7 +82,7 @@ namespace sgl
 	void RadioButton::triggerClicked()
 	{
 		is_checked_ = !is_checked_;
-		auto event_type = is_checked_ ? EventType::RadioButtonChecked : EventType::RadioButtonChecked;
+		const auto event_type = is_checked_ ? EventType::RadioButtonChecked : EventType::RadioButtonChecked;
 		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{

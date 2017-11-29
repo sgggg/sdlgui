@@ -7,12 +7,9 @@ namespace sgl
 {
 	Window::Window()
 		:id_(-1)
-		, width_(0)
-		, height_(0)
-		, relative_pos_x_(0)
-		, relative_pos_y_(0)
-		, screen_pos_x_(0)
-		, screen_pos_y_(0)
+		, size_{0, 0}
+		, relative_pos_{0, 0}
+		, screen_pos_{0, 0}
 		, is_visible_(false)
 		, is_active_(true)
 		, is_clicked_(false)
@@ -36,13 +33,14 @@ namespace sgl
 	{
 		manager_->unregisterWindow(this);
 		setParent(nullptr);
-		for (auto child : children_)
+		// be careful not to use iterators here because setParent() invalidates iterators into children_
+		while (!children_.empty())
 		{
-			child->setParent(nullptr);
+			children_.back()->setParent(nullptr);
 		}
 	}
 
-	WindowId Window::GetId() const
+	WindowId Window::getId() const
 	{
 		return id_;
 	}
@@ -59,6 +57,10 @@ namespace sgl
 
 	void Window::setParent(Window* new_parent)
 	{
+		if (new_parent == this)
+		{
+			return;
+		}
 		// 1. remove this window from children of old parent, if there was one
 		if (parent_ != nullptr)
 		{
@@ -87,38 +89,43 @@ namespace sgl
 
 	void Window::setSize(int width, int height)
 	{
-		width_ = width;
-		height_ = height;
+		setSize({width, height});
+	}
+
+	void Window::setSize(Size new_size)
+	{
+		size_ = new_size;
 	}
 
 	Size Window::getSize() const
 	{
-		return Size{width_, height_};
+		return size_;
 	}
 
 	void Window::setPosition(int x, int y)
 	{
+		return setPosition({x, y});
+	}
+
+	void Window::setPosition(Point new_position)
+	{
 		// TODO check that window is always positioned fully inside parent window
 		// TODO make sure that all child windows are moved together with their parent
-		auto new_pos_x = x;
-		auto new_pos_y = y;
-		relative_pos_x_ = new_pos_x;
-		relative_pos_y_ = new_pos_y;
+		const auto new_pos_ = new_position;
+		relative_pos_ = new_pos_;
 		if (parent_ == nullptr)
 		{
-			screen_pos_x_ = new_pos_x;
-			screen_pos_y_ = new_pos_y;
+			screen_pos_ = new_pos_;
 		}
 		else
 		{
-			screen_pos_x_ = parent_->screen_pos_x_ + new_pos_x;
-			screen_pos_y_ = parent_->screen_pos_y_ + new_pos_y;
+			screen_pos_ = parent_->screen_pos_ + new_pos_;
 		}
 	}
 
 	Point Window::getPosition() const
 	{
-		return Point{relative_pos_x_, relative_pos_y_};
+		return relative_pos_;
 	}
 
 	void Window::setFocus()
@@ -159,7 +166,7 @@ namespace sgl
 		event_handlers_.erase(eventType);
 	}
 
-	bool Window::isVisible()
+	bool Window::isVisible() const
 	{
 		return is_visible_;
 	}
@@ -285,7 +292,7 @@ namespace sgl
 					// - resuming mouse-down when re-entering with pressed lmouse
 					// TODO
 		auto was_handled = false;
-		auto did_contain_mouse = contains_mouse_;
+		const auto did_contain_mouse = contains_mouse_;
 		contains_mouse_ = isInsideWindowBounds(e.motion.x, e.motion.y);
 		if (did_contain_mouse && contains_mouse_)
 		{
@@ -327,10 +334,10 @@ namespace sgl
 
 	bool Window::isInsideWindowBounds(int x, int y) const
 	{
-		return	x >= screen_pos_x_ &&
-			x <= screen_pos_x_ + width_ &&
-			y >= screen_pos_y_ &&
-			y <= screen_pos_y_ + height_;
+		return	x >= screen_pos_.x &&
+			x <= screen_pos_.x + size_.width &&
+			y >= screen_pos_.y &&
+			y <= screen_pos_.y + size_.height;
 	}
 
 	Window* Window::getRootParent(Window* window)

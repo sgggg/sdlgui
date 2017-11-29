@@ -12,7 +12,6 @@ namespace sgl
 		virtual std::string getLabel() const;
 		virtual void setLabel(const std::string& text);
 
-		// inherited functions
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:

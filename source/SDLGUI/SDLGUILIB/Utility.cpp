@@ -70,8 +70,8 @@ namespace sgl
 			else
 			{
 				// Get width and height from surface so we don't have to use SDL_QueryTexture
-				auto width = surface_message->w;
-				auto height = surface_message->h;
+				const auto width = surface_message->w;
+				const auto height = surface_message->h;
 
 				auto texture_message = SDL_CreateTextureFromSurface(renderer, surface_message);
 				if (texture_message == NULL)
@@ -81,8 +81,8 @@ namespace sgl
 				else
 				{
 					// Copy texture to renderer
-					auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
-					auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
+					const auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+					const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 					SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
 					SDL_RenderFillRect(renderer, &dest_rect);
@@ -99,7 +99,7 @@ namespace sgl
 
 	SDL_Surface* renderTextToSurface(const std::string& text_message, SDL_Color text_color, int font_size)
 	{
-		auto font_path = getKnownFolderPath(KnownFolders::Fonts);
+		const auto font_path = getKnownFolderPath(KnownFolders::Fonts);
 		auto text_font = TTF_OpenFont((font_path + "\\Arial.ttf").c_str(), font_size);
 		SDL_Surface* surface = nullptr;
 		if (text_font == NULL)
@@ -121,8 +121,8 @@ namespace sgl
 	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int pos_x, int pos_y, PosAlign align)
 	{
 		// Get width and height from surface so we don't have to use SDL_QueryTexture
-		auto width = surface->w;
-		auto height = surface->h;
+		const auto width = surface->w;
+		const auto height = surface->h;
 
 		auto texture_message = SDL_CreateTextureFromSurface(renderer, surface);
 		if (texture_message == NULL)
@@ -132,8 +132,8 @@ namespace sgl
 		else
 		{
 			// Copy texture to renderer
-			auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
-			auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
+			const auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+			const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 			SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
 
@@ -145,14 +145,14 @@ namespace sgl
 
 	void drawRectangle(SDL_Renderer* renderer, int pos_x, int pos_y, int width, int height, SDL_Color c)
 	{
-		auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
+		const auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 		SDL_RenderDrawRect(renderer, &outline_rect);
 	}
 
 	void drawFilledRectangle(SDL_Renderer* renderer, int pos_x, int pos_y, int width, int height, SDL_Color c)
 	{
-		auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
+		const auto outline_rect = SDL_Rect{ pos_x, pos_y, width, height };
 		SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 		SDL_RenderFillRect(renderer, &outline_rect);
 	}

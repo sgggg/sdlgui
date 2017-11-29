@@ -30,7 +30,7 @@ namespace sgl
 	{
 		if (is_visible_)
 		{
-			auto color_theme = manager_->getStyleManager().getColorTheme();
+			const auto& color_theme = manager_->getStyleManager().getColorTheme();
 			SDL_Color color_button_fill, color_button_frame, color_button_label;
 			if (is_active_)
 			{
@@ -59,19 +59,18 @@ namespace sgl
 				color_button_label = color_theme.text_inactive;
 			}
 			// draw button fill color
-			drawFilledRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_button_fill);
+			drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_button_fill);
 			// draw outline
-			auto outline_rect = SDL_Rect{ screen_pos_x_, screen_pos_y_, width_, height_ };
-			drawRectangle(renderer, screen_pos_x_, screen_pos_y_, width_, height_, color_button_frame);
+			drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_button_frame);
 			// draw button label
-			auto button_center = getCenter({ screen_pos_x_, screen_pos_y_, width_, height_ });
+			const auto button_center = getCenter({ screen_pos_.x, screen_pos_.y, size_.width, size_.height });
 			renderTextAtPos(renderer, label_, button_center.x, button_center.y, PosAlign::Center, color_button_label, color_theme.text_background);
 		}
 	}
 
 	void Button::triggerClicked()
 	{
-		auto event_type = EventType::ButtonPressed;
+		const auto event_type = EventType::ButtonPressed;
 		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{
@@ -84,7 +83,7 @@ namespace sgl
 
 	void Button::triggerMouseDown()
 	{
-		auto event_type = EventType::ButtonDown;
+		const auto event_type = EventType::ButtonDown;
 		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{
@@ -97,7 +96,7 @@ namespace sgl
 
 	void Button::triggerMouseUp()
 	{
-		auto event_type = EventType::ButtonUp;
+		const auto event_type = EventType::ButtonUp;
 		auto event_handler = event_handlers_.find(event_type);
 		if (event_handler != std::end(event_handlers_))
 		{

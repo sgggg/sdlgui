@@ -13,9 +13,9 @@ namespace sgl
 	std::string sgl::readEnvironmentVariable(const std::string& variable)
 	{
 #ifdef _WIN32
-		auto buffer_size = 32767;	// see https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
+		constexpr auto buffer_size = 32767;	// see https://msdn.microsoft.com/en-us/library/windows/desktop/ms683188(v=vs.85).aspx
 		auto buffer = std::unique_ptr<char[]>(new char[buffer_size]);
-		auto num_chars = GetEnvironmentVariableA(variable.c_str(), buffer.get(), buffer_size);
+		const auto num_chars = GetEnvironmentVariableA(variable.c_str(), buffer.get(), buffer_size);
 		if (num_chars == 0)
 		{
 			// TODO error

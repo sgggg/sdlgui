@@ -210,6 +210,7 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGL.dll" "$(OutDir)"</Comm
     <ClCompile Include="TestWindowFocus.cpp" />
     <ClCompile Include="TestWindowTextInput.cpp" />
     <ClCompile Include="TestWindowTextLabel.cpp" />
+    <ClCompile Include="TestWindowWindow.cpp" />
     <ClCompile Include="UserInputGeneration.cpp" />
     <ClCompile Include="TestWindowButton.cpp" />
     <ClCompile Include="TestWindowFrame.cpp" />

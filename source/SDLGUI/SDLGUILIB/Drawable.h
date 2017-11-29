@@ -26,7 +26,7 @@ namespace sgl
 		 * 
 		 * An invisible object should not be drawn when its `draw()` function is called.
 		 */
-		virtual bool isVisible() = 0;
+		virtual bool isVisible() const = 0;
 		/**
 		 * @brief Set the visibility of this object.
 		 * 

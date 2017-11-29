@@ -17,6 +17,6 @@ namespace sgl
 
 	protected:
 		std::string title_;
-		bool has_title_bar_;							///< If true, this frame has a title bar containing its title at the top
+		bool has_title_bar_;					///< If true, this frame has a title bar containing its title at the top
 	};
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
+
 #include "GuiManager.h"
 #include "Window.h"
-#include <assert.h>
 
 namespace sgl
 {
@@ -60,10 +60,9 @@ namespace sgl
 		// because all those with parents are drawn by their 
 		// parents draw() function
 		// we're going through the list in reverse order so that the first item is drawn on top
-		for (auto window_it = std::rbegin(window_stack_); window_it != std::rend(window_stack_); ++window_it)
-		{
-			(*window_it)->draw(renderer);
-		}
+		std::for_each(window_stack_.rbegin(), window_stack_.rend(), [=](auto* window) {
+			window->draw(renderer);
+		});
 	}
 
 	void GuiManager::registerWindow(Window* window, WindowId& id)
@@ -100,17 +99,16 @@ namespace sgl
 		{
 			window_stack_.erase(window_stack_it);
 		}
-		freeWindowId(window->GetId());
+		freeWindowId(window->getId());
 		// move focus to another existing window, if the destroyed had focus
 		if (window == window_with_focus_)
 		{
-			if (window_stack_.size() > 0)
+			if (!window_stack_.empty())
 			{
 				window_with_focus_ = *std::begin(window_stack_);
 			}
 			else
 			{
-				// this one was the last window
 				window_with_focus_ = nullptr;
 			}
 		}
@@ -138,14 +136,7 @@ namespace sgl
 
 	bool GuiManager::hasWindowFocus(const Window* window) const
 	{
-		if (window_with_focus_ == nullptr)
-		{
-			return false;
-		}
-		else
-		{
-			return window_with_focus_ == window;
-		}
+		return window_with_focus_ == window;
 	}
 
 	WindowId GuiManager::getAvailableWindowId()
@@ -153,7 +144,7 @@ namespace sgl
 		return window_id_counter_++;
 	}
 
-	void GuiManager::freeWindowId(WindowId id)
+	void GuiManager::freeWindowId(WindowId /*id*/)
 	{
 		// TODO implement
 	}
@@ -173,14 +164,9 @@ namespace sgl
 	void GuiManager::updateWindowStack()
 	{
 		window_stack_.clear();
-		// TODO replace this with an stdlib algorithm
-		for (const auto win : windows_)
-		{
-			if (win->getParent() == nullptr)
-			{
-				window_stack_.push_back(win);
-			}
-		}
+		std::copy_if(windows_.begin(), windows_.end(), std::back_inserter(window_stack_), [](auto* window) {
+			return window->getParent() == nullptr;
+		});
 	}
 
 	void GuiManager::setApplicationTime(std::chrono::milliseconds time)

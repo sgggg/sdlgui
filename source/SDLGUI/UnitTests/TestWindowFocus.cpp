@@ -148,7 +148,7 @@ namespace UnitTests
 
 			Assert::AreEqual(first_key_press.key.keysym.sym, left_event_window.last_received_key_down_.sym);
 			Assert::AreEqual(0, right_event_window.last_received_key_down_.sym);
-			
+
 			globalClickWindow(right_event_window);
 			auto second_key_press = pressCharacterKey('B');
 			sgl::HandleEvent(&second_key_press);

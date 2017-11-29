@@ -13,13 +13,13 @@ namespace sgl
 
 	void ColorTheme::loadDefault()
 	{
-		SDL_Color lightergray	= { 0xEE	,	0xEE	,	0xEE	, 0xFF	};
-		SDL_Color lightgray		= { 0xDD	,	0xDD	,	0xDD	, 0xFF	};
-		SDL_Color gray			= { 0xC0	,	0xC0	,	0xC0	, 0xFF	};
-		SDL_Color darkergray	= { 0xAA	,	0xAA	,	0xAA	, 0xFF	};
-		SDL_Color black			= { 0x0		,	0x0		,	0x0		, 0xFF	};
-		SDL_Color white			= { 0xFF	,	0xFF	,	0xFF	, 0xFF	};
-		SDL_Color transparent	= { 0x0		,	0x0		,	0x0		, 0x0	};
+		const SDL_Color lightergray		= { 0xEE	,	0xEE	,	0xEE	, 0xFF	};
+		const SDL_Color lightgray		= { 0xDD	,	0xDD	,	0xDD	, 0xFF	};
+		const SDL_Color gray			= { 0xC0	,	0xC0	,	0xC0	, 0xFF	};
+		const SDL_Color darkergray		= { 0xAA	,	0xAA	,	0xAA	, 0xFF	};
+		const SDL_Color black			= { 0x0		,	0x0		,	0x0		, 0xFF	};
+		const SDL_Color white			= { 0xFF	,	0xFF	,	0xFF	, 0xFF	};
+		const SDL_Color transparent		= { 0x0		,	0x0		,	0x0		, 0x0	};
 		window_background				= lightgray;
 		window_titlebar					= gray;
 		window_frame_focus				= black;
@@ -74,7 +74,7 @@ namespace sgl
 	void GraphicsResources::loadDefault()
 	{
 		// prerender characters
-		auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
+		const auto fontPath = getKnownFolderPath(KnownFolders::Fonts);
 		// render with default color theme and style
 		ColorTheme ctheme;
 		WindowStyle wstyle;
