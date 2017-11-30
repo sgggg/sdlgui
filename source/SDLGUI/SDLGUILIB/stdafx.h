@@ -25,4 +25,5 @@
 #include <assert.h>
 #include <algorithm>
 #include <iterator>
+#include <numeric>
 

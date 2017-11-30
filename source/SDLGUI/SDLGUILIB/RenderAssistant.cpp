@@ -29,13 +29,9 @@ namespace sgl
 
 	SDL_Point RenderAssistant::renderString(SDL_Renderer* renderer, const std::string& string_to_render, TextMode mode, int posX, int posY) const
 	{
-		auto end_of_string = SDL_Point{ posX, posY };
-		// TODO replace this with an stdlib algorithm
-		for (const auto character : string_to_render)
-		{
-			end_of_string.y = posY;
-			end_of_string = renderCharacter(renderer, character, mode, end_of_string);
-		}
-		return end_of_string;
+		return std::accumulate(string_to_render.begin(), string_to_render.end(), SDL_Point{posX, posY}, [=](auto draw_position, auto character) {
+			draw_position.y = posY;
+			return renderCharacter(renderer, character, mode, draw_position);
+		});
 	}
 }

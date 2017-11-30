@@ -16,21 +16,29 @@ Task List
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - finish radio button control
+- implement slider control
 - add grouping window (GroupBox) for radio buttons and other controls
 - add scroll bars
-- (optional) add canvas control
-- (optional) add register control
-- (optional) add combo-box (drop-down list) control
-- (optional) add customizable menus and menu bars
 - add timed events and redraws for animations
-- implement moving of windows (drag & drop), this also moves all controls in a window
 - make sure controls are always positioned (and drawn) inside their parent window
 - window id generation/assignment should account for user defined IDs and IDs that are reused
 - adjust window size automatically to drawn content like text for buttons, checkboxes, text labels
 - change mouse cursor (e.g. when hovering text input controls or when resizing/moving a window) via SDL_CreateSystemCursor
+- finish reference implementation of simple calculator
+- add more unit tests (especially GuiManager)
+- evaluate not using global functions but package everything into a Gui top-level object
+- implement renderer interface to enable bindings to renderers other than SDL
+
+
+
+Low priority:
+- (optional) add canvas control
+- (optional) add register control
+- (optional) add combo-box (drop-down list) control
+- (optional) add customizable menus and menu bars
+- implement moving of windows (drag & drop), this also moves all controls in a window
 - add functionality to (minimize/)maximize windows
 - add title bar buttons for (minimizing/)maximizing
-- add reference implementations using the developed GUI functionality to implement a simple calculator
 
 
 
