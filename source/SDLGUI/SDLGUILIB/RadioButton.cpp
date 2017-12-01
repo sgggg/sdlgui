@@ -70,7 +70,7 @@ namespace sgl
 					// draw in unchecked state -> no fill
 				}
 				// draw label next to control
-				renderTextAtPos(renderer, label_, screen_pos_.x + label_offset, screen_pos_.y + circle_radius, PosAlign::Left, color_theme.text_active, color_theme.text_background);
+				renderTextAtPos(renderer, label_, screen_pos_.x + label_offset, screen_pos_.y + circle_radius, Alignment::Left, color_theme.text_active, color_theme.text_background);
 			}
 			else
 			{

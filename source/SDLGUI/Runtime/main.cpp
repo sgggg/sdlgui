@@ -73,9 +73,9 @@ int main(int /*argc*/, char* /*args*/[])
 	check2.addEventCallback(sgl::EventType::CheckBoxUnchecked, f5);
 
 	//add textlabel to window
-	sgl::TextLabel t(&main_frame, "hello world");
+	sgl::TextLabel t(&main_frame, "hello worlddddddddddddddddddddddd");
 	t.setPosition(10, 20);
-	t.setSize(10, 10);
+	t.setSize(100, 50);
 
 	//add textinput to window
 	sgl::TextInput i(&main_frame, "Der defaultText");

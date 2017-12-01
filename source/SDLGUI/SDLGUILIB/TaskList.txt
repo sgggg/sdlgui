@@ -12,7 +12,7 @@ Known Bugs List
 Task List
 * This list will contain all tasks that still need to be completed.
 
-- add possibility to change text alignment in TextLabel control
+- create alignable text component for Frames, Buttons, TextLabels, etc.
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - finish radio button control

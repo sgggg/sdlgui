@@ -34,8 +34,9 @@ void CalculatorGui::initialize(int guiWidth, int guiHeight)
 	calculation.setPosition(0, 0);
 	const auto output_panel_height = 80;
 	calculation.setSize(guiWidth, output_panel_height);
+	calculation.setTextAlignment(sgl::Alignment::Right);
 
-	gl.setPosition(0, 50);
+	gl.setPosition(0, output_panel_height);
 	gl.setSize(guiWidth, guiHeight - output_panel_height);
 
 	button_clear.addEventCallback(sgl::EventType::ButtonPressed, [&](const auto& e) {

@@ -26,6 +26,10 @@ namespace Microsoft
 			{
 				RETURN_WIDE_STRING(q);
 			}
+			template<> inline std::wstring ToString<sgl::Alignment>(const sgl::Alignment& q)
+			{
+				RETURN_WIDE_STRING(static_cast<int>(q));
+			}
 		}
 	}
 }

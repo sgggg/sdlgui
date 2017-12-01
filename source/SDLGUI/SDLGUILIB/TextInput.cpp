@@ -69,7 +69,7 @@ namespace sgl
 				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_background_inactive);
 				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_inactive);
 				renderTextAtPos(renderer, default_text_, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2,
-					PosAlign::Left, color_theme.text_inactive, color_theme.text_background);
+					Alignment::Left, color_theme.text_inactive, color_theme.text_background);
 			}
 		}
 	}
@@ -150,12 +150,12 @@ namespace sgl
 		{
 			auto first_string_surface = renderTextToSurface(first_string, color_theme.text_active);
 			cursor_pos_x += first_string_surface->w;
-			renderAndFreeSurface(renderer, first_string_surface, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2, PosAlign::Left);
+			renderAndFreeSurface(renderer, first_string_surface, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2, Alignment::Left);
 		}
 		if (!last_string.empty())
 		{
 			auto last_string_surface = renderTextToSurface(last_string, color_theme.text_active);
-			renderAndFreeSurface(renderer, last_string_surface, cursor_pos_x, screen_pos_.y + size_.height / 2, PosAlign::Left);
+			renderAndFreeSurface(renderer, last_string_surface, cursor_pos_x, screen_pos_.y + size_.height / 2, Alignment::Left);
 		}
 		return cursor_pos_x;
 	}

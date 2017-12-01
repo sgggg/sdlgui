@@ -64,7 +64,7 @@ namespace sgl
 			drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_button_frame);
 			// draw button label
 			const auto button_center = getCenter({ screen_pos_.x, screen_pos_.y, size_.width, size_.height });
-			renderTextAtPos(renderer, label_, button_center.x, button_center.y, PosAlign::Center, color_button_label, color_theme.text_background);
+			renderTextAtPos(renderer, label_, button_center.x, button_center.y, Alignment::Center, color_button_label, color_theme.text_background);
 		}
 	}
 

@@ -5,19 +5,19 @@
 
 namespace sgl
 {
-	Window::Window()
-		:id_(-1)
-		, size_{0, 0}
-		, relative_pos_{0, 0}
-		, screen_pos_{0, 0}
-		, is_visible_(false)
-		, is_active_(true)
-		, is_clicked_(false)
-		, contains_mouse_(false)
-		, parent_(nullptr)
-		, children_()
-		, event_handlers_()
-		, manager_(GuiManager::GetInstance())
+	Window::Window():
+		id_(-1),
+		size_{0, 0},
+		relative_pos_{0, 0},
+		screen_pos_{0, 0},
+		is_visible_(false),
+		is_active_(true),
+		is_clicked_(false),
+		contains_mouse_(false),
+		parent_(nullptr),
+		children_(),
+		event_handlers_(),
+		manager_(GuiManager::GetInstance())
 	{
 	}
 

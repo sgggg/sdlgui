@@ -49,7 +49,7 @@ namespace sgl
 					const auto title_bar_area = SDL_Rect{ screen_pos_.x + title_bar_margin, screen_pos_.y + title_bar_margin, size_.width - 2 * title_bar_margin, title_bar_height };
 					drawFilledRectangle(renderer, title_bar_area.x, title_bar_area.y, title_bar_area.w, title_bar_area.h, color_theme.window_titlebar);
 					renderTextAtPos(renderer, title_, title_bar_area.x + title_bar_text_offset, title_bar_area.y + title_bar_height / 2,
-						PosAlign::Left, color_theme.text_active, color_theme.text_background);
+						Alignment::Left, color_theme.text_active, color_theme.text_background);
 				}
 			}
 			else

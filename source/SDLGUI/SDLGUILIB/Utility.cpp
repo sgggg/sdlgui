@@ -10,38 +10,38 @@
 
 namespace sgl
 {
-	Point alignRectangle(SDL_Rect rect, PosAlign new_alignment)
+	Point calcOriginOfAlignedRect(SDL_Rect rect, Alignment new_alignment)
 	{
 		auto new_position = Point{ rect.x, rect.y };
 		switch (new_alignment)
 		{
-		case PosAlign::TopLeft:
+		case Alignment::TopLeft:
 			break;
-		case PosAlign::Top:
+		case Alignment::Top:
 			new_position.x = rect.x - rect.w / 2;
 			break;
-		case PosAlign::TopRight:
+		case Alignment::TopRight:
 			new_position.x = rect.x - rect.w;
 			break;
-		case PosAlign::Left:
+		case Alignment::Left:
 			new_position.y = rect.y - rect.h / 2;
 			break;
-		case PosAlign::Center:
+		case Alignment::Center:
 			new_position.x = rect.x - rect.w / 2;
 			new_position.y = rect.y - rect.h / 2;
 			break;
-		case PosAlign::Right:
+		case Alignment::Right:
 			new_position.x = rect.x - rect.w;
 			new_position.y = rect.y - rect.h / 2;
 			break;
-		case PosAlign::BottomLeft:
+		case Alignment::BottomLeft:
 			new_position.y = rect.y - rect.h;
 			break;
-		case PosAlign::Bottom:
+		case Alignment::Bottom:
 			new_position.x = rect.x - rect.w / 2;
 			new_position.y = rect.y - rect.h;
 			break;
-		case PosAlign::BottomRight:
+		case Alignment::BottomRight:
 			new_position.x = rect.x - rect.w;
 			new_position.y = rect.y - rect.h;
 			break;
@@ -51,7 +51,48 @@ namespace sgl
 		return new_position;
 	}
 
-	void renderTextAtPos(SDL_Renderer* renderer, const std::string& text_message, int pos_x, int pos_y, PosAlign align, SDL_Color text_color, SDL_Color background_color, int font_size)
+	Point getAlignedPointInRect(SDL_Rect rect, Alignment new_alignment)
+	{
+		auto new_point = Point{ rect.x, rect.y };
+		switch (new_alignment)
+		{
+		case Alignment::TopLeft:
+			break;
+		case Alignment::Top:
+			new_point.x = rect.x + rect.w / 2;
+			break;
+		case Alignment::TopRight:
+			new_point.x = rect.x + rect.w;
+			break;
+		case Alignment::Left:
+			new_point.y = rect.y + rect.h / 2;
+			break;
+		case Alignment::Center:
+			new_point.x = rect.x + rect.w / 2;
+			new_point.y = rect.y + rect.h / 2;
+			break;
+		case Alignment::Right:
+			new_point.x = rect.x + rect.w;
+			new_point.y = rect.y + rect.h / 2;
+			break;
+		case Alignment::BottomLeft:
+			new_point.y = rect.y + rect.h;
+			break;
+		case Alignment::Bottom:
+			new_point.x = rect.x + rect.w / 2;
+			new_point.y = rect.y + rect.h;
+			break;
+		case Alignment::BottomRight:
+			new_point.x = rect.x + rect.w;
+			new_point.y = rect.y + rect.h;
+			break;
+		default:
+			break;
+		}
+		return new_point;
+	}
+	
+	void renderTextAtPos(SDL_Renderer* renderer, const std::string& text_message, int pos_x, int pos_y, Alignment align, SDL_Color text_color, SDL_Color background_color, int font_size)
 	{
 		auto font_path = getKnownFolderPath(KnownFolders::Fonts);
 		auto text_font = TTF_OpenFont((font_path + "\\Arial.ttf").c_str(), font_size);
@@ -81,7 +122,7 @@ namespace sgl
 				else
 				{
 					// Copy texture to renderer
-					const auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+					const auto aligned_pos = calcOriginOfAlignedRect({ pos_x, pos_y, width, height }, align);
 					const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 					SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
@@ -118,7 +159,7 @@ namespace sgl
 		return surface;
 	}
 
-	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int pos_x, int pos_y, PosAlign align)
+	void renderAndFreeSurface(SDL_Renderer* renderer, SDL_Surface* surface, int pos_x, int pos_y, Alignment align)
 	{
 		// Get width and height from surface so we don't have to use SDL_QueryTexture
 		const auto width = surface->w;
@@ -132,7 +173,7 @@ namespace sgl
 		else
 		{
 			// Copy texture to renderer
-			const auto aligned_pos = alignRectangle({ pos_x, pos_y, width, height }, align);
+			const auto aligned_pos = calcOriginOfAlignedRect({ pos_x, pos_y, width, height }, align);
 			const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 			SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
