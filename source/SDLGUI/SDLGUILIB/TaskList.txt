@@ -12,7 +12,6 @@ Known Bugs List
 Task List
 * This list will contain all tasks that still need to be completed.
 
-- create alignable text component for Frames, Buttons, TextLabels, etc.
 - implement window children positioning layouts (Flow layout, grid layout, border layout, etc.)
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - finish radio button control
@@ -20,6 +19,7 @@ Task List
 - add grouping window (GroupBox) for radio buttons and other controls
 - add scroll bars
 - add timed events and redraws for animations
+- maybe implement test renderer to unit test rendering stuff
 - make sure controls are always positioned (and drawn) inside their parent window
 - window id generation/assignment should account for user defined IDs and IDs that are reused
 - adjust window size automatically to drawn content like text for buttons, checkboxes, text labels
@@ -28,6 +28,7 @@ Task List
 - add more unit tests (especially GuiManager)
 - evaluate not using global functions but package everything into a Gui top-level object
 - implement renderer interface to enable bindings to renderers other than SDL
+- create alignable text component for Frames, etc.
 
 
 

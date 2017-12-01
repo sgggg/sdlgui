@@ -51,7 +51,6 @@ namespace sgl
 				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_text_area_background);
 				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_active);
 				auto cursor_pos_x = screen_pos_.x + window_style.inner_padding;
-				// render text, stored in current_text_
 				if (!current_text_.empty())
 				{
 					cursor_pos_x = drawText(renderer, cursor_pos_x);

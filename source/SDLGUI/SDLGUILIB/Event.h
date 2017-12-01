@@ -2,13 +2,14 @@
 
 #include "SDLGUILIB_API.h"
 #include <functional>
+#include <chrono>
 
 namespace sgl
 {
 	class Event;
 
 	typedef std::function<void(const Event& e)> EventCallback;
-	typedef int64_t EventTime;
+	typedef std::chrono::milliseconds EventTime;
 
 	enum class EventType
 	{
@@ -26,7 +27,7 @@ namespace sgl
 	{
 	public:
 		EventType type_ = EventType::Invalid;
-		EventTime time_ = 0;
+		EventTime time_ = std::chrono::milliseconds(0);
 	};
 
 	class CommandEvent : public Event

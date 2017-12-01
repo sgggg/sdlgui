@@ -5,11 +5,11 @@
 
 namespace sgl
 {
-	Window::Window():
+	Window::Window() :
 		id_(-1),
-		size_{0, 0},
-		relative_pos_{0, 0},
-		screen_pos_{0, 0},
+		size_{ 0, 0 },
+		relative_pos_{ 0, 0 },
+		screen_pos_{ 0, 0 },
 		is_visible_(false),
 		is_active_(true),
 		is_clicked_(false),
@@ -89,7 +89,7 @@ namespace sgl
 
 	void Window::setSize(int width, int height)
 	{
-		setSize({width, height});
+		setSize({ width, height });
 	}
 
 	void Window::setSize(Size new_size)
@@ -104,22 +104,21 @@ namespace sgl
 
 	void Window::setPosition(int x, int y)
 	{
-		return setPosition({x, y});
+		return setPosition({ x, y });
 	}
 
 	void Window::setPosition(Point new_position)
 	{
 		// TODO check that window is always positioned fully inside parent window
 		// TODO make sure that all child windows are moved together with their parent
-		const auto new_pos_ = new_position;
-		relative_pos_ = new_pos_;
+		relative_pos_ = new_position;
 		if (parent_ == nullptr)
 		{
-			screen_pos_ = new_pos_;
+			screen_pos_ = new_position;
 		}
 		else
 		{
-			screen_pos_ = parent_->screen_pos_ + new_pos_;
+			screen_pos_ = parent_->screen_pos_ + new_position;
 		}
 	}
 
@@ -131,14 +130,7 @@ namespace sgl
 	void Window::setFocus()
 	{
 		manager_->setWindowFocus(this);
-		if (parent_ == nullptr)
-		{
-			manager_->stackOnTop(this);
-		}
-		else
-		{
-			manager_->stackOnTop(getRootParent(this));
-		}
+		manager_->stackOnTop(getRootParent(this));
 	}
 
 	bool Window::hasFocus() const
@@ -342,7 +334,10 @@ namespace sgl
 
 	Window* Window::getRootParent(Window* window)
 	{
-		assert(window != nullptr);
+		if (window == nullptr)
+		{
+			return nullptr;
+		}
 		auto root_parent = window;
 		while (root_parent->parent_ != nullptr)
 		{
