@@ -52,6 +52,17 @@ namespace UnitTests
 			Assert::AreEqual(new_label, button_.getLabel());
 		}
 
+		TEST_METHOD(CheckButtonSetLabelAlignment)
+		{
+			sgl::Button button(nullptr, "Label Text"s);
+			auto expected_default_alignment = sgl::Alignment::Center;
+			Assert::AreEqual(expected_default_alignment, button.getLabelAlignment());
+
+			auto new_alignment = sgl::Alignment::TopRight;
+			button.setLabelAlignment(new_alignment);
+			Assert::AreEqual(new_alignment, button.getLabelAlignment());
+		}
+
 		TEST_METHOD(CheckButtonPressedCallback)
 		{
 			button_.handleEvent(leftMouseDown(1, 2));
@@ -150,6 +161,5 @@ namespace UnitTests
 			Assert::IsFalse(callback_button_went_down_);
 			Assert::IsFalse(callback_button_went_up_);
 		}
-
 	};
 }

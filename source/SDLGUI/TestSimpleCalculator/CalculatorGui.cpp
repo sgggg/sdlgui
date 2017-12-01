@@ -34,7 +34,7 @@ void CalculatorGui::initialize(int guiWidth, int guiHeight)
 	calculation.setPosition(0, 0);
 	const auto output_panel_height = 80;
 	calculation.setSize(guiWidth, output_panel_height);
-	calculation.setTextAlignment(sgl::Alignment::Right);
+	calculation.setLabelAlignment(sgl::Alignment::Right);
 
 	gl.setPosition(0, output_panel_height);
 	gl.setSize(guiWidth, guiHeight - output_panel_height);
@@ -122,7 +122,7 @@ void CalculatorGui::updateCalculationString()
 	{
 		new_label += std::to_string(number_being_entered_);
 	}
-	calculation.setText(new_label);
+	calculation.setLabel(new_label);
 }
 
 void CalculatorGui::addDigit(int digit)

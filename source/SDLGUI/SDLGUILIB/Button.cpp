@@ -4,15 +4,17 @@
 
 namespace sgl
 {
-	Button::Button()
-		:Window()
-		,label_()
+	Button::Button() :
+		Window(),
+		label_(),
+		label_alignment_(Alignment::Center)
 	{
 	}
 
-	Button::Button(Window* parent, const std::string& label)
-		:Window(parent)
-		,label_(label)
+	Button::Button(Window* parent, const std::string& label) :
+		Window(parent),
+		label_(label),
+		label_alignment_(Alignment::Center)
 	{
 	}
 
@@ -24,6 +26,16 @@ namespace sgl
 	void Button::setLabel(const std::string& text)
 	{
 		label_ = text;
+	}
+
+	Alignment Button::getLabelAlignment() const
+	{
+		return label_alignment_;
+	}
+
+	void Button::setLabelAlignment(Alignment alignment)
+	{
+		label_alignment_ = alignment;
 	}
 
 	void Button::draw(SDL_Renderer* renderer)
@@ -63,8 +75,9 @@ namespace sgl
 			// draw outline
 			drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_button_frame);
 			// draw button label
-			const auto button_center = getCenter({ screen_pos_.x, screen_pos_.y, size_.width, size_.height });
-			renderTextAtPos(renderer, label_, button_center.x, button_center.y, Alignment::Center, color_button_label, color_theme.text_background);
+
+			const auto aligned_point = getAlignedPointInRect({ screen_pos_.x, screen_pos_.y, size_.width, size_.height }, label_alignment_);
+			renderTextAtPos(renderer, label_, aligned_point.x, aligned_point.y, label_alignment_, color_button_label, color_theme.text_background);
 		}
 	}
 

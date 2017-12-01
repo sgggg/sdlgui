@@ -10,45 +10,43 @@
 
 namespace sgl
 {
-	Point calcOriginOfAlignedRect(SDL_Rect rect, Alignment new_alignment)
+	void alignRectangle(SDL_Rect& rect, Alignment new_alignment)
 	{
-		auto new_position = Point{ rect.x, rect.y };
 		switch (new_alignment)
 		{
 		case Alignment::TopLeft:
 			break;
 		case Alignment::Top:
-			new_position.x = rect.x - rect.w / 2;
+			rect.x -= rect.w / 2;
 			break;
 		case Alignment::TopRight:
-			new_position.x = rect.x - rect.w;
+			rect.x -= rect.w;
 			break;
 		case Alignment::Left:
-			new_position.y = rect.y - rect.h / 2;
+			rect.y -= rect.h / 2;
 			break;
 		case Alignment::Center:
-			new_position.x = rect.x - rect.w / 2;
-			new_position.y = rect.y - rect.h / 2;
+			rect.x -= rect.w / 2;
+			rect.y -= rect.h / 2;
 			break;
 		case Alignment::Right:
-			new_position.x = rect.x - rect.w;
-			new_position.y = rect.y - rect.h / 2;
+			rect.x -= rect.w;
+			rect.y -= rect.h / 2;
 			break;
 		case Alignment::BottomLeft:
-			new_position.y = rect.y - rect.h;
+			rect.y -= rect.h;
 			break;
 		case Alignment::Bottom:
-			new_position.x = rect.x - rect.w / 2;
-			new_position.y = rect.y - rect.h;
+			rect.x -= rect.w / 2;
+			rect.y -= rect.h;
 			break;
 		case Alignment::BottomRight:
-			new_position.x = rect.x - rect.w;
-			new_position.y = rect.y - rect.h;
+			rect.x -= rect.w;
+			rect.y -= rect.h;
 			break;
 		default:
 			break;
 		}
-		return new_position;
 	}
 
 	Point getAlignedPointInRect(SDL_Rect rect, Alignment new_alignment)
@@ -122,12 +120,12 @@ namespace sgl
 				else
 				{
 					// Copy texture to renderer
-					const auto aligned_pos = calcOriginOfAlignedRect({ pos_x, pos_y, width, height }, align);
-					const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
+					auto destination_rect = SDL_Rect{ pos_x, pos_y, width, height };
+					alignRectangle(destination_rect, align);
 					SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
 					SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
-					SDL_RenderFillRect(renderer, &dest_rect);
-					SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
+					SDL_RenderFillRect(renderer, &destination_rect);
+					SDL_RenderCopy(renderer, texture_message, NULL, &destination_rect);
 
 					// Free resources
 					SDL_DestroyTexture(texture_message);
@@ -173,10 +171,10 @@ namespace sgl
 		else
 		{
 			// Copy texture to renderer
-			const auto aligned_pos = calcOriginOfAlignedRect({ pos_x, pos_y, width, height }, align);
-			const auto dest_rect = SDL_Rect{ aligned_pos.x, aligned_pos.y, width, height };
+			auto destination_rect = SDL_Rect{ pos_x, pos_y, width, height };
+			alignRectangle(destination_rect, align);
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-			SDL_RenderCopy(renderer, texture_message, NULL, &dest_rect);
+			SDL_RenderCopy(renderer, texture_message, NULL, &destination_rect);
 
 			// Free resources
 			SDL_DestroyTexture(texture_message);
