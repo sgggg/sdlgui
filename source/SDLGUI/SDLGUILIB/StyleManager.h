@@ -11,8 +11,8 @@ namespace sgl
 
 		const ColorTheme& getColorTheme() const;
 		const WindowStyle& getWindowStyle() const;
-		void load_default_color_theme();
-		void load_default_window_style();
+		void loadDefaultColorTheme();
+		void loadDefaultWindowStyle();
 
 	private:
 		ColorTheme current_color_theme_;

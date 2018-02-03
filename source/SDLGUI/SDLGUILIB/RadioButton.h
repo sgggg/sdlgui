@@ -18,7 +18,11 @@ namespace sgl
 		virtual void draw(SDL_Renderer* renderer) override;
 
 	protected:
+		void drawActiveState(SDL_Renderer * renderer, const sgl::Point &circle_center, const int &circle_radius, const int &label_offset);
 		virtual void triggerClicked() override;
+		void sendCheckedEvent();
+		virtual void uncheckSiblingRadioButtons();
+		bool hasChangedToChecked(bool was_checked);
 
 		std::string label_;
 		bool is_checked_;

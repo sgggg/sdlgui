@@ -63,9 +63,9 @@ namespace UnitTests
 			BasicWindow window2(nullptr);
 			BasicWindow window3(nullptr);
 
-			Assert::AreNotEqual(sgl::Window::kInvalidId, window1.getId());
-			Assert::AreNotEqual(sgl::Window::kInvalidId, window2.getId());
-			Assert::AreNotEqual(sgl::Window::kInvalidId, window3.getId());
+			Assert::AreNotEqual(sgl::kInvalidWindowId, window1.getId());
+			Assert::AreNotEqual(sgl::kInvalidWindowId, window2.getId());
+			Assert::AreNotEqual(sgl::kInvalidWindowId, window3.getId());
 			Assert::AreNotEqual(window1.getId(), window2.getId());
 			Assert::AreNotEqual(window1.getId(), window3.getId());
 			Assert::AreNotEqual(window2.getId(), window3.getId());

@@ -11,3 +11,4 @@
 #include "HBoxLayout.h"
 #include "GridLayout.h"
 #include "GuiManager.h"
+#include "GroupBox.h"

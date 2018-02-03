@@ -104,7 +104,7 @@ namespace sgl
 			auto surface_message = TTF_RenderText_Solid(text_font, text_message.c_str(), text_color);
 			if (surface_message == NULL)
 			{
-				std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
+				std::cerr << "renderTextAtPos(): Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 			}
 			else
 			{
@@ -150,7 +150,7 @@ namespace sgl
 			surface = TTF_RenderText_Solid(text_font, text_message.c_str(), text_color);
 			if (surface == NULL)
 			{
-				std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
+				std::cerr << "renderTextToSurface(): Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 			}
 			TTF_CloseFont(text_font);
 		}

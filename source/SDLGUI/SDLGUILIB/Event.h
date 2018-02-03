@@ -1,8 +1,10 @@
 #pragma once
 
-#include "SDLGUILIB_API.h"
 #include <functional>
 #include <chrono>
+
+#include "SDLGUILIB_API.h"
+#include "Common.h"
 
 namespace sgl
 {
@@ -17,10 +19,8 @@ namespace sgl
 		ButtonDown,
 		ButtonUp,
 		ButtonPressed,
-		CheckBoxChecked,
-		CheckBoxUnchecked,
-		RadioButtonChecked,
-		RadioButtonUnchecked,
+		Checked,
+		Unchecked,
 	};
 	
 	class Event
@@ -28,6 +28,7 @@ namespace sgl
 	public:
 		EventType type_ = EventType::Invalid;
 		EventTime time_ = std::chrono::milliseconds(0);
+		WindowId source_ = kInvalidWindowId;
 	};
 
 	class CommandEvent : public Event

@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#include <cctype>
+
 #include "UserInputGeneration.h"
 #include "../SDLGUILIB/SGL.h"
 
@@ -122,9 +125,9 @@ SDL_Event pressCharacterKey(char character)
 		throw std::runtime_error("typing this key is not supported right now");
 	}
 	Uint16 modifier{};
-	if (character >= 'A' && character <= 'Z')
+	if (::isupper(character))
 	{
-		character += 'a' - 'A';
+		character = ::tolower(character);
 		modifier = KMOD_SHIFT;
 	}
 	auto key_press_event = SDL_Event{};

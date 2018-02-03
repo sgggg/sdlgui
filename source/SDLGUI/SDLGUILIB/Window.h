@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 #include <string>
 #include <map>
 #include <cstdint>
@@ -14,14 +14,9 @@
 
 namespace sgl
 {
-	typedef std::int64_t WindowId;
-	class GuiManager;
-
 	class SDLGUILIB_API Window : public Drawable, public EventProcessor
 	{
 	public:
-		static const WindowId kInvalidId = WindowId(-1);
-
 		Window();
 		Window(Window* parentWindow);
 		~Window();
@@ -29,6 +24,7 @@ namespace sgl
 		virtual WindowId getId() const;
 		virtual void addChild(Window& child_window);
 		virtual void removeChild(Window& child_window);
+		virtual std::vector<Window*> getChildren() const;
 		virtual void setParent(Window* new_parent);
 		virtual Window* getParent() const;
 		virtual void setSize(int width, int height);
@@ -55,8 +51,10 @@ namespace sgl
 		bool handleMouseButtonUp(const SDL_Event& e);
 		bool handleMouseMotion(const SDL_Event& e);
 		bool handleKeyDown(const SDL_Event& e);
+		
 		bool isInsideWindowBounds(int x, int y) const;
 		Window* getRootParent(Window* window);
+		void callEventCallback(const Event& e);
 
 		friend GuiManager;
 		// event generating functions
@@ -80,7 +78,7 @@ namespace sgl
 		bool is_clicked_;									///< `true` if there was a mouse down event inside this window but no mouse up event yet
 		bool contains_mouse_;								///< `true` if the mouse pointer is currently inside this window
 		Window* parent_;									///< Non-owning pointer to parent window
-		std::list<Window*> children_;						///< Non-owning pointers to all children of this window
+		std::vector<Window*> children_;						///< Non-owning pointers to all children of this window
 		std::map<EventType, EventCallback> event_handlers_;	///< List of registered event callback functions
 		GuiManager* manager_;								///< Non-owning pointer to the global GUI manager
 

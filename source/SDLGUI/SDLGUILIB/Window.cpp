@@ -55,6 +55,11 @@ namespace sgl
 		child_window.setParent(nullptr);
 	}
 
+	std::vector<Window*> Window::getChildren() const
+	{
+		return children_;
+	}
+
 	void Window::setParent(Window* new_parent)
 	{
 		if (new_parent == this)
@@ -344,6 +349,15 @@ namespace sgl
 			root_parent = root_parent->parent_;
 		}
 		return root_parent;
+	}
+
+	void Window::callEventCallback(const Event& e)
+	{
+		auto event_handler = event_handlers_.find(e.type_);
+		if (event_handler != std::end(event_handlers_))
+		{
+			event_handler->second(e);
+		}
 	}
 
 	void Window::triggerClicked()

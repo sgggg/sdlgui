@@ -10,8 +10,8 @@ namespace sgl
 		:current_color_theme_()
 		,current_window_style_()
 	{
-		load_default_color_theme();
-		load_default_window_style();
+		loadDefaultColorTheme();
+		loadDefaultWindowStyle();
 	}
 
 	const ColorTheme& StyleManager::getColorTheme() const
@@ -24,12 +24,12 @@ namespace sgl
 		return current_window_style_;
 	}
 
-	void StyleManager::load_default_color_theme()
+	void StyleManager::loadDefaultColorTheme()
 	{
 		current_color_theme_.loadDefault();
 	}
 
-	void StyleManager::load_default_window_style()
+	void StyleManager::loadDefaultWindowStyle()
 	{
 		current_window_style_ = WindowStyle{};
 	}

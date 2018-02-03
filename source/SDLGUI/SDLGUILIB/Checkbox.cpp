@@ -80,14 +80,10 @@ namespace sgl
 	void Checkbox::triggerClicked()
 	{
 		is_checked_ = !is_checked_;
-		const auto event_type = is_checked_ ? EventType::CheckBoxChecked : EventType::CheckBoxUnchecked;
-		auto event_handler = event_handlers_.find(event_type);
-		if (event_handler != std::end(event_handlers_))
-		{
-			Event e;
-			e.type_ = event_type;
-			e.time_ = manager_->getApplicationTime();
-			event_handler->second(e);
-		}
+		const auto event_type = is_checked_ ? EventType::Checked : EventType::Unchecked;
+		Event e;
+		e.type_ = event_type;
+		e.time_ = manager_->getApplicationTime();
+		callEventCallback(e);
 	}
 }

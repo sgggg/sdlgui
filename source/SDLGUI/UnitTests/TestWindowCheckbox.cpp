@@ -26,10 +26,10 @@ namespace UnitTests
 		{
 			checkbox_.setSize(200, 80);
 			checkbox_.setVisible(true);
-			checkbox_.addEventCallback(sgl::EventType::CheckBoxChecked, [this](const auto& e) {
+			checkbox_.addEventCallback(sgl::EventType::Checked, [this](const auto& e) {
 				callback_was_checked_ = true;
 			});
-			checkbox_.addEventCallback(sgl::EventType::CheckBoxUnchecked, [this](const auto& e) {
+			checkbox_.addEventCallback(sgl::EventType::Unchecked, [this](const auto& e) {
 				callback_was_unchecked_ = true;
 			});
 		}

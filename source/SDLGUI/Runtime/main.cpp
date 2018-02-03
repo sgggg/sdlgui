@@ -57,8 +57,8 @@ int main(int /*argc*/, char* /*args*/[])
 	auto f3 = [&b](const sgl::Event& /*e*/) {
 		b.setVisible(true);
 	};
-	c.addEventCallback(sgl::EventType::CheckBoxChecked, f2);
-	c.addEventCallback(sgl::EventType::CheckBoxUnchecked, f3);
+	c.addEventCallback(sgl::EventType::Checked, f2);
+	c.addEventCallback(sgl::EventType::Unchecked, f3);
 
 	sgl::Checkbox check2(&main_frame, "Deactivate Button \"Press Me!\"");
 	check2.setPosition(200, 150);
@@ -69,8 +69,8 @@ int main(int /*argc*/, char* /*args*/[])
 	auto f5 = [&b](const sgl::Event& /*e*/) {
 		b.setActive(true);
 	};
-	check2.addEventCallback(sgl::EventType::CheckBoxChecked, f4);
-	check2.addEventCallback(sgl::EventType::CheckBoxUnchecked, f5);
+	check2.addEventCallback(sgl::EventType::Checked, f4);
+	check2.addEventCallback(sgl::EventType::Unchecked, f5);
 
 	//add textlabel to window
 	sgl::TextLabel t(&main_frame, "hello worlddddddddddddddddddddddd");
@@ -97,13 +97,23 @@ int main(int /*argc*/, char* /*args*/[])
 	// create second window
 	sgl::Frame second_frame(nullptr, "Other Window");
 	second_frame.setSize(400, 300);
-	second_frame.setPosition(100, 100);
+	second_frame.setPosition(50, 50);
 	second_frame.setTitleBar(true);
 
-	// add radio button to window
-	sgl::RadioButton radio_button(&second_frame, "Radio?");
-	radio_button.setPosition(200, 50);
-	radio_button.setSize(100, 40);
+	sgl::GroupBox group_box(&second_frame);
+	group_box.setSize(300, 200);
+	sgl::GridLayout box_grid_layout(&group_box);
+	box_grid_layout.setSize(300, 200);
+
+	// add some radio buttons to group box
+	sgl::RadioButton radio_button1(&box_grid_layout, "Option 1");
+	sgl::RadioButton radio_button2(&box_grid_layout, "Option 2");
+	sgl::RadioButton radio_button3(&box_grid_layout, "Option 3");
+
+	box_grid_layout.setGridPolicy(radio_button1, 0, 0);
+	box_grid_layout.setGridPolicy(radio_button2, 0, 1);
+	box_grid_layout.setGridPolicy(radio_button3, 0, 2);
+	box_grid_layout.updateLayout();
 
 	// make everything visible
 	main_frame.setVisible(true);

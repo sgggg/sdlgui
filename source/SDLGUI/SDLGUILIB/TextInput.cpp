@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#include <cctype>
+
 #include "TextInput.h"
 #include "GuiManager.h"
 
@@ -93,10 +96,10 @@ namespace sgl
 	void TextInput::handlePrintableKeyInput(SDL_Keysym key)
 	{
 		auto ascii_character = static_cast<char>(key.sym);
-		if (ascii_character >= 'a' && ascii_character <= 'z' && key.mod & KMOD_SHIFT)
+		if (::islower(ascii_character) && key.mod & KMOD_SHIFT)
 		{
 			// make char uppercase
-			ascii_character -= 'a' - 'A';
+			ascii_character = ::toupper(ascii_character);
 		}
 		addCharacter(cursor_position_, ascii_character);
 	}

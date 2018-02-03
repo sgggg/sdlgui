@@ -61,7 +61,7 @@ namespace sgl
 				auto surface = TTF_RenderText_Solid(text_font, char_as_string, text_color);
 				if (surface == nullptr)
 				{
-					std::cerr << "Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
+					std::cerr << "prerenderCharacters(): Unable to create surface from message! Error: " << SDL_GetError() << std::endl;
 				}
 				auto managed_surface = GraphicsResources::ManagedSurface(surface, SDL_FreeSurface);
 				rendered_characters.emplace(std::make_pair(char_as_string[0], std::move(managed_surface)));
