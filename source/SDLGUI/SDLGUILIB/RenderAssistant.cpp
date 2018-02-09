@@ -11,7 +11,7 @@ namespace sgl
 
 	SDL_Point RenderAssistant::renderCharacter(SDL_Renderer* renderer, char char_to_render, TextMode mode, SDL_Point position) const
 	{
-		const auto prerendered_char = graphics_resources_.prerendered_characters_.find(mode)->second.find(char_to_render)->second.get();
+		const auto prerendered_char = getPrerenderedCharacter(mode, char_to_render);
 		auto char_texture = SDL_CreateTextureFromSurface(renderer, prerendered_char);
 		if (char_texture == nullptr)
 		{
@@ -25,6 +25,11 @@ namespace sgl
 		}
 		SDL_DestroyTexture(char_texture);
 		return SDL_Point{ position.x + prerendered_char->w, position.y + prerendered_char->h };
+	}
+
+	SDL_Surface* RenderAssistant::getPrerenderedCharacter(sgl::TextMode& mode, char char_to_render) const
+	{
+		return graphics_resources_.prerendered_characters_.find(mode)->second.find(char_to_render)->second.get();
 	}
 
 	SDL_Point RenderAssistant::renderString(SDL_Renderer* renderer, const std::string& string_to_render, TextMode mode, int posX, int posY) const

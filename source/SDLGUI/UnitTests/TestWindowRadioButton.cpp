@@ -23,10 +23,10 @@ namespace UnitTests
 		sgl::RadioButton radio1_;
 		sgl::RadioButton radio2_;
 		sgl::RadioButton radio3_;
-		int last_checked_radio_ = 0;
-		int last_unchecked_radio_ = 0;
+		int last_checked_radio_{ 0 };
+		int last_unchecked_radio_{0};
 
-		TestWindowRadioButton():
+		TestWindowRadioButton() :
 			radio1_label_("Option 1"),
 			radio2_label_("Option 2"),
 			radio3_label_("Option 3"),
@@ -100,7 +100,7 @@ namespace UnitTests
 			Assert::IsFalse(radio2_.isChecked());
 			Assert::IsTrue(radio3_.isChecked());
 		}
-		
+
 		TEST_METHOD(CheckRadioButtonCheckedUncheckedCallback)
 		{
 			Assert::AreEqual(0, last_checked_radio_);
@@ -121,7 +121,7 @@ namespace UnitTests
 			Assert::AreEqual(1, last_checked_radio_);
 			Assert::AreEqual(2, last_unchecked_radio_);
 		}
-		
+
 		TEST_METHOD(CheckSetCheckedAndUncheckedWhenInactive)
 		{
 			radio1_.setActive(false);
@@ -136,7 +136,7 @@ namespace UnitTests
 
 			Assert::IsFalse(radio1_.isChecked());
 		}
-		
+
 		TEST_METHOD(CheckSetCheckedAndUncheckedWhenNotVisible)
 		{
 			radio1_.setVisible(false);
@@ -151,7 +151,7 @@ namespace UnitTests
 
 			Assert::IsFalse(radio1_.isChecked());
 		}
-		
+
 		TEST_METHOD(CheckSetCheckedAndNotUncheckedViaMouse)
 		{
 			Assert::IsFalse(radio1_.isChecked());
@@ -164,7 +164,7 @@ namespace UnitTests
 
 			Assert::IsTrue(radio1_.isChecked());
 		}
-		
+
 		TEST_METHOD(CheckSetCheckedAndUncheckedViaMouseWhenInactive)
 		{
 			radio1_.setActive(false);

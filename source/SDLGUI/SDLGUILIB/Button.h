@@ -20,6 +20,7 @@ namespace sgl
 		virtual void triggerClicked() override;
 		virtual void triggerMouseDown() override;
 		virtual void triggerMouseUp() override;
+		void sendEvent(EventType event_type);
 
 		std::string label_;
 		Alignment label_alignment_;

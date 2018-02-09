@@ -75,7 +75,6 @@ namespace sgl
 			// draw outline
 			drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_button_frame);
 			// draw button label
-
 			const auto aligned_point = getAlignedPointInRect({ screen_pos_.x, screen_pos_.y, size_.width, size_.height }, label_alignment_);
 			renderTextAtPos(renderer, label_, aligned_point.x, aligned_point.y, label_alignment_, color_button_label, color_theme.text_background);
 		}
@@ -83,25 +82,25 @@ namespace sgl
 
 	void Button::triggerClicked()
 	{
-		Event e;
-		e.type_ = EventType::ButtonPressed;
-		e.time_ = manager_->getApplicationTime();
-		callEventCallback(e);
+		sendEvent(EventType::ButtonPressed);
 	}
 
 	void Button::triggerMouseDown()
 	{
-		Event e;
-		e.type_ = EventType::ButtonDown;
-		e.time_ = manager_->getApplicationTime();
-		callEventCallback(e);
+		sendEvent(EventType::ButtonDown);
 	}
 
 	void Button::triggerMouseUp()
 	{
+		sendEvent(EventType::ButtonUp);
+	}
+
+	void Button::sendEvent(EventType event_type)
+	{
 		Event e;
-		e.type_ = EventType::ButtonUp;
+		e.type_ = event_type;
 		e.time_ = manager_->getApplicationTime();
 		callEventCallback(e);
 	}
 }
+

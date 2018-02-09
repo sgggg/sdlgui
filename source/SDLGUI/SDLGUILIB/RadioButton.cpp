@@ -119,8 +119,12 @@ namespace sgl
 					auto sibling_radio_button = dynamic_cast<RadioButton*>(sibling);
 					if (sibling_radio_button)
 					{
+						auto wasChecked = sibling_radio_button->is_checked_;
 						sibling_radio_button->is_checked_ = false;
-						// TODO sibling doesn't send the necessary Unchecked event
+						if (wasChecked != sibling_radio_button->is_checked_)
+						{
+							sibling_radio_button->sendCheckedEvent();
+						}
 					}
 				}
 			}

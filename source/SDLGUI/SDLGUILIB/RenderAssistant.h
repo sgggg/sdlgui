@@ -13,6 +13,8 @@ namespace sgl
 		SDL_Point renderString(SDL_Renderer* renderer, const std::string& string_to_render, TextMode mode, int pos_x, int pos_y) const;
 
 	private:
+		SDL_Surface* getPrerenderedCharacter(sgl::TextMode &mode, char char_to_render) const;
+
 		GraphicsResources graphics_resources_;
 	};
 }

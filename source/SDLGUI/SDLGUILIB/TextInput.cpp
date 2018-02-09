@@ -47,31 +47,43 @@ namespace sgl
 	{
 		if (is_visible_)
 		{
-			const auto& color_theme = manager_->getStyleManager().getColorTheme();
-			const auto& window_style = manager_->getStyleManager().getWindowStyle();
 			if (is_active_)
 			{
-				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_text_area_background);
-				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_active);
-				auto cursor_pos_x = screen_pos_.x + window_style.inner_padding;
-				if (!current_text_.empty())
-				{
-					cursor_pos_x = drawText(renderer, cursor_pos_x);
-				}
-				if (hasFocus())
-				{
-					if (manager_->getApplicationTime().count() % 1000 < 500)
-					{
-						drawCursor(renderer, cursor_pos_x);
-					}
-				}
+				drawActive(renderer);
 			}
 			else
 			{
-				drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_background_inactive);
-				drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_inactive);
-				renderTextAtPos(renderer, default_text_, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2,
-					Alignment::Left, color_theme.text_inactive, color_theme.text_background);
+				drawInactive(renderer);
+			}
+		}
+	}
+
+	void TextInput::drawInactive(SDL_Renderer* renderer)
+	{
+		const auto& color_theme = manager_->getStyleManager().getColorTheme();
+		const auto& window_style = manager_->getStyleManager().getWindowStyle();
+		drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_background_inactive);
+		drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_inactive);
+		renderTextAtPos(renderer, default_text_, screen_pos_.x + window_style.inner_padding, screen_pos_.y + size_.height / 2,
+			Alignment::Left, color_theme.text_inactive, color_theme.text_background);
+	}
+
+	void TextInput::drawActive(SDL_Renderer* renderer)
+	{
+		const auto& color_theme = manager_->getStyleManager().getColorTheme();
+		const auto& window_style = manager_->getStyleManager().getWindowStyle();
+		drawFilledRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_text_area_background);
+		drawRectangle(renderer, screen_pos_.x, screen_pos_.y, size_.width, size_.height, color_theme.control_frame_active);
+		auto cursor_pos_x = screen_pos_.x + window_style.inner_padding;
+		if (!current_text_.empty())
+		{
+			cursor_pos_x = drawText(renderer, cursor_pos_x);
+		}
+		if (hasFocus())
+		{
+			if (manager_->getApplicationTime().count() % 1000 < 500)
+			{
+				drawCursor(renderer, cursor_pos_x);
 			}
 		}
 	}
@@ -203,7 +215,7 @@ namespace sgl
 			const auto right_str = current_text_.substr(index);
 			current_text_ = left_str + character + right_str;
 		}
-		++cursor_position_;
+		moveCursorRight();
 	}
 
 	void TextInput::addCharacterRange(int index, const std::string& characters)
