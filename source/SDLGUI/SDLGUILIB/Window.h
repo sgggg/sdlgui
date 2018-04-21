@@ -56,7 +56,7 @@ namespace sgl
 		Window* getRootParent(Window* window);
 		void callEventCallback(const Event& e);
 
-		friend GuiManager;
+		friend GuiManager;		// currently needed for access to triggerFocusLost/triggerFocusGained
 		// event generating functions
 		virtual void triggerClicked();
 		virtual void triggerDoubleClicked();

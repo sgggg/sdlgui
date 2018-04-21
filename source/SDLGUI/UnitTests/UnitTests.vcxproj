@@ -101,6 +101,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\include;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +125,7 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGLD.dll" "$(OutDir)"</Com
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\include;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +151,7 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGLD.dll" "$(OutDir)"</Com
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\include;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +179,7 @@ xcopy /y "$(ProjectDir)..\..\..\lib\$(PlatformTarget)\SGL.dll" "$(OutDir)"</Comm
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\thirdparty\SDL2_ttf-2.0.12\include;$(ProjectDir)..\..\..\thirdparty\SDL2-2.0.3\include;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

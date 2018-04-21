@@ -9,7 +9,7 @@ namespace sgl
 {
 	/**
 	 * @brief Returns the value of the environment variable with the given name.
-	 * 
+	 *
 	 * @param variable Name of the environment variable to get.
 	 * @return Value of the specified variable.
 	 */
@@ -26,4 +26,7 @@ namespace sgl
 	 * @return String containing the system path to the specified location.
 	 */
 	std::string getKnownFolderPath(KnownFolders folder);
+
+	std::string utf8_encode(const std::wstring &wstr);
+	std::wstring utf8_decode(const std::string &str);
 }

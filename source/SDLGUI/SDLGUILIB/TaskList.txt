@@ -12,6 +12,9 @@ Known Bugs List
 Task List
 * This list will contain all tasks that still need to be completed.
 
+- convert incoming SDL_Events in InputHandler to Events (should maybe be named Message) and use only those internally
+- change EventProcessor to accept Events instead of SDL_Events
+- convert SDLGUILIB project to static lib
 - change mouse cursor (e.g. when hovering text input controls or when resizing/moving a window) via SDL_CreateSystemCursor
 - implement pack function that reduces a window to its minimal required size (to still fit all children)
 - finish radio button control

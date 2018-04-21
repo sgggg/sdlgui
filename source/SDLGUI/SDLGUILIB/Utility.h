@@ -71,6 +71,4 @@ namespace sgl
 	void drawCircle(SDL_Renderer* renderer, int circle_center_x, int circle_center_y, int radius, SDL_Color c);
 
 	void drawFilledCircle(SDL_Renderer* renderer, int circle_center_x, int circle_center_y, int radius, SDL_Color c);
-
-	std::string convert_wide_to_narrow_string(const std::wstring& wide_string);
 }

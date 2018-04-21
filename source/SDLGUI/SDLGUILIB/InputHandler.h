@@ -18,6 +18,7 @@ namespace sgl
 		InputHandler(GuiManager* manager);
 
 		virtual bool handleEvent(const SDL_Event& e) override;
+		virtual Event toEvent(const SDL_Event& e);
 
 	private:
 		GuiManager* manager_;

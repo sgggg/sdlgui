@@ -18,9 +18,15 @@ namespace sgl
 	{
 		// pass the event top-down through the stack, until we find a window that handles it
 		const auto& window_stack = manager_->getWindowStack();
-		std::find_if(window_stack.begin(), window_stack.end(), [&](auto window) {
+		std::find_if(window_stack.begin(), window_stack.end(), [&](auto* window) {
 			return window->handleEvent(e);
+			//return window->handleEvent(toEvent(e));
 		});
 		return true;
+	}
+
+	Event InputHandler::toEvent(const SDL_Event& e)
+	{
+		return Event();
 	}
 }

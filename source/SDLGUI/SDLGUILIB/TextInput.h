@@ -16,8 +16,8 @@ namespace sgl
 		virtual void setDefaultText(const std::string new_default_text);
 
 		virtual void draw(SDL_Renderer* renderer) override;
-		void drawInactive(SDL_Renderer * renderer);
-		void drawActive(SDL_Renderer * renderer);
+		void drawInactive(SDL_Renderer* renderer);
+		void drawActive(SDL_Renderer* renderer);
 		virtual void triggerKeyDown(SDL_Keysym key) override;
 
 	protected:

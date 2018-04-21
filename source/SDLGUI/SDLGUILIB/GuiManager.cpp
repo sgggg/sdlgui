@@ -56,7 +56,7 @@ namespace sgl
 
 	void GuiManager::drawGui(SDL_Renderer* renderer)
 	{
-		// we draw all the windows that don't have parents
+		// we draw only the windows that don't have parents
 		// because all those with parents are drawn by their 
 		// parents draw() function
 		// we're going through the list in reverse order so that the first item is drawn on top
@@ -177,6 +177,11 @@ namespace sgl
 	std::chrono::milliseconds GuiManager::getApplicationTime() const
 	{
 		return application_time_;
+	}
+
+	void GuiManager::dispatch(Event&& event)
+	{
+		// TODO pass this event to registered event handlers
 	}
 
 	GuiManager::GuiManager()

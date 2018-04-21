@@ -5,10 +5,10 @@
 namespace sgl
 {
 	class GuiManager;
+	class Window;
 
 	typedef std::int64_t WindowId;
-	const WindowId kInvalidWindowId = WindowId(-1);
+	constexpr WindowId kInvalidWindowId = WindowId(-1);
 }
-
 
 

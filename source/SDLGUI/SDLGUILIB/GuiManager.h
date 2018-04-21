@@ -8,6 +8,7 @@
 #include "InputHandler.h"
 #include "RenderAssistant.h"
 #include "EventProcessor.h"
+#include "Common.h"
 
 namespace sgl
 {
@@ -17,11 +18,7 @@ namespace sgl
 	void SDLGUILIB_API SetApplicationTime(std::chrono::milliseconds absolute_time);
 	std::chrono::milliseconds SDLGUILIB_API GetApplicationTime();
 
-
-	class Window;
 	
-	typedef std::int64_t WindowId;	// TODO remove
-
 	/**
 	 * @brief Singleton GuiManager that manages all resources and handles events and input for 
 	 * all windows.
@@ -141,6 +138,7 @@ namespace sgl
 		 * @return Application time in milliseconds.
 		 */
 		std::chrono::milliseconds getApplicationTime() const;
+		void dispatch(Event&& event);
 
 	private:
 		GuiManager();

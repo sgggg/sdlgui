@@ -6,7 +6,7 @@
 namespace sgl
 {
 	Window::Window() :
-		id_(-1),
+		id_(kInvalidWindowId),
 		size_{ 0, 0 },
 		relative_pos_{ 0, 0 },
 		screen_pos_{ 0, 0 },
@@ -171,7 +171,7 @@ namespace sgl
 	void Window::setVisible(bool is_visible)
 	{
 		is_visible_ = is_visible;
-		for (auto child : children_)
+		for (auto* child : children_)
 		{
 			child->setVisible(is_visible);
 		}
@@ -189,8 +189,6 @@ namespace sgl
 		auto was_handled = handleEventByChildren(e);
 		if (!was_handled)
 		{
-			// if the event was not handled by any child
-			// check if it concerns this window
 			switch (e.type)
 			{
 			case SDL_MOUSEBUTTONDOWN:

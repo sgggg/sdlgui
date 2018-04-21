@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "OsUtility.h"
 #include "ErrorHandling.h"
-#include "Utility.h"
 
 #include "windows.h"
 #include <objbase.h>			// provides CoTaskMemFree
 #include <Shlobj.h>				// provides SHGetKnownFolderPath
 #include <Knownfolders.h>		// provides FOLDERID_Fonts
+#include <codecvt>				// this is used in convert_wide_to_narrow_string
 
 namespace sgl
 {
@@ -24,6 +24,7 @@ namespace sgl
 		return buffer.get();
 #endif
 	}
+
 	std::string getKnownFolderPath(KnownFolders folder)
 	{
 #ifdef _WIN32
@@ -37,9 +38,37 @@ namespace sgl
 			// TODO error
 			break;
 		}
-		std::string path(convert_wide_to_narrow_string(folder_path));
+		auto path(utf8_encode(folder_path));
 		CoTaskMemFree(folder_path);
 		return path;
+#endif
+	}
+
+	std::string utf8_encode(const std::wstring &wstr)
+	{
+#ifdef _WIN32
+		if (wstr.empty())
+		{
+			return std::string();
+		}
+		auto size_needed = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], static_cast<int>(wstr.size()), NULL, 0, NULL, NULL);
+		auto result = std::string(size_needed, 0);
+		WideCharToMultiByte(CP_UTF8, 0, &wstr[0], static_cast<int>(wstr.size()), &result[0], size_needed, NULL, NULL);
+		return result;
+#endif
+	}
+
+	std::wstring utf8_decode(const std::string &str)
+	{
+#ifdef _WIN32
+		if (str.empty())
+		{
+			return std::wstring();
+		}
+		auto size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), NULL, 0);
+		auto result = std::wstring(size_needed, 0);
+		MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), &result[0], size_needed);
+		return result;
 #endif
 	}
 }

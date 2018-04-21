@@ -5,7 +5,6 @@
 #include "SDL_ttf.h"
 #include <iostream>
 #include <string>
-#include <codecvt>				// this is used in convert_wide_to_narrow_string
 #include <cmath>				// provides pi
 
 namespace sgl
@@ -249,13 +248,5 @@ namespace sgl
 	void drawFilledCircle(SDL_Renderer* renderer, int circle_center_x, int circle_center_y, int radius, SDL_Color c)
 	{
 		drawCircleImpl(renderer, circle_center_x, circle_center_y, radius, c, true);
-	}
-	
-	std::string convert_wide_to_narrow_string(const std::wstring& wide_string)
-	{
-		typedef std::codecvt_utf8<wchar_t> convert_typeX;
-		std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-		return converterX.to_bytes(wide_string);
 	}
 }
