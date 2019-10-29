@@ -22,10 +22,6 @@ namespace Microsoft
 			{
 				RETURN_WIDE_STRING("(" << std::to_wstring(q.width) << "," << std::to_wstring(q.height) << ")");
 			}
-			template<> inline std::wstring ToString<std::int64_t>(const std::int64_t& q)
-			{
-				RETURN_WIDE_STRING(q);
-			}
 			template<> inline std::wstring ToString<sgl::Alignment>(const sgl::Alignment& q)
 			{
 				RETURN_WIDE_STRING(static_cast<int>(q));
