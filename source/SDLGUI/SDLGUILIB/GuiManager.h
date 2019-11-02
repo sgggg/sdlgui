@@ -6,32 +6,27 @@
 
 #include "StyleManager.h"
 #include "InputHandler.h"
+#include "IMessageBroker.h"
 #include "RenderAssistant.h"
 #include "EventProcessor.h"
 #include "Common.h"
 
 namespace sgl
 {
-	// global functions for GUI control
-	void SDLGUILIB_API DrawGui(SDL_Renderer* renderer);
-	bool SDLGUILIB_API HandleEvent(SDL_Event* e);
-	void SDLGUILIB_API SetApplicationTime(std::chrono::milliseconds absolute_time);
-	std::chrono::milliseconds SDLGUILIB_API GetApplicationTime();
-
-	
 	/**
 	 * @brief Singleton GuiManager that manages all resources and handles events and input for 
 	 * all windows.
 	 */
-	class GuiManager
+	class SDLGUILIB_API GuiManager : public IMessageBroker
 	{
 	public:
-		/**
-		 * @brief Returns a pointer to the global GUI manager object. If it 
-		 * doesn't exist yet, it will be created.
-		 * @return Pointer to the global GUI manager. Can not be `nullptr`.
-		 */
-		static GuiManager* GetInstance();
+		GuiManager();
+		///< @todo check if we can undelete these
+		GuiManager(const GuiManager&) = delete;
+		GuiManager(GuiManager&&) = delete;
+		GuiManager& operator=(const GuiManager&) = delete;
+		GuiManager& operator=(GuiManager&&) = delete;
+		~GuiManager();
 		/**
 		 * @brief Returns a reference to the input handler.
 		 * @return Reference to the input handler.
@@ -62,11 +57,10 @@ namespace sgl
 		 * 
 		 * Each window _must_ be registered after contruction to the GUI manager so
 		 * it can be drawn and receive input, etc.
-		 * @param window Pointer to the new window instance to register.
-		 * @param[out] id Output parameter. The unique window ID the window 
+		 * @param window Reference to the new window instance to register.
 		 * will receive upon registering to the GUI manager.
 		 */
-		void registerWindow(Window* window, WindowId& /* out */ id);
+		void registerWindow(Window& window) override;
 		/**
 		 * @brief Unregisters the given window from the GUI manager.
 		 * 
@@ -99,7 +93,7 @@ namespace sgl
 		 * @brief Returns a new, unused window ID.
 		 * @return A newly generated window ID, not used by any other window
 		 */
-		WindowId getAvailableWindowId();
+		static WindowId getAvailableWindowId();
 		/** 
 		 * @brief Release the given window ID.
 		 * 
@@ -141,11 +135,6 @@ namespace sgl
 		void dispatch(Event&& event);
 
 	private:
-		GuiManager();
-		GuiManager(const GuiManager&) = delete;
-		GuiManager& operator=(const GuiManager&) = delete;
-
-		static std::unique_ptr<GuiManager> instance;	///< Singleton instance of GuiManager
 		InputHandler input_handler_;					///< Manages input through `SDL_Event`s and passes it to the windows according to `window_stack_` order
 		StyleManager style_manager_;					///< Manages window appearance
 		RenderAssistant render_assistant_;				///< Provides utility for rendering GUI elements

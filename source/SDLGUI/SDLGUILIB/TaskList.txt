@@ -47,3 +47,21 @@ Low priority:
 ... and more
 
 
+
+example code snipped draft:
+
+
+
+Frame frame1{Window::NO_PARENT, "Hello World!";
+Button b1{frame1, "Say Hello World"};
+
+GuiManager man;
+man.registerWindow(w1);
+
+man.sendInput(sdl_event);
+
+man.setTime(sdl_time);
+man.draw(sdl_renderer);
+
+man.unregisterWindow(w1);
+

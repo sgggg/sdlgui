@@ -17,8 +17,10 @@ namespace UnitTests
 	public:
 		TEST_METHOD(CheckSetAndGetDefaultText)
 		{
+			sgl::GuiManager manager_;
 			auto default_text = "default text"s;
 			sgl::TextInput text_input(nullptr, default_text);
+			manager_.registerWindow(text_input);
 
 			Assert::AreEqual(""s, text_input.getText());
 			Assert::AreEqual(default_text, text_input.getDefaultText());
@@ -32,8 +34,10 @@ namespace UnitTests
 
 		TEST_METHOD(CheckSetAndGetText)
 		{
+			sgl::GuiManager manager_;
 			auto default_text = "default text"s;
 			sgl::TextInput text_input(nullptr, default_text);
+			manager_.registerWindow(text_input);
 
 			Assert::AreEqual(""s, text_input.getText());
 			Assert::AreEqual(default_text, text_input.getDefaultText());
@@ -53,8 +57,10 @@ namespace UnitTests
 
 		TEST_METHOD(CheckEnterText)
 		{
+			sgl::GuiManager manager_;
 			auto default_text = "default text"s;
 			sgl::TextInput text_input(nullptr, default_text);
+			manager_.registerWindow(text_input);
 			text_input.setVisible(true);
 
 			Assert::AreEqual(""s, text_input.getText());
@@ -75,7 +81,9 @@ namespace UnitTests
 
 		TEST_METHOD(CheckEnterTextAtCursor)
 		{
+			sgl::GuiManager manager_;
 			sgl::TextInput text_input(nullptr, "default text"s);
+			manager_.registerWindow(text_input);
 			text_input.setVisible(true);
 
 			Assert::AreEqual(""s, text_input.getText());
@@ -104,7 +112,9 @@ namespace UnitTests
 
 		TEST_METHOD(CheckRemoveTextWithBackspaceAtCursor)
 		{
+			sgl::GuiManager manager_;
 			sgl::TextInput text_input(nullptr, "default text"s);
+			manager_.registerWindow(text_input);
 			text_input.setVisible(true);
 
 			auto expected_text = "AbCdEf"s;
@@ -130,7 +140,9 @@ namespace UnitTests
 
 		TEST_METHOD(CheckRemoveTextWithDeleteAtCursor)
 		{
+			sgl::GuiManager manager_;
 			sgl::TextInput text_input(nullptr, "default text"s);
+			manager_.registerWindow(text_input);
 			text_input.setVisible(true);
 
 			auto typed_text = "AbCdEf"s;
@@ -151,7 +163,9 @@ namespace UnitTests
 		
 		TEST_METHOD(CheckEnterAndRemoveTextAtCursor)
 		{
+			sgl::GuiManager manager_;
 			sgl::TextInput text_input(nullptr, "default text"s);
+			manager_.registerWindow(text_input);
 			text_input.setVisible(true);
 
 			auto typed_text = "AbCdEf"s;

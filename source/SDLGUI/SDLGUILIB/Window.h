@@ -22,6 +22,7 @@ namespace sgl
 		~Window();
 
 		virtual WindowId getId() const;
+		virtual void setManager(GuiManager* manager);
 		virtual void addChild(Window& child_window);
 		virtual void removeChild(Window& child_window);
 		virtual std::vector<Window*> getChildren() const;

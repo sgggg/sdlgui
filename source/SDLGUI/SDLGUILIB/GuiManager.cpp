@@ -5,35 +5,25 @@
 
 namespace sgl
 {
-	void DrawGui(SDL_Renderer* renderer)
+	GuiManager::GuiManager()
+		:input_handler_(this)
+		, style_manager_()
+		, render_assistant_()
+		, windows_()
+		, window_stack_()
+		, window_with_focus_(nullptr)
+		, application_time_(0)
 	{
-		GuiManager::GetInstance()->drawGui(renderer);
 	}
 
-	bool HandleEvent(SDL_Event* e)
+	GuiManager::~GuiManager()
 	{
-		return GuiManager::GetInstance()->getInputHandler().handleEvent(*e);
-	}
-
-	void SetApplicationTime(std::chrono::milliseconds absoluteTime)
-	{
-		GuiManager::GetInstance()->setApplicationTime(absoluteTime);
-	}
-
-	std::chrono::milliseconds GetApplicationTime()
-	{
-		return GuiManager::GetInstance()->getApplicationTime();
-	}
-
-	GuiManager* GuiManager::GetInstance()
-	{
-		if (instance == nullptr)
+		for (auto* window : windows_)
 		{
-			instance.reset(new GuiManager());
+			window->setManager(nullptr);
 		}
-		return instance.get();
 	}
-
+	
 	InputHandler& GuiManager::getInputHandler()
 	{
 		return input_handler_;
@@ -62,27 +52,23 @@ namespace sgl
 		// we're going through the list in reverse order so that the first item is drawn on top
 		std::for_each(window_stack_.rbegin(), window_stack_.rend(), [=](auto* window) {
 			window->draw(renderer);
-		});
+			});
 	}
 
-	void GuiManager::registerWindow(Window* window, WindowId& id)
+	void GuiManager::registerWindow(Window& window)
 	{
-		// each window must have a unique window ID
-		if (id == -1)
-		{
-			id = getAvailableWindowId();
-		}
-		windows_.push_back(window);
+		windows_.push_back(&window);
 		// the draw order of top-level windows is saved in the window stack
-		if (window->getParent() == nullptr)
+		if (window.getParent() == nullptr)
 		{
-			window_stack_.push_front(window);
+			window_stack_.push_front(&window);
 		}
 		// if this is the first window created, set it as focused
 		if (windows_.size() == 1)
 		{
-			window_with_focus_ = window;
+			window_with_focus_ = &window;
 		}
+		window.setManager(this);
 	}
 
 	void GuiManager::unregisterWindow(Window* window)
@@ -99,7 +85,7 @@ namespace sgl
 		{
 			window_stack_.erase(window_stack_it);
 		}
-		freeWindowId(window->getId());
+		//freeWindowId(window->getId());
 		// move focus to another existing window, if the destroyed had focus
 		if (window == window_with_focus_)
 		{
@@ -141,6 +127,7 @@ namespace sgl
 
 	WindowId GuiManager::getAvailableWindowId()
 	{
+		static WindowId window_id_counter_{0};
 		return window_id_counter_++;
 	}
 
@@ -166,7 +153,7 @@ namespace sgl
 		window_stack_.clear();
 		std::copy_if(windows_.begin(), windows_.end(), std::back_inserter(window_stack_), [](auto* window) {
 			return window->getParent() == nullptr;
-		});
+			});
 	}
 
 	void GuiManager::setApplicationTime(std::chrono::milliseconds time)
@@ -183,18 +170,4 @@ namespace sgl
 	{
 		// TODO pass this event to registered event handlers
 	}
-
-	GuiManager::GuiManager()
-		:input_handler_(this)
-		,style_manager_()
-		,render_assistant_()
-		,windows_()
-		,window_stack_()
-		,window_with_focus_(nullptr)
-		,window_id_counter_(0)
-		,application_time_(0)
-	{
-	}
-
-	std::unique_ptr<GuiManager> GuiManager::instance;
 }

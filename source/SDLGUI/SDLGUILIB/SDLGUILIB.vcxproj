@@ -190,6 +190,7 @@
     <ClInclude Include="GroupBox.h" />
     <ClInclude Include="GuiManager.h" />
     <ClInclude Include="HBoxLayout.h" />
+    <ClInclude Include="IMessageBroker.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="OsUtility.h" />

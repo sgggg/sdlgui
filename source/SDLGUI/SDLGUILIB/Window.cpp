@@ -6,7 +6,7 @@
 namespace sgl
 {
 	Window::Window() :
-		id_(kInvalidWindowId),
+		id_{ GuiManager::getAvailableWindowId() },
 		size_{ 0, 0 },
 		relative_pos_{ 0, 0 },
 		screen_pos_{ 0, 0 },
@@ -17,7 +17,7 @@ namespace sgl
 		parent_(nullptr),
 		children_(),
 		event_handlers_(),
-		manager_(GuiManager::GetInstance())
+		manager_(nullptr)
 	{
 	}
 
@@ -26,12 +26,11 @@ namespace sgl
 	{
 		setParent(parent_window);
 		setPosition(0, 0);
-		manager_->registerWindow(this, id_);
 	}
 
 	Window::~Window()
 	{
-		manager_->unregisterWindow(this);
+		if (manager_) manager_->unregisterWindow(this);
 		setParent(nullptr);
 		// be careful not to use iterators here because setParent() invalidates iterators into children_
 		while (!children_.empty())
@@ -43,6 +42,15 @@ namespace sgl
 	WindowId Window::getId() const
 	{
 		return id_;
+	}
+
+	void Window::setManager(GuiManager* manager)
+	{
+		manager_ = manager;
+		for (auto* child : children_)
+		{
+			child->setManager(manager);
+		}
 	}
 
 	void Window::addChild(Window& child_window)
@@ -82,9 +90,8 @@ namespace sgl
 		}
 		// 3. set this windows parent
 		parent_ = new_parent;
-		assert(parent_ != this);	// window can't be its own child
 		// 4. notify manager that parent relationships have changed
-		manager_->updateWindowStack();
+		if (manager_) manager_->updateWindowStack();
 	}
 
 	Window* Window::getParent() const
@@ -134,13 +141,23 @@ namespace sgl
 
 	void Window::setFocus()
 	{
-		manager_->setWindowFocus(this);
-		manager_->stackOnTop(getRootParent(this));
+		if (manager_)
+		{
+			manager_->setWindowFocus(this);
+			manager_->stackOnTop(getRootParent(this));
+		}
 	}
 
 	bool Window::hasFocus() const
 	{
-		return manager_->hasWindowFocus(this);
+		if (manager_)
+		{
+			return manager_->hasWindowFocus(this);
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void Window::setActive(bool isActive)
@@ -319,7 +336,7 @@ namespace sgl
 	{
 		// handle keyboard only if we're the window with focus
 		auto was_handled = false;
-		if (manager_->hasWindowFocus(this))
+		if (manager_ && manager_->hasWindowFocus(this))
 		{
 			triggerKeyDown(e.key.keysym);
 			was_handled = true;

@@ -5,23 +5,23 @@
 #include "UserInputGeneration.h"
 #include "../SDLGUILIB/SGL.h"
 
-void globalClickScreenPosition(int x, int y)
+void globalClickScreenPosition(sgl::InputHandler& input_handler, int x, int y)
 {
 	auto press = leftMouseDown(x, y);
 	auto release = leftMouseUp(x, y);
-	sgl::HandleEvent(&press);
-	sgl::HandleEvent(&release);
+	input_handler.handleEvent(press);
+	input_handler.handleEvent(release);
 }
 
-void globalClickWindow(sgl::Window& window_to_click)
+void globalClickWindow(sgl::InputHandler& input_handler, sgl::Window& window_to_click)
 {
 	auto position = window_to_click.getPosition();
 	auto size = window_to_click.getSize();
 	auto center_of_window = sgl::Point{position.x + size.width / 2, position.y + size.height / 2};
 	auto press = leftMouseDown(center_of_window.x, center_of_window.y);
 	auto release = leftMouseUp(center_of_window.x, center_of_window.y);
-	sgl::HandleEvent(&press);
-	sgl::HandleEvent(&release);
+	input_handler.handleEvent(press);
+	input_handler.handleEvent(release);
 }
 
 void localClickWindow(sgl::Window& window_to_click)

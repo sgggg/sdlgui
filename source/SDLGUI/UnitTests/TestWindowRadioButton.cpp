@@ -18,6 +18,7 @@ namespace UnitTests
 		std::string radio1_label_;
 		std::string radio2_label_;
 		std::string radio3_label_;
+		sgl::GuiManager manager_;
 		sgl::Frame frame_;
 		sgl::GroupBox group_box_;
 		sgl::RadioButton radio1_;
@@ -58,6 +59,7 @@ namespace UnitTests
 			radio3_.addEventCallback(sgl::EventType::Unchecked, [this](const auto&) {
 				last_unchecked_radio_ = 3;
 			});
+			manager_.registerWindow(frame_);
 		}
 
 		TEST_METHOD(CheckRadioButtonSetAndGetLabelText)

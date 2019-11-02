@@ -15,6 +15,7 @@ namespace UnitTests
 	TEST_CLASS(TestWindowButton)
 	{
 	public:
+		sgl::GuiManager manager_;
 		std::string button_label_;
 		sgl::Button button_;
 		bool callback_button_was_pressed_ = false;
@@ -23,8 +24,9 @@ namespace UnitTests
 		sgl::EventType callback_received_event_type_ = sgl::EventType::Invalid;
 
 		TestWindowButton()
-			:button_label_("Button Label")
-			,button_(nullptr, button_label_)
+			:manager_{}
+			, button_(nullptr, button_label_)
+			, button_label_{"Button Label"}
 		{
 			button_.setSize(200, 200);
 			button_.setVisible(true);
@@ -40,13 +42,14 @@ namespace UnitTests
 				callback_button_went_up_ = true;
 				callback_received_event_type_ = e.type_;
 			});
+			manager_.registerWindow(button_);
 		}
 
 		TEST_METHOD(CheckButtonLabel)
 		{
 			Assert::AreEqual(button_label_, button_.getLabel());
 
-			auto new_label = "New Button Label"s;
+			const auto new_label = "New Button Label"s;
 			button_.setLabel(new_label);
 
 			Assert::AreEqual(new_label, button_.getLabel());
@@ -55,6 +58,7 @@ namespace UnitTests
 		TEST_METHOD(CheckButtonSetLabelAlignment)
 		{
 			sgl::Button button(nullptr, "Label Text"s);
+			manager_.registerWindow(button);
 			auto expected_default_alignment = sgl::Alignment::Center;
 			Assert::AreEqual(expected_default_alignment, button.getLabelAlignment());
 

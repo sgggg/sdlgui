@@ -66,18 +66,19 @@ void CalculatorApp::runUpdateLoop(SDL_Renderer* renderer)
 	std::chrono::system_clock clock;
 	const auto maxFps = 30;
 	const auto frame_time = std::chrono::microseconds(1'000'000) / maxFps; // e.g. a frame has 1/60 s for 60 fps
+	sgl::GuiManager gui_manager;
 	while (running)
 	{
 		// begin new frame
 		auto frame_start = clock.now();
 
 		// 1. advance state of application to the current time
-		sgl::SetApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()));
+		gui_manager.setApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()));
 
 		// 2. handle all input
 		while (0 != SDL_PollEvent(&e))
 		{
-			sgl::HandleEvent(&e);
+			gui_manager.getInputHandler().handleEvent(e);
 
 			if (e.type == SDL_QUIT)
 			{
@@ -88,7 +89,7 @@ void CalculatorApp::runUpdateLoop(SDL_Renderer* renderer)
 		// 3. draw updated state
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
-		sgl::DrawGui(renderer);
+		gui_manager.drawGui(renderer);
 		SDL_RenderPresent(renderer);
 
 		// 4. wait until frame time is over

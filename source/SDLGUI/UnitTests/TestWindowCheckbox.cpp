@@ -16,13 +16,14 @@ namespace UnitTests
 	{
 	public:
 		std::string checkbox_label_;
+		sgl::GuiManager manager_;
 		sgl::Checkbox checkbox_;
 		bool callback_was_checked_ = false;
 		bool callback_was_unchecked_ = false;
 
 		TestWindowCheckbox()
-			:checkbox_label_("Label Text")
-			,checkbox_(nullptr, checkbox_label_)
+			:checkbox_label_{ "Label Text" }
+			, checkbox_{nullptr, checkbox_label_}
 		{
 			checkbox_.setSize(200, 80);
 			checkbox_.setVisible(true);
@@ -32,6 +33,7 @@ namespace UnitTests
 			checkbox_.addEventCallback(sgl::EventType::Unchecked, [this](const auto& e) {
 				callback_was_unchecked_ = true;
 			});
+			manager_.registerWindow(checkbox_);
 		}
 
 		TEST_METHOD(CheckSetAndGetLabelText)

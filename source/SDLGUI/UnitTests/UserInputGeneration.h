@@ -3,9 +3,10 @@
 #include "SDL.h"
 #include "../SDLGUILIB/EventProcessor.h"
 #include "../SDLGUILIB/Window.h"
+#include "../SDLGUILIB/InputHandler.h"
 
-void globalClickScreenPosition(int x, int y);
-void globalClickWindow(sgl::Window& window_to_click);
+void globalClickScreenPosition(sgl::InputHandler& input_handler, int x, int y);
+void globalClickWindow(sgl::InputHandler& input_handler, sgl::Window& window_to_click);
 
 void localClickWindow(sgl::Window& window_to_click);
 

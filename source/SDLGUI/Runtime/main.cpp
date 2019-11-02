@@ -119,6 +119,11 @@ int main(int /*argc*/, char* /*args*/[])
 	main_frame.setVisible(true);
 	second_frame.setVisible(true);
 
+	// create the manager for all windows
+	sgl::GuiManager gui_manager;
+	gui_manager.registerWindow(main_frame);
+	gui_manager.registerWindow(second_frame);
+
 	// get 2D rendering context
 	auto renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
 	auto running = true;
@@ -132,12 +137,12 @@ int main(int /*argc*/, char* /*args*/[])
 		auto frame_start = clock.now();
 
 		// 1. advance state of application to the current time
-		sgl::SetApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()));
+		gui_manager.setApplicationTime(std::chrono::duration_cast<std::chrono::milliseconds>(clock.now().time_since_epoch()));
 
 		// 2. handle all input
 		while (0 != SDL_PollEvent(&e))
 		{
-			sgl::HandleEvent(&e);
+			gui_manager.getInputHandler().handleEvent(e);
 
 			if (e.type == SDL_QUIT)
 			{
@@ -148,7 +153,7 @@ int main(int /*argc*/, char* /*args*/[])
 		// 3. draw updated state
 		SDL_SetRenderDrawColor(renderer, 0, 0, 70, 255);
 		SDL_RenderClear(renderer);
-		sgl::DrawGui(renderer);
+		gui_manager.drawGui(renderer);
 		SDL_RenderPresent(renderer);
 
 		// 4. wait until frame time is over
