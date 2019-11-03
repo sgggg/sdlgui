@@ -53,6 +53,11 @@ namespace sgl
 		}
 	}
 
+	GuiManager* Window::getManager() const
+	{
+		return manager_;
+	}
+
 	void Window::addChild(Window& child_window)
 	{
 		child_window.setParent(this);
