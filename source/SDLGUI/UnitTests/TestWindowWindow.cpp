@@ -25,7 +25,7 @@ namespace UnitTests
 		}
 	};
 
-	class MockGuiManager : public sgl::GuiManager 
+	class MockGuiManager : public sgl::GuiManager
 	{};
 
 	TEST_CLASS(TestWindowWindow)
@@ -102,6 +102,66 @@ namespace UnitTests
 
 			Assert::IsNull(window2.getParent());
 		}
+
+		TEST_METHOD(GivenWindowWithoutChildren_WhenSetItselfAsChild_ThenHasNoChildren)
+		{
+			TestableWindow window1(nullptr);
+
+			window1.addChild(window1);
+
+			Assert::AreEqual(std::size_t{ 0 }, window1.getChildren().size());
+		}
+
+		TEST_METHOD(GivenWindowWithoutChildren_WhenAddChildren_ThenWindowHasChildren)
+		{
+			TestableWindow window1(nullptr);
+			TestableWindow child1(nullptr);
+			TestableWindow child2(nullptr);
+
+			window1.addChild(child1);
+			window1.addChild(child2);
+
+			Assert::AreEqual(std::size_t{ 2 }, window1.getChildren().size());
+			Assert::AreEqual<void*>(&child1, window1.getChildren()[0]);
+			Assert::AreEqual<void*>(&child2, window1.getChildren()[1]);
+		}
+
+		TEST_METHOD(GivenWindowWithChild_WhenChildIsAddedToOtherWindow_ThenOtherWindowHasChildOnly)
+		{
+			TestableWindow window1(nullptr);
+			TestableWindow window2(nullptr);
+			TestableWindow child1(nullptr);
+			window1.addChild(child1);
+			
+			window2.addChild(child1);
+
+			Assert::AreEqual(std::size_t{ 0 }, window1.getChildren().size());
+			Assert::AreEqual(std::size_t{ 1 }, window2.getChildren().size());
+			Assert::AreEqual<void*>(&child1, window2.getChildren()[0]);
+		}
+
+		TEST_METHOD(GivenWindowWithChild_WhenChildIsRemoved_ThenWindowHasNoChildren)
+		{
+			TestableWindow window1(nullptr);
+			TestableWindow child1(nullptr);
+			window1.addChild(child1);
+
+			window1.removeChild(child1);
+
+			Assert::AreEqual(std::size_t{ 0 }, window1.getChildren().size());
+		}
+
+		TEST_METHOD(GivenWindowWithoutChild_WhenChildIsRemoved_ThenNoop)
+		{
+			TestableWindow window1(nullptr);
+			TestableWindow child1(nullptr);
+
+			window1.removeChild(child1);
+
+			Assert::AreEqual(std::size_t{ 0 }, window1.getChildren().size());
+		}
+
+		// TODO add test about parent/child relationship (combination of setParent/addChild calls)
 
 		TEST_METHOD(GivenWindow_WhenGetId_ThenHasValidId)
 		{
@@ -201,7 +261,33 @@ namespace UnitTests
 			Assert::IsTrue(window.isVisible());
 		}
 
-		// TODO remaining tests
+		TEST_METHOD(GivenWindow_WhenIsActive_ThenTrueByDefault)
+		{
+			TestableWindow window(nullptr);
 
+			Assert::IsTrue(window.isActive());
+		}
+
+		TEST_METHOD(GivenActiveWindow_WhenSetInactive_ThenInactive)
+		{
+			TestableWindow window(nullptr);
+
+			window.setActive(false);
+
+			Assert::IsFalse(window.isActive());
+		}
+
+		TEST_METHOD(GivenInactiveWindow_WhenSetActive_ThenActive)
+		{
+			TestableWindow window(nullptr);
+			window.setActive(false);
+			
+			window.setActive(true);
+
+			Assert::IsTrue(window.isActive());
+		}
+
+		// TODO handleEvent tests
+		// TODO callback tests
 	};
 }
