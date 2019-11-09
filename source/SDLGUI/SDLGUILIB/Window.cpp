@@ -10,19 +10,19 @@ namespace sgl
 		size_{ 0, 0 },
 		relative_pos_{ 0, 0 },
 		screen_pos_{ 0, 0 },
-		is_visible_(false),
-		is_active_(true),
-		is_clicked_(false),
-		contains_mouse_(false),
-		parent_(nullptr),
-		children_(),
-		event_handlers_(),
-		manager_(nullptr)
+		is_visible_{ false },
+		is_active_{ true },
+		is_clicked_{ false },
+		contains_mouse_{ false },
+		parent_{ nullptr },
+		children_{},
+		event_handlers_{},
+		manager_{nullptr}
 	{
 	}
 
 	Window::Window(Window* parent_window)
-		:Window()
+		:Window{}
 	{
 		setParent(parent_window);
 		setPosition(0, 0);

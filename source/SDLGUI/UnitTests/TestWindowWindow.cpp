@@ -103,6 +103,30 @@ namespace UnitTests
 			Assert::IsNull(window2.getParent());
 		}
 
+		TEST_METHOD(GivenWindowWithParent_WhenParentIsDestroyed_ThenParentIsRemoved)
+		{
+			TestableWindow window1(nullptr);
+			{
+				TestableWindow window2(nullptr);
+
+				window1.setParent(&window2);
+			}
+
+			Assert::IsNull(window1.getParent());
+		}
+
+		TEST_METHOD(GivenWindowWithParent_WhenOtherParentIsSet_ThenOldParentIsReplaced)
+		{
+			TestableWindow old_parent(nullptr);
+			TestableWindow window(&old_parent);
+			TestableWindow new_parent(nullptr);
+			
+			window.setParent(&new_parent);
+
+			Assert::AreEqual<void*>(&new_parent, window.getParent());
+			Assert::AreEqual(std::size_t{ 0 }, old_parent.getChildren().size());
+		}
+
 		TEST_METHOD(GivenWindowWithoutChildren_WhenSetItselfAsChild_ThenHasNoChildren)
 		{
 			TestableWindow window1(nullptr);
@@ -161,7 +185,37 @@ namespace UnitTests
 			Assert::AreEqual(std::size_t{ 0 }, window1.getChildren().size());
 		}
 
-		// TODO add test about parent/child relationship (combination of setParent/addChild calls)
+		TEST_METHOD(GivenWindowWithChild_WhenChildIsDestroyed_ThenWindowHasNoChildren)
+		{
+			TestableWindow parent(nullptr);
+			{
+				TestableWindow child(nullptr);
+				parent.addChild(child);
+
+			}
+
+			Assert::AreEqual(std::size_t{ 0 }, parent.getChildren().size());
+		}
+
+		TEST_METHOD(GivenWindow_WhenChildIsAdded_ThenChildHasParent)
+		{
+			TestableWindow parent(nullptr);
+			TestableWindow child(nullptr);
+			
+			parent.addChild(child);
+
+			Assert::AreEqual<void*>(&parent, child.getParent());
+		}
+
+		TEST_METHOD(GivenWindow_WhenParentIsSet_ThenWindowIsChildOfParent)
+		{
+			TestableWindow parent(nullptr);
+			TestableWindow child(nullptr);
+
+			child.setParent(&parent);
+
+			Assert::AreEqual<void*>(&child, parent.getChildren()[0]);
+		}
 
 		TEST_METHOD(GivenWindow_WhenGetId_ThenHasValidId)
 		{

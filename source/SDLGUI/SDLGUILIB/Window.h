@@ -1,16 +1,14 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
-#include <cstdint>
-#include <assert.h>
-
 #include "SDLGUILIB_API.h"
 #include "Drawable.h"
 #include "Event.h"
 #include "Utility.h"
 #include "EventProcessor.h"
+
+#include <vector>
+#include <string>
+#include <map>
 
 namespace sgl
 {
@@ -18,7 +16,11 @@ namespace sgl
 	{
 	public:
 		Window();
-		Window(Window* parentWindow);
+		explicit Window(Window* parentWindow);
+		Window& operator=(const Window&) = delete;
+		Window& operator=(Window&&) = delete;
+		Window(const Window&) = delete;
+		Window(Window&&) = delete;
 		~Window();
 
 		virtual WindowId getId() const;
@@ -83,9 +85,5 @@ namespace sgl
 		std::vector<Window*> children_;						///< Non-owning pointers to all children of this window
 		std::map<EventType, EventCallback> event_handlers_;	///< List of registered event callback functions
 		GuiManager* manager_;								///< Non-owning pointer to the global GUI manager
-
-	private:
-		Window& operator=(const Window&) = delete;
-		Window(const Window&) = delete;
 	};
 }
